@@ -1,0 +1,172 @@
+{
+  "pass": true,
+  "project": "/Users/jiefengzhou/Documents/vscode/vNext/cueframe/examples/r-pdoom",
+  "format": "landscape",
+  "scale": 1,
+  "gpu": "swiftshader",
+  "mode": "hash",
+  "cases": [
+    {
+      "name": "sequential (reference)",
+      "pass": true,
+      "samples": 30,
+      "mismatches": []
+    },
+    {
+      "name": "shuffled",
+      "pass": true,
+      "samples": 30,
+      "mismatches": []
+    },
+    {
+      "name": "cold seek (fresh page per sample)",
+      "pass": true,
+      "samples": 6,
+      "mismatches": []
+    },
+    {
+      "name": "multi-worker (3 workers, 8 chunks)",
+      "pass": true,
+      "samples": 30,
+      "mismatches": []
+    },
+    {
+      "name": "resume after killed worker",
+      "pass": true,
+      "samples": 30,
+      "mismatches": [],
+      "note": "restarts=1"
+    },
+    {
+      "name": "live snapshot vs still snapshot at holds",
+      "pass": true,
+      "skipped": true,
+      "samples": 0,
+      "mismatches": [],
+      "note": "not applicable: timeline has no holds"
+    },
+    {
+      "name": "motion-blurred pure scene: sub-frame sample sweep",
+      "pass": true,
+      "skipped": true,
+      "samples": 0,
+      "mismatches": [],
+      "note": "not applicable: no scene declares blur"
+    },
+    {
+      "name": "replay scene (reverse order vs sequential)",
+      "pass": true,
+      "skipped": true,
+      "samples": 0,
+      "mismatches": [],
+      "note": "not applicable: no replay scene"
+    }
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "warnings": [],
+  "env": {
+    "createdAt": "2026-10-08T22:41:46.767Z",
+    "node": "v26.7.0",
+    "playwright": "1.64.0",
+    "browser": {
+      "channel": "chromium (bundled)",
+      "version": "156.0.8078.4",
+      "args": [
+        "--force-color-profile=srgb",
+        "--hide-scrollbars",
+        "--mute-audio",
+        "--disable-lcd-text",
+        "--font-render-hinting=none",
+        "--disable-partial-raster",
+        "--disable-main-frame-before-activation",
+        "--run-all-compositor-stages-before-draw",
+        "--disable-checker-imaging",
+        "--disable-gpu-rasterization",
+        "--disable-accelerated-2d-canvas",
+        "--disable-gpu-compositing",
+        "--use-gl=angle",
+        "--use-angle=swiftshader",
+        "--enable-unsafe-swiftshader"
+      ]
+    },
+    "gpu": {
+      "backend": "swiftshader",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+    },
+    "os": {
+      "platform": "darwin",
+      "release": "25.6.0",
+      "arch": "arm64",
+      "cpu": "Apple M5 Pro"
+    },
+    "fonts": [
+      {
+        "family": "Archivo",
+        "src": "/data/fonts/Archivo%5Bwdth,wght%5D.ttf",
+        "sha256": null
+      },
+      {
+        "family": "Plex Mono",
+        "src": "/data/fonts/IBMPlexMono-Regular.ttf",
+        "sha256": "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46"
+      },
+      {
+        "family": "Plex Mono",
+        "src": "/data/fonts/IBMPlexMono-Medium.ttf",
+        "sha256": "a9b4c49bb299e05b5f6c481e7fb5e78943d2793249a0c8874ab574a2d1ea6755"
+      }
+    ],
+    "assets": {
+      "data/audio.json": "c9581fbe0a18edb711834e4698ba1e2f83af028add7067b9e50aa24faf01600b",
+      "data/brief.md": "1a866b31e5677dc84c8bc2b95880f20abdc802b46d64c97a4b4e04da65dc1ed4",
+      "data/fonts/Archivo[wdth,wght].ttf": "0e094a7d3c7c4c25cf1310c4b30014f1dae9332220b1c2c88f4fa996f0b05053",
+      "data/fonts/IBMPlexMono-Medium.ttf": "a9b4c49bb299e05b5f6c481e7fb5e78943d2793249a0c8874ab574a2d1ea6755",
+      "data/fonts/IBMPlexMono-Regular.ttf": "6a3412f058c7d8dfd9170c41e85ade48e5156ecb89356110ca57a0a27734af46",
+      "data/fonts/OFL.txt": "108b4e57c9c796d3d38d0428ca7ee39de47ad93187302718d9b2d8864b9b716b",
+      "data/lyrics.json": "0016ae2be44131efd68d0d4c1411651c3ca9937bc404a5d25e064514a536d70d",
+      "env.d.ts": "c0a657338622a2508f84cd403ef2668adb0aec78d39b18f99549af5ac8e4b78e",
+      "lib.ts": "4d72bdafdbb828ac39c31357df45d522770481b1bded0fc97f3fd85382590cd5",
+      "motion.ts": "42af95c381ee88b44198ee2ca51a2dca56f1f119f8fb594f54213646df574253",
+      "package.json": "925f135feec093bf3dc565ff4d7e4b495a5ae5315d01b072750afddf46ce7193",
+      "scenes/hook.ts": "9d6fea718d50d7b119665589ced9968a20a30a41814ce1fe6ea625ac3e811d2e",
+      "scenes/prompt.ts": "a4eeda53b9e1bc35e2f9180bdae7b9aafb7f548ae7aa2995fe80be1770e62976",
+      "timeline.ts": "8c914b64fe80c61250a611e0c6726f6c5fb57ff436667b08471a9a6b833cdb53",
+      "tsconfig.json": "a5b47c851bb8e32d409387cfcafaa9484cb967a6e364502bca9e5fc3d6398241"
+    }
+  },
+  "report": "/Users/jiefengzhou/Documents/vscode/vNext/cueframe/examples/r-pdoom/out/check/determinism-landscape.json",
+  "seconds": 57.836,
+  "reference": {
+    "f0": "e48e6e07b73e086fee2ea4326569c6ab998cbfa7d711de8e0bc20122ea5a2ef2",
+    "f19": "210f59289637d8f521c3fb91c08829ed7f1965b0dbc7d8c644bfc6db2953a7ba",
+    "f38": "6e9b5f6d4e26d7d7dd7fdc9f8e0bfa778a1199ffe8a59d105da2227acece9b92",
+    "f57": "b4185ee43cda9b3ed510e7bcb22c03b87f716cd1b18074ba0d84d72f9ad705f8",
+    "f76": "9a0fa7a96a5a9c5952daf18ed2745c850c020a1abeced37b38b4ddd22cb1e005",
+    "f95": "8a8652e52620ef108f9b56e83636e0e16703b513de49877b0a3f2a0a21808186",
+    "f114": "1a07b24dd258faf6fe0504bf06fad47c7f863bc94e2de0682ddb88ad4a92f825",
+    "f133": "26e21ae97eafebd8f566be6243a03809abd33c0c9ed32544cdd66217a0a39db6",
+    "f152": "af629111962c6b94ff31e7ee9089e27960a47070dbcdc5733d5a591401c25fdb",
+    "f171": "0b9ff93fe1b18c5a206c50263638c1815fa33211a86da8a01e2d2ab83bfd31a7",
+    "f177": "82655b81f804f85bd793b008a862dd408eaefc67b05e5c498b7571bc440dbfd4",
+    "f190": "bd2b9b17f486dfbe08b895672f56848e3cccf37883fa180503e0f469f75f7b9d",
+    "f209": "3b8acb40b44cec93d737853adafd0438e77c2b6e52271b3c14abec6ad0fc5b44",
+    "f228": "b75c69de4aabc750bb879c8dfb222326696be2925b5c3c72a80476d1fc314ca3",
+    "f247": "5ed4d0a99138c0cb2504a361cdc415ec14ed4586f3fcbaf1aa64c7eea44eaf2a",
+    "f266": "dd4ee0c482681b3773ff4f1338fce08a70ad5d94892c559e3afb16c8926d8c9e",
+    "f285": "217a5a6bac04af29624b46243e621d691cc2301bf04e02450a0bd3a885e29e30",
+    "f304": "77e38a4e88d72a1c4b331a56b05d3c373543b7f70617c2a0f25d913c0208d4a0",
+    "f323": "774221589524db68da8516a6b5e16e10126b63e88fade481cecba969b53ad782",
+    "f342": "1aa110a0493aed0478976bf728b1d2ace6a413e00f65ee49d08d51014464e167",
+    "f353": "a9ddeae77430d97de9ceeffe43b50e6481244cab0e1880b2cce33db0900736f1",
+    "f354": "5952840fb06094e50dda640d9a659c1fb961781a85cc7a0c583120202b9b844d",
+    "f361": "48bc230d2148c15fdca0272fbe53634e585cacc0ca4913aaed329f37a424a3a5",
+    "f380": "78cd671d41a59fb1121ffb8cea28c8f17a557240581ccf5be3e56debac42fbed",
+    "f399": "3f996367e7f9ecf2b6f04262755bde4aec53dd4a4a53942f765073ed4cbc8cd4",
+    "f409": "ac08bcde6ff60ac7b43dd8c6d2f0301647a5b3b6362f3dd035ec27fc9f5725a3",
+    "f418": "26ee020f3577f73b8ff10dd2fa995192def624a44cf98c9bad61fe14414d7ece",
+    "f437": "bcf72161a892122bbc1c003dea298a3641f3455d3b5d82360d9f44103b43d7aa",
+    "f456": "2c4405645d93ab3ec4b35c08e48b576445f2d82467aac5ee32078785f60d24c3",
+    "f463": "d2b8d5b6c61fd0d1dddfe6da08b9f668d45845eb16e254f03367d651442d9702"
+  }
+}
