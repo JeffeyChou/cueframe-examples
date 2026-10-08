@@ -1,0 +1,10 @@
+{
+  "voice": { "gain": 1.0 },
+  "stems": [
+    { "name": "bed", "file": "build/stems/bed.wav", "role": "bed", "gain": 0.24, "duck": true },
+    { "name": "sfx", "file": "build/stems/sfx.wav", "role": "sfx", "gain": 0.40 }
+  ],
+  "duck": { "depth": 0.72, "threshold": 0.04, "window": 0.12 },
+  "target": { "lufs": -14, "tp": -1.5 },
+  "fade_out": 1.2
+}
