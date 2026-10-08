@@ -1,0 +1,65 @@
+{
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "+18%",
+  "pitch": "+0Hz",
+  "fps": 30,
+  "gap": 0.35,
+  "scenes": [
+    {
+      "id": "hook",
+      "min": 3.6,
+      "pad": 0.5,
+      "say": "三个 AI Agent，只有一个浏览器，会发生什么？",
+      "sub": "3 个 AI Agent 只有 1 个浏览器\n会发生什么？"
+    },
+    {
+      "id": "fail",
+      "min": 8.0,
+      "pad": 0.6,
+      "say": "A 刚登录，B 就用上了他的号；C 打开 PDF，满屏乱码；浏览器一崩，全员黑屏。",
+      "sub": "A 刚登录 B 就用上了他的号\nC 打开 PDF 满屏乱码\n浏览器一崩 全员黑屏"
+    },
+    {
+      "id": "stop",
+      "min": 3.2,
+      "pad": 0.5,
+      "say": "停！我给你们每人发一个浏览器。",
+      "sub": "停！\n我给你们每人发一个浏览器"
+    },
+    {
+      "id": "isolate",
+      "min": 6.5,
+      "pad": 0.5,
+      "say": "一个地址，每个 Agent 一个独立浏览器，Cookie 互不串门；一台机器一张 Token，随时吊销。",
+      "sub": "一个地址 每个 Agent 一个独立浏览器\nCookie 互不串门\n一台机器一张 Token 随时吊销"
+    },
+    {
+      "id": "deploy",
+      "min": 6.5,
+      "pad": 0.5,
+      "say": "服务器一条命令部署，别的电脑一行命令接入，Claude Code、Codex、Pi 自动配好。",
+      "sub": "服务器一条命令部署\n别的电脑一行命令接入\nClaude Code、Codex、Pi 自动配好"
+    },
+    {
+      "id": "perks",
+      "min": 6.2,
+      "pad": 0.5,
+      "say": "崩了自动复活，PDF 直接出文字，想偷看内网？没门。",
+      "sub": "崩了自动复活\nPDF 直接出文字\n想偷看内网？没门"
+    },
+    {
+      "id": "compare",
+      "min": 4.2,
+      "pad": 0.4,
+      "say": "原版做不到的，它全补上了。",
+      "sub": "原版做不到的\n它全补上了"
+    },
+    {
+      "id": "cta",
+      "min": 4.6,
+      "pad": 1.2,
+      "say": "GitHub 搜 obscura gateway，点个 Star 吧！",
+      "sub": "GitHub 搜 obscura-gateway\n点个 ⭐ Star 吧！"
+    }
+  ]
+}
