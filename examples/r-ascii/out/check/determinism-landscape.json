@@ -1,0 +1,172 @@
+{
+  "pass": false,
+  "project": "/Users/jiefengzhou/Documents/vscode/vNext/cueframe/examples/r-ascii",
+  "format": "landscape",
+  "scale": 1,
+  "gpu": "swiftshader",
+  "mode": "hash",
+  "cases": [
+    {
+      "name": "sequential (reference)",
+      "pass": true,
+      "samples": 30,
+      "mismatches": []
+    },
+    {
+      "name": "shuffled",
+      "pass": true,
+      "samples": 30,
+      "mismatches": []
+    },
+    {
+      "name": "cold seek (fresh page per sample)",
+      "pass": true,
+      "samples": 8,
+      "mismatches": []
+    },
+    {
+      "name": "multi-worker (3 workers, 9 chunks)",
+      "pass": true,
+      "samples": 27,
+      "mismatches": []
+    },
+    {
+      "name": "resume after killed worker",
+      "pass": true,
+      "samples": 27,
+      "mismatches": [],
+      "note": "restarts=1"
+    },
+    {
+      "name": "live snapshot vs still snapshot at holds",
+      "pass": true,
+      "samples": 1,
+      "mismatches": []
+    },
+    {
+      "name": "motion-blurred pure scene: sub-frame sample sweep",
+      "pass": true,
+      "skipped": true,
+      "samples": 0,
+      "mismatches": [],
+      "note": "not applicable: no scene declares blur"
+    },
+    {
+      "name": "replay scene (reverse order vs sequential)",
+      "pass": true,
+      "skipped": true,
+      "samples": 0,
+      "mismatches": [],
+      "note": "not applicable: no replay scene"
+    }
+  ],
+  "errors": [
+    "console: WebSocket connection to 'ws://127.0.0.1:51073/?token=MjDXakj1GHy6' failed: Error during WebSocket handshake: Unexpected response code: 200",
+    "console: WebSocket connection to 'ws://127.0.0.1:0/?token=MjDXakj1GHy6' failed: Error in connection establishment: net::ERR_UNSAFE_PORT",
+    "console: [vite] failed to connect to websocket.\nyour current setup:\n  (browser) 127.0.0.1:51073/ <--[HTTP]--> 127.0.0.1:0/ (server)\n  (browser) 127.0.0.1:51073/ <--[WebSocket (failing)]--> 127.0.0.1:0/ (server)\nCheck out your Vite / network configuration and https://vite.dev/config/server-options.html#server-hmr .",
+    "console: Failed to send error to Vite server: TypeError: Cannot read properties of undefined (reading 'send')\n    at Object.send (http://127.0.0.1:51073/@vite/client:251:7)\n    at Object.send (http://127.0.0.1:51073/@vite/client:982:16)\n    at Object.send (http://127.0.0.1:51073/@vite/client:110:21)\n    at Object.send (http://127.0.0.1:51073/@vite/client:190:30)\n    at sendError (http://127.0.0.1:51073/@vite/client:318:19)\n    at sendLog (http://127.0.0.1:51073/@vite/client:346:11)"
+  ],
+  "warnings": [],
+  "env": {
+    "createdAt": "2026-10-08T18:54:56.863Z",
+    "node": "v26.7.0",
+    "playwright": "1.64.0",
+    "browser": {
+      "channel": "chromium (bundled)",
+      "version": "156.0.8078.4",
+      "args": [
+        "--force-color-profile=srgb",
+        "--hide-scrollbars",
+        "--mute-audio",
+        "--disable-lcd-text",
+        "--font-render-hinting=none",
+        "--use-gl=angle",
+        "--use-angle=swiftshader",
+        "--enable-unsafe-swiftshader"
+      ]
+    },
+    "gpu": {
+      "backend": "swiftshader",
+      "renderer": null
+    },
+    "os": {
+      "platform": "darwin",
+      "release": "25.6.0",
+      "arch": "arm64",
+      "cpu": "Apple M5 Pro"
+    },
+    "fonts": [
+      {
+        "family": "JBM",
+        "src": "/fonts/JetBrainsMono-Regular.woff",
+        "sha256": "063897354407f3e01516ee22f48e22839c7c4606c171c2be3c970dff3bc913f2"
+      },
+      {
+        "family": "JBM",
+        "src": "/fonts/JetBrainsMono-ExtraBold.woff",
+        "sha256": "9e7bfae31cde62c6d12bb0f1d74ab195a2e3705b1ed8aff3f6797069ecaed8fe"
+      },
+      {
+        "family": "NotoSC",
+        "src": "/fonts/NotoSansSC-Bold-subset.woff",
+        "sha256": "a06d2e888b2a2d4757b6713deaa58f62d29e07ad04e5eb4c52378300e736e101"
+      }
+    ],
+    "assets": {
+      "chrome.ts": "32d3b756a97bc5a7726723f2cd9e9d6f3b7b78e46e432048213338a981484ea2",
+      "crt.ts": "684a8261f5b4bed45da8ab9dd8b0e8cfa69c05bbe65a8f718163fa6b048c8bd8",
+      "data/lyrics.json": "b2a8c9a9c600b25acae29d2c622bf816a69b5f92a93b5bd4c0d423982a2da987",
+      "env.d.ts": "c0a657338622a2508f84cd403ef2668adb0aec78d39b18f99549af5ac8e4b78e",
+      "fonts/JetBrainsMono-ExtraBold.woff": "9e7bfae31cde62c6d12bb0f1d74ab195a2e3705b1ed8aff3f6797069ecaed8fe",
+      "fonts/JetBrainsMono-Regular.woff": "063897354407f3e01516ee22f48e22839c7c4606c171c2be3c970dff3bc913f2",
+      "fonts/NotoSansSC-Bold-subset.woff": "a06d2e888b2a2d4757b6713deaa58f62d29e07ad04e5eb4c52378300e736e101",
+      "fonts/OFL-JetBrainsMono.txt": "a76abf002c49097d146e86740a3105a5d00450b1592e820a1109a8c5680cd697",
+      "fonts/OFL-NotoSansSC.txt": "1c05c68c34f9708415aada51f17e1b0092d2cea709bf4a94cd38114f9e73d7d9",
+      "lib.ts": "fbf6093ba783c96106c022d636953c3f793b1c85c0e2df0f285f4eaff9e8127d",
+      "package.json": "f41a5077437783f4eb7c77a623a0b860305c1471f230f7e7d384274f43e20ef7",
+      "scenes/terminal.ts": "7effb905d6b270b36472098c494d9b3dbe69731741794b722d1f1761196b0139",
+      "timeline.ts": "48d5265b4335d8475799c18438ae9f2fb015fc8e4e313b3f31a70667d20afda4",
+      "timing.ts": "d6c0f462519c67f8acd087abd492318d9345692c6a46a6d2a15e6466319a5062",
+      "tsconfig.json": "eba614cc45530da86077d275acb9d5c7792f6c2446d1c570ac4cf45245673088",
+      "visuals/circle.ts": "1a20c149f491bf0287cef13c84b76ccc4efd558c761a490121f3b7bf48410c83",
+      "visuals/infinity.ts": "c36fe32d7e678239b45a57c3a7958b91989b2813ce84f12e5701fa6e98f6ec88",
+      "visuals/points.ts": "76829365ec7ad32a5d0afd3fa3cb8766f20b7382fca9e388f40ca5333be74db0",
+      "visuals/sine.ts": "8bcee2d2f805f6e6716e968172d0d62fabb02d8b8aa65bccf0b29cb69080db41",
+      "visuals/types.ts": "f6275f49cd29de9ccdaa4580e3ceec390afe49b6171d4094a65b9308f23e8d15"
+    }
+  },
+  "report": "/Users/jiefengzhou/Documents/vscode/vNext/cueframe/examples/r-ascii/out/check/determinism-landscape.json",
+  "seconds": 35.668,
+  "reference": {
+    "f0": "4f11c2e67a3f30ed94013c3aa636dd44a599033ecc5f6cff47fcc50e846e12dd",
+    "f18": "3b7ec9fdc12943593bd3051c2377104867c58ee51d343c8aa3a4411ea33d0f5b",
+    "f36": "bd5051967b5ee7dc130bd26af9088b37ba9aa38576bfea63f2f763297ae87b0f",
+    "f54": "f9e15b90aad48ffee464b4f7be2ae201209c8ab4a548926b8bbae18aab5c856b",
+    "f72": "22f5b6c82c6173cf77c6186aa02ed52155270759909add397000b1534895765b",
+    "f90": "10739a24cd11ae7d9af744048bead9d124f667a6bffb2100f3b80c69df9dfbaa",
+    "f108": "1f5119ee1a569b581336ecf249f20b1a0ff72efbab1d6c08d02b8e43faced47e",
+    "f126": "d2a27f2e555984af993883c0de7e4e3c7b590bc691f041192f9ff679b79cfeab",
+    "f144": "a99d43c7cab536d43841fac411e9e6dfb001696a39a48106ac208e7a3006574c",
+    "f162": "daab4ba1528934da3d5e8dddad8507e2c6114e598d5422bcadb3688f4b2e95f1",
+    "f180": "a1396d8a633bf1b92b63f7ea5d8599a5731f6dd78ff7cf277790feb7188401b8",
+    "f198": "50cfc86ebd56f3d1ba6688bedb393dcaf26caf95e0ea070ef4084337de7648b6",
+    "f216": "854db4e6df19ebf659456ebb2320b88312340513d728c9d6f7695530a5c74b3c",
+    "f221": "807d755a49c8a4295bc2b2ac8be5c7eaae7395b30fa6c78dccfe3b31a7b9868f",
+    "f234": "2ad7200f5ae21fea27455cf571ad9a78c6b02190429fcd9d7d34eebc4a025d01",
+    "f252": "db6958b07bcd9afbc8a07f67d423dd82cadb96ec4cbf2d3a7abd2d089ef127d2",
+    "f270": "bb20150e17e4c4923fc01f319ffcc536ba0d1217b23d54aa1e3190a8aa763a1c",
+    "f288": "7a453aa7d2303bc81eb443e74dad60202ec6c6bd23533df8bb225bf58ae074ef",
+    "f306": "0a6eb7fbd7dcd0ac08f394d58b8d3e99e839e2807b31544511787144e436ebc7",
+    "f324": "79e210e2c6ad97060a7fe6e38b9bf0ae3af0411c83bffb47ee4bc0fc0a0674c9",
+    "f342": "6bb1dde08f6d7ae1e250ec1aea562bf6e8a9545d8601900182410e57bf22c739",
+    "f360": "be678957dd49fd35b429643e90e06ff0656a16f278037588e28dfe0dfe986df6",
+    "f378": "67d72e5dd58050d3da9d049f8958ddcac4ffb01020558738ee924ec7fae4dc62",
+    "f396": "cddfa69414a9a41fb90495c10936162c1e3f1fb5ed9c16ef6fbf0e9dfb1a0457",
+    "f414": "794cdd415c74adad3a551e36531b41dc2307281f74abf4516b56c3643e7e8ae7",
+    "f432": "8ecf3ade98b063773641c26d08a4cf4b2485e7d150b1203132793768ea315c58",
+    "f441": "9a0b4973aeed7106ab7c8c1a62f731f5af1acecbbabc73bc927f9eeffd643b48",
+    "hold:limitations@0": "22f98bb544af060f24298dbdacbd37a2479b70ba19b21f4597759624b21b0e80",
+    "hold:limitations@1": "50eb2bc5ba0d6b6683a53d700fb54626bfdc74dbbab665660677a229afd6086a",
+    "hold:limitations@5": "95d8b3d982f55e771e6a46aba58ba0c3d4156505aacf08ac262d41808135a145"
+  }
+}
