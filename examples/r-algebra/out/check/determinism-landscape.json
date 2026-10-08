@@ -1,0 +1,179 @@
+{
+  "pass": true,
+  "project": "/Users/jiefengzhou/Documents/vscode/vNext/cueframe/examples/r-algebra",
+  "format": "landscape",
+  "scale": 1,
+  "gpu": "swiftshader",
+  "mode": "hash",
+  "cases": [
+    {
+      "name": "sequential (reference)",
+      "pass": true,
+      "samples": 27,
+      "mismatches": []
+    },
+    {
+      "name": "shuffled",
+      "pass": true,
+      "samples": 27,
+      "mismatches": []
+    },
+    {
+      "name": "cold seek (fresh page per sample)",
+      "pass": true,
+      "samples": 7,
+      "mismatches": []
+    },
+    {
+      "name": "multi-worker (3 workers, 9 chunks)",
+      "pass": true,
+      "samples": 27,
+      "mismatches": []
+    },
+    {
+      "name": "resume after killed worker",
+      "pass": true,
+      "samples": 27,
+      "mismatches": [],
+      "note": "restarts=1"
+    },
+    {
+      "name": "live snapshot vs still snapshot at holds",
+      "pass": true,
+      "skipped": true,
+      "samples": 0,
+      "mismatches": [],
+      "note": "not applicable: timeline has no holds"
+    },
+    {
+      "name": "motion-blurred pure scene: sub-frame sample sweep",
+      "pass": true,
+      "samples": 4,
+      "mismatches": [],
+      "note": "film f260 x4; 4 distinct sub-frames"
+    },
+    {
+      "name": "replay scene (reverse order vs sequential)",
+      "pass": true,
+      "skipped": true,
+      "samples": 0,
+      "mismatches": [],
+      "note": "not applicable: no replay scene"
+    }
+  ],
+  "errors": [],
+  "consoleErrors": [],
+  "warnings": [],
+  "env": {
+    "createdAt": "2026-10-08T22:51:07.201Z",
+    "node": "v26.7.0",
+    "playwright": "1.64.0",
+    "browser": {
+      "channel": "chromium (bundled)",
+      "version": "156.0.8078.4",
+      "args": [
+        "--force-color-profile=srgb",
+        "--hide-scrollbars",
+        "--mute-audio",
+        "--disable-lcd-text",
+        "--font-render-hinting=none",
+        "--disable-partial-raster",
+        "--disable-main-frame-before-activation",
+        "--run-all-compositor-stages-before-draw",
+        "--disable-checker-imaging",
+        "--disable-gpu-rasterization",
+        "--disable-accelerated-2d-canvas",
+        "--disable-gpu-compositing",
+        "--use-gl=angle",
+        "--use-angle=swiftshader",
+        "--enable-unsafe-swiftshader"
+      ]
+    },
+    "gpu": {
+      "backend": "swiftshader",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+    },
+    "os": {
+      "platform": "darwin",
+      "release": "25.6.0",
+      "arch": "arm64",
+      "cpu": "Apple M5 Pro"
+    },
+    "fonts": [
+      {
+        "family": "SubCJK",
+        "src": "/build/fonts/NotoSerifSC-Medium.subset.ttf",
+        "sha256": "7412a542e8866bae6df5b83b5426b5b323e213a605464b3da00a6640749695c1"
+      },
+      {
+        "family": "SubEN",
+        "src": "/build/fonts/Cormorant-Italic.subset.ttf",
+        "sha256": "16d7433fb518aed78df48fb729a5d354da2d4b9cf6e74a5a4bfbd27a0ef82935"
+      }
+    ],
+    "assets": {
+      "build/fonts/Cinzel-SemiBold.subset.ttf": "e9c06d36d2c1e4ab101f52a8d3aea9d1106a5b2f2946fa97388604e8c6048604",
+      "build/fonts/Cormorant-Italic.subset.ttf": "16d7433fb518aed78df48fb729a5d354da2d4b9cf6e74a5a4bfbd27a0ef82935",
+      "build/fonts/NotoSerifSC-Black.subset.ttf": "cf8fff988607cd2f3bf5bba9e02beb6c65798ee2044826d19d9aabfeda011e17",
+      "build/fonts/NotoSerifSC-Bold.subset.ttf": "237bb2424df0dbf51735a3e6c198f45978ad363a5e230a4f82accacf7abe339f",
+      "build/fonts/NotoSerifSC-Medium.subset.ttf": "7412a542e8866bae6df5b83b5426b5b323e213a605464b3da00a6640749695c1",
+      "build/fonts/STIXTwoMath.subset.ttf": "3c25b0528d0895c5f8c85e2d26d5adff04f9d4a2373d52c5bcc7857153ff0565",
+      "build/fonts/fonts.json": "41b5e0e7b4d6903e3766cb0a7b1d0af502bc0fdf8d95ee4a4ce2118634ebe253",
+      "build/fonts-src/Cinzel-SemiBold.ttf": "1f4a32b08426745afeb832279f53b92cfafac348e039cfe387f9eb527e17aedb",
+      "build/fonts-src/Cormorant-Italic.ttf": "ec82abf7f4dab717c69a64d6d386996fb4d430c97f21cb6fc760e6bb80e2b683",
+      "build/fonts-src/NotoSerifSC-Black.ttf": "f9ea13ec858c00115574df7c83458ca90344ce6d64f05ab80894cc15494253d9",
+      "build/fonts-src/NotoSerifSC-Bold.ttf": "bff9efdba0d03a4968312208746368cca5bc8db830bea0308b61b3bab284370b",
+      "build/fonts-src/NotoSerifSC-Medium.ttf": "3fb67f37a44c4f9d2e56af8f42f484f6dc33e0e92dcc28438955eedca2cbac24",
+      "data/film.json": "1d525ae691d282efe548ab4c5fe3b0a2a82b8a055fd16a872efce3982ce5baa7",
+      "data/fonts/Cinzel.ttf": "f4d83d34d1f6c741193e4acf4b3dff9531e5a67b6aa65228d00a7db72a4e0f34",
+      "data/fonts/CormorantGaramond-Italic.ttf": "0f48ea6abb2084537854f7174c470991a463b13036309e3b50a81511611c530d",
+      "data/fonts/NotoSerifSC.ttf": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9",
+      "data/fonts/OFL-cinzel.txt": "f2b3029aba64c378bf0963b62945eee15e564fe4330b934c8f2eb058282b5e83",
+      "data/fonts/OFL-cormorant.txt": "60700d351cac4650c51f3f9db318d2a420f8b45052dba2715eb5fec41f0f6956",
+      "data/fonts/OFL-notoserifsc.txt": "5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6",
+      "data/fonts/OFL-stix.txt": "0c8825913b60d858aacdb33c4ca6660a7d64b0d6464702efbb19313f5765861a",
+      "data/fonts/STIXTwoMath.ttf": "562551b15b836e6e01d1b7350909baf3c8c8d83260c1190fbf4544333e6936de",
+      "env.d.ts": "e2df472b9ec47aa3a874e5ef66ca340d207358fce4246cef5d39ea8b2fd335ed",
+      "fonts.py": "c21d3c89084b91cd3e1172fd1e0de8b536113889699c84bd39ccef0652e5ca23",
+      "lib.ts": "0b244b60119281b1aa6a88f0b1c64034d01b67dc300929d882bfa9ddd7fad479",
+      "make.sh": "129cf2e539f268cfc0560949d36921c70bab4276ded3acbad57a6034f7776b48",
+      "package.json": "99a3b76768ac15ba2d6dc1a564cff4140d8b7f47b9cadea5f50535613fbcb52a",
+      "scenes/film.ts": "53347d864de9defd605230570d7055c9f942ba4754726c0d4fb81f6d9459702c",
+      "scenes/shaders.ts": "32eb39f73da0c6da60e0d808a95dfeb7e63286eb47994c979fbaf3f03a54d53c",
+      "scenes/subs.ts": "5232a3a7815518f24aa8864501aeb69091feb03de834bd069358de3904281db0",
+      "timeline.ts": "3679a45a01089c91da17a9e4284681ec8b99e4c39be07134c1d8c5aad4776cac",
+      "tsconfig.json": "ad54185fef69f3f8ba487cd643fd50289c7a7beec1221b032ddab9e544afb7d8"
+    }
+  },
+  "report": "/Users/jiefengzhou/Documents/vscode/vNext/cueframe/examples/r-algebra/out/check/determinism-landscape.json",
+  "seconds": 234.196,
+  "reference": {
+    "f0": "25f90e3e7fefc7655f61c370dfae8e1990027cff5f7854a87bbfb7a584a860a2",
+    "f22": "8340bc48bd5c6a6efcdddceaacd53624bea8898dbbf376b2d75d78175ae0fb9d",
+    "f44": "86e163a9fe73a405f62e33173f17daae7d12b0c1787d7a540e7fb4f787665f6d",
+    "f66": "4cb034ae959dbe0aada612bba19628e23c88e31adf6ab545c59f038d76c6b82e",
+    "f88": "1afba5a40f1ed727dc5e3ace094c7f84a3dedc5f255a9e8b7d6fb434a5e375f8",
+    "f110": "36fb5f1cfc7da0d3214080d5b13e3f2c13ea6a1d192166fcec27cf69de9f90cc",
+    "f130": "3dbfeafacdd3fa7b17c206e7fab7143577c6faa3bfda5e91e7344b8d25c1a23e",
+    "f132": "e3976c46b7899549e31b43eadd3de83c9d40dfd1bf6e4b8fee10d7029f4dbdaa",
+    "f154": "b503daf58152a37aa8e2dee0b75e36dd72ed3dbe0911cd22fdcdd8add7be72c9",
+    "f176": "802bdf61f4581bb45abf5827bf6db482746645796237306bd2543dc3de9d49c5",
+    "f198": "09fc81494f998f094c92af84e3171661c3726a4d394d76ec93232dbcaba92fcd",
+    "f220": "8347e98b1d03aab53853eb49c5acedf97c629c0ddee16a6c069e482728dc1375",
+    "f242": "21e78649a5fc02c9f7fe5267434372bbd99521e74b37ade39f1013f2b3b2314e",
+    "f260": "bc8c8ba3fc1b4cc4ec62b4feba6d498b13c91e0522e5778512209c67c4f4cd9f",
+    "f264": "f3bce3177f7e473eadb0a03c04753c1ad8ce976b881d7fd4cc3c2fdcb9313dfa",
+    "f286": "7b3cb58b27de9f6958c02a2aaf7194b7f6a19d2a78d3df425f37c03e080968b5",
+    "f308": "bec347197aa323a92314d8a9171e2b630358c5dda30e7c7f1dd89f7870d2dcc0",
+    "f330": "7cf27f46fbbc2b8b3f99558313dc866b6a49d2ce432f040b40ea036e16bb2c6f",
+    "f352": "de3d4ca1d6a7958d1a00bbda020e6fccb57681553b226e5e789430da57c373ae",
+    "f374": "58daad0425b619fffb57ee1cad86d8b297570202d5ad278af56829c38a9ff895",
+    "f396": "8e4560fed083466db2b56029f33c888d6c683ffc5c03a8f00fc7c817431632f0",
+    "f418": "63f9f8908b6be289594c519d7b7452919f9c1c4d8b78f85817080463638b748b",
+    "f440": "4a1ad19e050b2ba0e042cfc29a028f7b3b6cf49da14e7d15cef8ec1a1de411b0",
+    "f462": "be4d7d37cd7476fa41f732ff3ca0a8e0ad2f456608ab3aa6486c5f0e797e39ad",
+    "f484": "33ccc6eb4222947e80dd7bc7f7edb20f275edf0d0bb951f9ba8de6a70ed337fb",
+    "f506": "18cdd6d3703ca6f6af231236eb10b10c05c876f7ad88aee77f1253efe448a997",
+    "f519": "4489a29272cba874e99201e028a4af40534048137642721e1d99507bae009b31"
+  }
+}

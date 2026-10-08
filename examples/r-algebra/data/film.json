@@ -1,0 +1,19 @@
+{
+  "fps": 30,
+  "bpm": 90,
+  "beatsPerBar": 4,
+  "bars": 6.5,
+  "narrativeOffset": 6.667,
+  "question": {
+    "cn1": "一片雪花，一枚魔方，一串密码，整个宇宙——",
+    "en1": "A snowflake, a Rubik's cube, a secret code, the universe—",
+    "cn2": "它们有什么共同点？",
+    "en2": "What do they have in common?"
+  },
+  "title": { "cn": "抽象代数", "en": "ABSTRACT  ALGEBRA", "tag": "— 结 构 之 美 —" },
+  "symbols": ["ℤ", "ℚ", "ℝ", "ℂ", "ℍ", "𝔽_p", "S_5", "A_5", "D_6", "GL(n)", "SU(3)", "E_8", "ℤ/nℤ", "Aut(G)", "Gal(K/ℚ)", "SO(3)", "Sp(4)", "𝕄"],
+  "subs": [
+    { "from": 4.23, "to": 6.43, "cn": "有些美，不在形状里——", "en": "Some beauty is not in the shape—" },
+    { "from": 6.63, "to": 9.13, "cn": "而在结构里。", "en": "but in the structure." }
+  ]
+}
