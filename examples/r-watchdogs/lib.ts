@@ -131,11 +131,13 @@ export class Smear {
 
 // 5×7 dot-matrix glyphs.
 const DM: Record<string, string> = {
-  A: '.###.#...##...######...##...##...#', D: '####.#...##...##...##...##...#####.', E: '######....#....####.#....#....#####',
+  A: '.###.#...##...#######...##...##...#', D: '####.#...##...##...##...##...#####.', E: '######....#....####.#....#....#####',
   I: '#####..#....#....#....#....#..#####', L: '#....#....#....#....#....#....#####', O: '.###.#...##...##...##...##...#.###.',
   R: '####.#...##...#####.#.#..#..#.#...#', S: '.#####....#.....###.....#....#####.', U: '#...##...##...##...##...##...#.###.',
   V: '#...##...##...##...##...#.#.#...#..',
 }
+for (const [ch, m] of Object.entries(DM)) if (m.length !== 35 || /[^.#]/.test(m)) throw new Error(`dot-matrix glyph ${ch}: ${m.length} cells, expected 35`)
+
 /** Lit cells of `word` as {col,row}, with `gap` blank columns between letters. */
 export function dotCells(word: string, gap = 1): { c: number; r: number; L: number }[] {
   const out: { c: number; r: number; L: number }[] = []

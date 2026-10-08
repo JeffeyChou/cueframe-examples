@@ -68,7 +68,7 @@
     "[guard] scene \"pylons\": Math.random() called during render"
   ],
   "env": {
-    "createdAt": "2026-10-08T22:33:35.748Z",
+    "createdAt": "2026-10-08T23:33:07.532Z",
     "node": "v26.7.0",
     "playwright": "1.64.0",
     "browser": {
@@ -121,7 +121,7 @@
       "data/fonts/OFL.txt": "bf6c7181be7d28e462e2a0b0fbe54b0efd817f456cf3a73b7e227060debef47e",
       "data/shots.md": "abdd10bfaf84ac306ed8e9c973afc24d39aee5f769a58b63b20e202ccd9e40ff",
       "env.d.ts": "c0a657338622a2508f84cd403ef2668adb0aec78d39b18f99549af5ac8e4b78e",
-      "lib.ts": "e9f2a8c2a7cbac98fb4834137f65700b82dfe92c219ace47ad5992ef007473e9",
+      "lib.ts": "67003a792ff8bda2cd4dd7528193a6fd8f70f51524f3a6a02636ad4c5b50ddc5",
       "motion.ts": "42af95c381ee88b44198ee2ca51a2dca56f1f119f8fb594f54213646df574253",
       "package.json": "06379dc7d83082d1159c1b39b0f9a242eed020e3239e0e9b9e4ed6f94fbb6612",
       "scenes/blame.ts": "e9a11254bd604f109bb2a38bc8ac47b299b3a04ec3e09829dad177f429af1552",
@@ -135,7 +135,7 @@
     }
   },
   "report": "/Users/jiefengzhou/Documents/vscode/vNext/cueframe/examples/r-watchdogs/out/check/determinism-landscape.json",
-  "seconds": 56.461,
+  "seconds": 66.187,
   "reference": {
     "f0": "dd2cc31027df81c64f22832aec99e7c9e861e837229069a077ad62a1a9dbd73a",
     "f19": "9d580dd5d575ca2d3a2591d16bbf942fe3a4875d62fb22a5d4d873213765db89",
@@ -169,12 +169,12 @@
     "f342": "8e50c8fa21c198418d8eb4cf5d14ecfd0255e80e6c456241f5e6e9b56de271bb",
     "f351": "a1ec36fa44b08df8c68f6e455b7b87b6e770770eb9eccccb9da4e4e46fc556f0",
     "f361": "86be2e80e0b6c4c04550666b8bd954d9d647bebc902668320c0cc6f33b8bbefb",
-    "f371": "d3abac4878a08363ba3427deb18bc26649b82637aa909c923350751d58920006",
-    "f380": "a88600cc0c31666ba8e73b5f9caffe64c9fa9a508d3349145639272a65ce3f7e",
-    "f399": "7e51d1a2863882b31b6f0bdd42fcdfc7e9062eced6f9ec27d14ec7b721d29ee8",
-    "f403": "46ea95f59d818d45595d8d87df6517bb03ebe2a20a6974f719b795938b90fdc7",
-    "f418": "2f7a2ae2ae2060cb435f6f60263cde4f78432ce3cd8c68d05f5f48eee943c6bb",
-    "f437": "7466597510b28bbf4abf9acf69d056573eb3384e5291e073a3356e476b671989",
-    "f454": "05e2645c6ddf1650efd721c8afe101ed456d506f361c37c028d3c21c49de49c3"
+    "f371": "b83de3999f7f46b21ea3c56e12d04a6794659b1c3ec6572695b28accb2cddcf0",
+    "f380": "ce2ed47ae2b802c801a8f1e6bf125b0991d178f9a1ebe32c5b1a2d4d5dc5a62f",
+    "f399": "684cbc252970915a89ef5e3c9641b650291d4d09c9adcd82a446e5540508d302",
+    "f403": "49e71000f14221a22b12d322613386faf73aab0debd9bcff54a4317535d913b4",
+    "f418": "003b4fb5dc84e4b635ad882948a6cf6aec5bec196937e0fe244a25a07de664e8",
+    "f437": "2106c2c2e19607a89efa71a652f187a3dd920d10ea9598a891c79ea94b1722e3",
+    "f454": "e56eb7b56c0ada724e0f3e5b885a5db5ab5d8c3ecde5e2f57004ce966f4eaf7e"
   }
 }
