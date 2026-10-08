@@ -1,7 +1,7 @@
 import { scene } from '@cueframe/core'
-import { DUR, film, narr, win } from '../lib.js'
+import { DUR, film, win } from '../lib.js'
 
-// Bilingual subtitles on the narrative clock, as DOM text above the film layer.
+// Bilingual subtitles at their film times (from/to in data/film.json), as DOM text above the film layer.
 export default scene({
   id: 'subs',
   at: 0,
@@ -21,7 +21,7 @@ export default scene({
       en.textContent = s.en
       box.append(cn, en)
       ctx.root.append(box)
-      return { box, from: narr(s.from), to: narr(s.to) }
+      return { box, from: s.from, to: s.to }
     })
     return { rows }
   },
