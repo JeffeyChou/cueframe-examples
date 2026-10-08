@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": [],
+    "paths": {
+      "@cueframe/core": ["../../packages/core/src/index.ts"],
+      "@cueframe/gfx": ["../../packages/gfx/src/index.ts"]
+    }
+  },
+  "include": ["*.ts", "scenes", "../../packages/gfx/src/opentype.d.ts"]
+}
