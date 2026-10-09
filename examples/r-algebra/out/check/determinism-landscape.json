@@ -5,6 +5,7 @@
   "scale": 1,
   "gpu": "swiftshader",
   "mode": "hash",
+  "strict": true,
   "cases": [
     {
       "name": "sequential (reference)",
@@ -53,6 +54,13 @@
       "note": "film f260 x4; 4 distinct sub-frames"
     },
     {
+      "name": "motion blur at cuts: clamped sub-frames",
+      "pass": true,
+      "samples": 8,
+      "mismatches": [],
+      "note": "film f0 x4, film f519 x4"
+    },
+    {
       "name": "replay scene (reverse order vs sequential)",
       "pass": true,
       "skipped": true,
@@ -65,7 +73,7 @@
   "consoleErrors": [],
   "warnings": [],
   "env": {
-    "createdAt": "2026-10-08T23:47:48.015Z",
+    "createdAt": "2026-10-09T02:15:19.833Z",
     "node": "v26.7.0",
     "playwright": "1.64.0",
     "browser": {
@@ -146,7 +154,7 @@
     }
   },
   "report": "/Users/jiefengzhou/Documents/vscode/vNext/cueframe/examples/r-algebra/out/check/determinism-landscape.json",
-  "seconds": 254.085,
+  "seconds": 244.134,
   "reference": {
     "f0": "25f90e3e7fefc7655f61c370dfae8e1990027cff5f7854a87bbfb7a584a860a2",
     "f22": "8340bc48bd5c6a6efcdddceaacd53624bea8898dbbf376b2d75d78175ae0fb9d",

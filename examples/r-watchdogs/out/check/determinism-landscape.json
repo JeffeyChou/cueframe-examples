@@ -5,6 +5,7 @@
   "scale": 1,
   "gpu": "swiftshader",
   "mode": "hash",
+  "strict": true,
   "cases": [
     {
       "name": "sequential (reference)",
@@ -54,6 +55,14 @@
       "note": "not applicable: no scene declares blur"
     },
     {
+      "name": "motion blur at cuts: clamped sub-frames",
+      "pass": true,
+      "skipped": true,
+      "samples": 0,
+      "mismatches": [],
+      "note": "not applicable: no scene declares blur"
+    },
+    {
       "name": "replay scene (reverse order vs sequential)",
       "pass": true,
       "skipped": true,
@@ -64,11 +73,9 @@
   ],
   "errors": [],
   "consoleErrors": [],
-  "warnings": [
-    "[guard] scene \"pylons\": Math.random() called during render"
-  ],
+  "warnings": [],
   "env": {
-    "createdAt": "2026-10-08T23:33:07.532Z",
+    "createdAt": "2026-10-09T02:16:19.088Z",
     "node": "v26.7.0",
     "playwright": "1.64.0",
     "browser": {
@@ -135,7 +142,7 @@
     }
   },
   "report": "/Users/jiefengzhou/Documents/vscode/vNext/cueframe/examples/r-watchdogs/out/check/determinism-landscape.json",
-  "seconds": 66.187,
+  "seconds": 53.818,
   "reference": {
     "f0": "dd2cc31027df81c64f22832aec99e7c9e861e837229069a077ad62a1a9dbd73a",
     "f19": "9d580dd5d575ca2d3a2591d16bbf942fe3a4875d62fb22a5d4d873213765db89",
