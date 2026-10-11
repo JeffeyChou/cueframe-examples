@@ -2,10 +2,11 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true,
-    "types": [],
+    "allowImportingTsExtensions": true,
+    "types": ["node"],
     "paths": {
       "@cueframe/core": ["../../packages/core/src/index.ts"]
     }
   },
-  "include": ["*.ts", "scenes"]
+  "include": ["*.ts", "scenes", "engine", "term"]
 }

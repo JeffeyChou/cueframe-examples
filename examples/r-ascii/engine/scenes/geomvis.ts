@@ -1,8 +1,8 @@
 // One character-drawn visual per section, drawn into the viewport in pixel units around its centre.
-import { seeded } from '@cueframe/core'
-import { ramp } from '../ascii-grid.js'
-import { type Section, View, fmt, hex } from '../lib.js'
-import { clamp01, flash, hash, inOutCubic, lerp, noise1, outCubic, outExpo, seg } from '../motion.js'
+import { seeded } from '../rng.ts'
+import { ramp } from './shim.ts'
+import { type Section, View, fmt, hex } from './shim.ts'
+import { clamp01, flash, hash, inOutCubic, lerp, noise1, outCubic, outExpo, seg } from '../../motion.ts'
 
 export interface Visual {
   draw(v: View, t: number, s: Section): void
