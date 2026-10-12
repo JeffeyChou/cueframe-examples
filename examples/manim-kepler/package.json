@@ -1,0 +1,8 @@
+{
+  "name": "@cueframe/example-manim-kepler",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@texmorph/mathjax": "link:../../../texmorph/packages/mathjax"
+  }
+}
