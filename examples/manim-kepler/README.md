@@ -27,12 +27,12 @@ examples/manim-kepler/make.sh      # narration → font → score → mix → sc
 ```
 
 - Narration: `script.json` (`engine: "command"`) runs `scripts/say.py` in `../index-tts`, which
-  synthesizes each line with IndexTTS-2.5 and the voice in `../voices/me/reference.wav`, then
-  aligns characters with Whisper (`small`) for word timings. Lines are cached by text; set
-  `KEPLER_VOICE` for another voice folder.
-- Subtitles: phrases from `build/words.json`, Noto Sans SC (OFL) subset to the spoken text;
+  synthesizes each line with IndexTTS-2.5 and the voice in `../voices/me/reference.wav`; `"align"`
+  then times each character from the audio (`cueframe-py align`, Whisper `small` + pauses). Lines
+  are cached by text; set `KEPLER_VOICE` for another voice folder.
+- Subtitles: `recipes/subtitles.ts`, phrases from `build/words.json`, Noto Sans SC (OFL) subset to the spoken text;
   `scripts/fetch-fonts.sh` downloads the font from google/fonts (not committed).
-- Score: `score.py` (72 BPM, D major, additive piano and pads; sections start on the narration
+- Score: `score.py` (the source of `recipes/explainer-audio/`; 72 BPM, D major, additive piano and pads; sections start on the narration
   cues) → `mix.json` ducks it under the voice at −16 LUFS.
 - texmorph is linked from a sibling checkout (`../texmorph`), as in `m2-talk`.
 

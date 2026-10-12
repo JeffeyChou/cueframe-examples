@@ -2,6 +2,7 @@
   "engine": "command",
   "command": "uv run --project ../../../index-tts python scripts/say.py {jobs}",
   "voice": "me",
+  "align": { "model": "small", "language": "zh" },
   "lead": 0.15,
   "lines": [
     { "id": "k1", "pad": 0.35, "say": "四百年前，开普勒从第谷留下的观测数据里，发现了一条奇怪的规律。" },

@@ -1,6 +1,7 @@
 import type { Frame, MountContext } from '@cueframe/core'
 import { createMorph, mathjaxRenderer, renderFormula, type MathMorph } from '@texmorph/mathjax'
 import { M, smooth } from '../../recipes/manim.js'
+export { glyphsOf, said } from '../../recipes/subtitles.js'
 import cueTable from './build/cues.json'
 
 /** Narration cues (seconds); `CUES['scene.k1.start']`. */
@@ -137,44 +138,3 @@ export async function chain(ctx: MountContext, parent: HTMLElement, steps: reado
   }
 }
 
-/** Phrase subtitles at the bottom: each phrase from words.json shows from its start to the next. */
-export function subtitles(ctx: MountContext, o: { y?: number; size?: number } = {}) {
-  const band = el(ctx.root, 'div', {
-    position: 'absolute', left: '50%', top: `${o.y ?? 980}px`, transform: 'translate(-50%, -50%)', whiteSpace: 'nowrap',
-    font: `500 ${o.size ?? 40}px "${CJK}", sans-serif`, color: M.white, letterSpacing: '0.04em',
-    textShadow: '0 0 12px rgba(7,11,18,.95), 0 0 4px rgba(7,11,18,.95)',
-  })
-  band.dataset.cfId = 'subtitle'
-  const items: { text: string; a: number; b: number }[] = []
-  const lines = ctx.data.words().words.reduce<string[]>((ids, w) => (w.line && !ids.includes(w.line) ? [...ids, w.line] : ids), [])
-  for (const id of lines) {
-    const line = ctx.data.words(id).line!
-    line.phrases.forEach((p, i) => {
-      const next = line.phrases[i + 1]
-      items.push({ text: p.text, a: p.start - 0.1, b: next ? next.start - 0.1 : line.end + 0.45 })
-    })
-  }
-  return (f: Frame) => {
-    const it = items.find((x) => f.t >= x.a && f.t < x.b)
-    band.textContent = it ? it.text : ''
-    band.style.opacity = it ? String(Math.min(1, (f.t - it.a) / 0.12, (it.b - f.t) / 0.12)) : '0'
-  }
-}
-
-/** Glyphs the subtitle font must carry. */
-export const glyphsOf = (words: { lines: readonly { text: string }[] }, extra = '') => Array.from(new Set(words.lines.map((l) => l.text).join('') + extra)).join('')
-
-/** Narrative time at which `text` (the nth occurrence) is spoken in line `id`. `end` gives its last character's end. */
-export function said(ctx: MountContext, id: string, text: string, o: { nth?: number; end?: boolean } = {}): number {
-  const line = ctx.data.words(id).line
-  if (!line) throw new Error(`said: no line ${id}`)
-  let at = -1
-  for (let k = 0; k <= (o.nth ?? 0); k++) {
-    at = line.text.indexOf(text, at + 1)
-    if (at < 0) throw new Error(`said: "${text}" not in ${id}: ${line.text}`)
-  }
-  const want = o.end ? at + text.length - 1 : at
-  const w = line.words.find((x) => x.chars?.includes(want)) ?? line.words.find((x) => (x.chars?.[0] ?? -1) >= want)
-  if (!w) throw new Error(`said: no word timing for "${text}" in ${id}`)
-  return o.end ? w.t1 : w.t0
-}
