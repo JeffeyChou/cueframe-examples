@@ -57,4 +57,4 @@ node examples/r-ascii/term/play.ts [--audio file] [--start seconds] [--fps 30] [
   - `audio.py` analyses the music.
   - `snap.py` rasterises cell dumps.
 
-The build step is `python3 -I tools/glyphs.py`, plus `cueframe-py fonts build/zh.txt data/fonts/NotoSansSC.ttf --project examples/r-ascii` for the caption font subset.
+The build step is `python3 -I tools/glyphs.py`, `scripts/fetch-fonts.sh` (NotoSansSC is not committed), plus `cueframe-py fonts build/zh.txt data/fonts/NotoSansSC.ttf --project examples/r-ascii` for the caption font subset.

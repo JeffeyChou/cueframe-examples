@@ -7,6 +7,7 @@ py() { uv run --project python cueframe-py "$@"; }
 mkdir -p $P/build
 jq -s '.[0] + {cues: .[1]}' $P/data/script.json $P/cues.json > $P/build/script.json
 py tts $P/build/script.json --project $P
+scripts/fetch-fonts.sh                                  # NotoSansSC is not committed
 py fonts - $P/data/fonts/NotoSansSC.ttf $P/data/fonts/JBM-Bold.ttf --project $P --words --text "$(cat $P/*.ts $P/scenes/*.ts)" </dev/null
 pnpm exec cueframe cues $P
 py synth $P/score.py

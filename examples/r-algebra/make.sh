@@ -6,6 +6,7 @@ P=examples/r-algebra
 D=$P/data/film.json
 py() { uv run --project python cueframe-py "$@"; }
 S=$P/build/fonts-src
+scripts/fetch-fonts.sh                                  # NotoSerifSC is not committed
 [ -f $S/Cinzel-SemiBold.ttf ] || uv run --project python python $P/fonts.py
 CJK=$(jq -r '[.question.cn1, .question.cn2, .title.cn, .title.tag, (.subs[] | .cn)] | join("")' $D)
 EN=$(jq -r '[.question.en1, .question.en2, (.subs[] | .en)] | join("")' $D)

@@ -31,7 +31,7 @@ examples/manim-kepler/make.sh      # narration → font → score → mix → sc
   aligns characters with Whisper (`small`) for word timings. Lines are cached by text; set
   `KEPLER_VOICE` for another voice folder.
 - Subtitles: phrases from `build/words.json`, Noto Sans SC (OFL) subset to the spoken text;
-  `make.sh` downloads the font from google/fonts into `data/fonts/` (not committed).
+  `scripts/fetch-fonts.sh` downloads the font from google/fonts (not committed).
 - Score: `score.py` (72 BPM, D major, additive piano and pads; sections start on the narration
   cues) → `mix.json` ducks it under the voice at −16 LUFS.
 - texmorph is linked from a sibling checkout (`../texmorph`), as in `m2-talk`.

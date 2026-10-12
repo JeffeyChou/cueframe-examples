@@ -7,8 +7,8 @@ P=examples/manim-kepler
 py() { uv run --project python cueframe-py "$@"; }
 cf() { pnpm exec cueframe "$@"; }
 
-FONT=$P/data/fonts/NotoSansSC.ttf                       # OFL, not committed: fetched from google/fonts
-[ -f $FONT ] || curl -fsSL -o $FONT --create-dirs "https://github.com/google/fonts/raw/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf"
+FONT=$P/data/fonts/NotoSansSC.ttf
+scripts/fetch-fonts.sh                                  # large OFL fonts are not committed
 
 py tts $P/script.json                                   # build/vo, words.json, cues.json (cached per line)
 py fonts $P/glyphs.txt $FONT --words
