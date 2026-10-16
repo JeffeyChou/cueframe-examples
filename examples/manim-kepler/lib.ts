@@ -100,8 +100,7 @@ export async function chain(ctx: MountContext, parent: HTMLElement, steps: reado
   }
   for (let i = 0; i + 1 < steps.length; i++) {
     const host = el(wrap, 'div', { position: 'absolute', left: '0', top: '0', fontSize: `${size}px`, whiteSpace: 'nowrap', transform: 'translateY(-50%)', willChange: 'transform' })
-    const m = await createMorph(host, { latex: tx(steps[i]!) }, { latex: tx(steps[i + 1]!) }, { renderer: tex, shapes: 'off' })
-    host.querySelector<HTMLElement>('.texmorph-stage')?.style.setProperty('visibility', 'inherit')
+    const m = await createMorph(host, { latex: tx(steps[i]!) }, { latex: tx(steps[i + 1]!) }, { renderer: tex })
     hosts.push(host)
     morphs.push(m)
     const bad = m.diagnostics.find((d) => d.severity === 'error')
