@@ -6,7 +6,20 @@ build/
 .venv/
 __pycache__/
 .DS_Store
-examples/r-ascii/data/music.*
-# large OFL fonts: scripts/fetch-fonts.sh
-examples/*/data/fonts/NotoSansSC.ttf
-examples/*/data/fonts/NotoSerifSC.ttf
+# Fonts and audio/video are fetched or rendered, never committed (scripts/fetch-fonts.sh, make.sh).
+# Files already tracked stay tracked; add a new one only on purpose, with `git add -f`.
+*.ttf
+*.otf
+*.woff
+*.woff2
+*.mp3
+*.wav
+*.m4a
+*.aac
+*.flac
+*.ogg
+*.mp4
+*.mov
+*.webm
+*.mkv
+*.avi
