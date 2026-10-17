@@ -1,1 +1,13 @@
-{ "name": "@cueframe/example-r-promo", "private": true, "type": "module" }
+{
+  "name": "@cueframe/example-r-promo",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": [
+      "build/beats.json",
+      "build/cues.json",
+      "build/words.json"
+    ],
+    "needs": "network for TTS: bash examples/r-promo/make.sh"
+  }
+}

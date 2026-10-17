@@ -14,7 +14,7 @@ The same engine renders two targets:
 Lyric timing comes from `data/lyrics.json`. The track itself is not in the repo. Put your copy at `data/music.mp3` (`.m4a`, `.flac`, `.wav`, `.ogg` also work), then run:
 
 ```sh
-python3 -I examples/r-ascii/tools/audio.py examples/r-ascii/data/music.mp3
+uv run --project cueframe/python python -I examples/r-ascii/tools/audio.py examples/r-ascii/data/music.mp3
 ```
 
 This writes three things:
@@ -57,4 +57,4 @@ node examples/r-ascii/term/play.ts [--audio file] [--start seconds] [--fps 30] [
   - `audio.py` analyses the music.
   - `snap.py` rasterises cell dumps.
 
-The build step is `python3 -I tools/glyphs.py`, `scripts/fetch-fonts.sh` (NotoSansSC is not committed), plus `cueframe-py fonts build/zh.txt data/fonts/NotoSansSC.ttf --project examples/r-ascii` for the caption font subset.
+The build steps, from the repository root: `uv run --project cueframe/python python -I examples/r-ascii/tools/glyphs.py`, `bash scripts/fetch-fonts.sh` (NotoSansSC is not committed), and `uv run --project cueframe/python cueframe-py fonts examples/r-ascii/build/zh.txt examples/r-ascii/data/fonts/NotoSansSC.ttf --project examples/r-ascii` for the caption font subset.

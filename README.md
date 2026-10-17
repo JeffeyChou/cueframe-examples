@@ -30,8 +30,10 @@ pnpm check                      # check types and a still for every example
 ```
 
 Each example's README has its own commands; `make.sh` scripts run from the repository root.
-Some examples import files their `make.sh` generates (`build/…`); `pnpm check` reports a project
-as SKIP, naming the files, until they exist. `pnpm bootstrap` builds r-algebra's font subsets.
+Some examples import files their `make.sh` generates (`build/…`) and declare them in their
+`package.json` (`cueframe.generated`, with what building them `needs`). `pnpm check` reports such a
+project as SKIP until those files exist; `pnpm check --strict` fails instead. A missing import that
+is not declared always fails. `make.sh` scripts use `jq`. `pnpm bootstrap` builds r-algebra's font subsets.
 The others need more than a clone:
 
 | Example | Needs | Build |
@@ -43,6 +45,7 @@ The others need more than a clone:
 
 ## Licences
 
-Code is MIT. Fonts carry their own OFL files next to them; large CJK fonts are not committed and
-come from `scripts/fetch-fonts.sh`. Music and lyrics in the replicas belong to their authors and
-are not included (see each example's README).
+Code is MIT (`LICENSE`). Fonts carry their own OFL files next to them; large CJK fonts are not
+committed and come from `scripts/fetch-fonts.sh`. The songs of the music-video replicas are not
+included; r-ascii and r-pdoom carry lyric timing data (`data/lyrics.json`), whose words belong to
+their authors (see each example's README).

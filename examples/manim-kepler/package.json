@@ -1,5 +1,12 @@
 {
   "name": "@cueframe/example-manim-kepler",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "cueframe": {
+    "generated": [
+      "build/cues.json",
+      "build/words.json"
+    ],
+    "needs": "a local IndexTTS voice (../index-tts, ../voices): bash examples/manim-kepler/make.sh"
+  }
 }

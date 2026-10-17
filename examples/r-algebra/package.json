@@ -1,1 +1,16 @@
-{ "name": "@cueframe/example-r-algebra", "private": true, "type": "module" }
+{
+  "name": "@cueframe/example-r-algebra",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": [
+      "build/fonts/Cinzel-SemiBold.subset.ttf",
+      "build/fonts/Cormorant-Italic.subset.ttf",
+      "build/fonts/NotoSerifSC-Black.subset.ttf",
+      "build/fonts/NotoSerifSC-Bold.subset.ttf",
+      "build/fonts/NotoSerifSC-Medium.subset.ttf",
+      "build/fonts/STIXTwoMath.subset.ttf"
+    ],
+    "needs": "bash examples/r-algebra/make.sh fonts (pnpm bootstrap runs it)"
+  }
+}

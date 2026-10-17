@@ -1,1 +1,12 @@
-{ "name": "@cueframe/example-r-ascii", "private": true, "type": "module" }
+{
+  "name": "@cueframe/example-r-ascii",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": [
+      "build/audio.json",
+      "build/glyphs.json"
+    ],
+    "needs": "your own copy of the song, then tools/audio.py and tools/glyphs.py (README.md)"
+  }
+}
