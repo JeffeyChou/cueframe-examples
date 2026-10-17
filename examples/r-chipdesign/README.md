@@ -10,8 +10,11 @@ and the circuit they become, and software versus hardware.
 The script is our own wording, narrated with a local IndexTTS voice; every visual time comes from
 the narration (`said()` on Whisper word times), so re-recording a line retimes the pictures.
 
-It is built with CueFrame as it is today, to measure what continuity costs: see
-`cueframe/docs/feedback/chip-design-study.md`.
+Elements carry over between narration lines and scenes through `ctx.layouts` and `ctx.key`
+(`cueframe/docs/guide/continuity.md`): each beat is a layout written as a table of spots
+(`@cueframe/recipes/blocking`), and CueFrame moves the keys between them. The code panel is handed
+from scene to scene (hdl → rtl → contrast). The first version, with every move written by hand,
+is commit 7d0c15a; the comparison is in `cueframe/docs/feedback/chip-design-study.md`.
 
 ```
 bash examples/r-chipdesign/make.sh

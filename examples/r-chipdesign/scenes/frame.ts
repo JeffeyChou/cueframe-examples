@@ -2,7 +2,7 @@
 import { cue, scene } from '@cueframe/core'
 import { subtitles } from '@cueframe/recipes/subtitles.js'
 import script from '../script.json'
-import { C, css, CUES, el, MONO, rich, SANS, seg, start } from '../lib.js'
+import { blocking, C, css, CUES, el, MONO, rich, SANS, start } from '../lib.js'
 
 const EYEBROW: Record<string, string> = { c: 'ABSTRACTION', h: 'HARDWARE DESCRIPTION', r: 'REGISTER TRANSFER LEVEL', d: 'SOFTWARE ≠ HARDWARE' }
 
@@ -37,36 +37,25 @@ export const chrome = scene({
     el(tag, 'span', { position: 'static' }, '没法一个个画，就"写"出来')
     const ep = el(root, 'div', { right: '72px', top: '42px', font: `500 18px ${MONO}`, color: C.dim, letterSpacing: '.2em' }, 'CUEFRAME · EP.02')
     tag.dataset.cfAudit = ep.dataset.cfAudit = 'chrome'
-    const eyebrow = el(root, 'div', { left: '110px', top: '128px' })
-    eyebrow.className = 'chip-eyebrow'
-    // Headline changes: a line whose title differs from the previous line's.
+    // One headline per change of title: the old one leaves, then the new one arrives.
     const changes: { at: number; title: string; eyebrow: string }[] = []
     for (const l of script.lines) {
       if (changes.at(-1)?.title === l.title) continue
       changes.push({ at: start(l.id), title: l.title, eyebrow: EYEBROW[l.id[0]!]! })
     }
-    const heads = changes.map((c) => {
-      const h = el(root, 'div', { left: '110px', top: '152px', font: `700 54px ${SANS}`, color: C.text, letterSpacing: '.02em', whiteSpace: 'nowrap' })
-      rich(h, c.title)
-      return h
+    const ids = changes.map((_, i) => `h${i}`)
+    const b = blocking(ids)
+    changes.forEach((c, i) => {
+      const h = ctx.key(b.set(el(root, 'div'), { [ids[i]!]: { x: 110, y: 128, w: 1500, h: 100 }, ...(i + 1 < ids.length ? { [ids[i + 1]!]: null } : {}) }), `head-${i}`)
+      el(h, 'div', { left: '0', top: '0' }, c.eyebrow).className = 'chip-eyebrow'
+      rich(el(h, 'div', { left: '0', top: '24px', font: `700 54px ${SANS}`, color: C.text, letterSpacing: '.02em', whiteSpace: 'nowrap' }), c.title)
     })
+    ctx.layouts(changes.map((c, i) => ({ id: ids[i]!, at: i ? c.at - 0.2 : 0, motion: { 'head-*': { dur: 0.25 }, [`head-${i}`]: { delay: 0.25 } } })), b.apply)
     const draw = subtitles(ctx, { y: 972, font: 'Noto Sans SC', size: 38, color: C.text, shadow: '0 0 14px #000, 0 0 4px #000' })
-    return { bar, eyebrow, heads, changes, draw, total: CUES.total! }
+    return { bar, draw, total: CUES.total! }
   },
   render(f, s) {
     s.bar.style.width = `${(1920 * Math.min(1, f.t / s.total)).toFixed(1)}px`
-    let i = -1
-    while (i + 1 < s.changes.length && s.changes[i + 1]!.at <= f.t + 0.2) i++
-    const cur = s.changes[i]
-    const prev = s.changes[i - 1]
-    const k = cur ? seg(f.t, cur.at - 0.2, cur.at + 0.25) : 0
-    s.heads.forEach((h, j) => {
-      const o = j === i ? k : j === i - 1 ? 1 - k : 0
-      h.style.opacity = String(o)
-      h.style.transform = `translateY(${(j === i ? 1 - k : -k) * 18}px)`
-    })
-    s.eyebrow.textContent = cur?.eyebrow ?? ''
-    s.eyebrow.style.opacity = String(cur ? Math.max(k, prev?.eyebrow === cur.eyebrow ? 1 : 0) : 0)
     s.draw(f)
   },
 })

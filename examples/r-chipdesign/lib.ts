@@ -2,6 +2,7 @@
 import type { MountContext } from '@cueframe/core'
 import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
+export { blocking } from '@cueframe/recipes/blocking.js'
 export { seg, win, lerp, clamp01, outCubic, inOutCubic, outBack, typed, caret } from '@cueframe/recipes/motion.js'
 
 export const CUES: Record<string, number> = cueTable

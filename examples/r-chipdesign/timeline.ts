@@ -5,7 +5,6 @@ import fonts from './build/fonts/fonts.json'
 import { bg, chrome } from './scenes/frame.js'
 import ladder from './scenes/ladder.js'
 import hdl from './scenes/hdl.js'
-import code from './scenes/code.js'
 import rtl from './scenes/rtl.js'
 import contrast from './scenes/contrast.js'
 
@@ -17,7 +16,7 @@ export default timeline({
   deliver: 'podcast',
   cues,
   words,
-  scenes: [bg, ladder, hdl, rtl, contrast, code, chrome],
+  scenes: [bg, ladder, hdl, rtl, contrast, chrome],
   fonts: [
     { family: 'Noto Sans SC', src: '/build/fonts/NotoSansSC.subset.woff2', weight: '500', glyphs },
     { family: 'Noto Sans SC', src: '/build/fonts/NotoSansSC.subset.woff2', weight: '600', glyphs },
