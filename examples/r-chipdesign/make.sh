@@ -11,6 +11,7 @@ bash scripts/fetch-fonts.sh                                   # Noto Sans SC and
 uv run --project cueframe/python --group align cueframe-py tts $P/script.json   # wavs, then Whisper word times (cached per line)
 py fonts - $P/data/fonts/NotoSansSC.ttf --project $P --text "$(cat $P/script.json $P/*.ts $P/scenes/*.ts) 0123456789" </dev/null
 py mix $P/mix.json --project $P                               # build/audio.wav: voice only, −16 LUFS
+py blender $P/blender/die.py --shot die --quality final --engine eevee   # the 3D die: EEVEE, about 2 minutes
 cf sheet $P --every 2.5 --out $P/out/sheet.png
 cf export $P
 cf measure $P/out/landscape.mp4

@@ -3,6 +3,7 @@ import cues from './build/cues.json'
 import words from './build/words.json'
 import fonts from './build/fonts/fonts.json'
 import { bg, chrome } from './scenes/frame.js'
+import die from './scenes/die.js'
 import ladder from './scenes/ladder.js'
 import hdl from './scenes/hdl.js'
 import rtl from './scenes/rtl.js'
@@ -16,7 +17,7 @@ export default timeline({
   deliver: 'podcast',
   cues,
   words,
-  scenes: [bg, ladder, hdl, rtl, contrast, chrome],
+  scenes: [bg, die, ladder, hdl, rtl, contrast, chrome],
   fonts: [
     { family: 'Noto Sans SC', src: '/build/fonts/NotoSansSC.subset.woff2', weight: '500', glyphs },
     { family: 'Noto Sans SC', src: '/build/fonts/NotoSansSC.subset.woff2', weight: '600', glyphs },
