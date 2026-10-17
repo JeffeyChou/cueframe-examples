@@ -20,7 +20,7 @@ From the repository root (Blender 5.x on `PATH` or in `/Applications`):
 bash examples/r-gb300/make.sh draft     # EEVEE drafts and fonts: about a minute
 pnpm exec cueframe dev examples/r-gb300
 pnpm exec cueframe stills examples/r-gb300 --fast --times 6,13,22
-bash examples/r-gb300/make.sh           # Cycles finals (about an hour on an M-series GPU), mp4, checks
+bash examples/r-gb300/make.sh           # Cycles finals (about 15 minutes on an M5 Pro), mp4, checks
 ```
 
 The model is code (`blender/model.py`, one script per shot), so the plates are build output and
