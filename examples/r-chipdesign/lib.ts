@@ -3,11 +3,10 @@ import type { MountContext } from '@cueframe/core'
 import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
 export { blocking } from '@cueframe/recipes/blocking.js'
-export { seg, win, lerp, clamp01, outCubic, inOutCubic, outBack, typed, caret } from '@cueframe/recipes/motion.js'
+export { seg, outCubic, inOutCubic, caret } from '@cueframe/recipes/motion.js'
 
 export const CUES: Record<string, number> = cueTable
 export const start = (id: string) => CUES[`scene.${id}.start`]!
-export const end = (id: string) => CUES[`scene.${id}.end`]!
 
 export const C = {
   bg: '#06080b',
@@ -25,8 +24,6 @@ export const SANS = '"Noto Sans SC", sans-serif'
 export const MONO = '"Plex Mono", "Noto Sans SC", ui-monospace, monospace'
 
 export interface Rect { x: number; y: number; w: number; h: number }
-export const lerpRect = (a: Rect, b: Rect, k: number): Rect =>
-  ({ x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k, w: a.w + (b.w - a.w) * k, h: a.h + (b.h - a.h) * k })
 export const center = (cx: number, cy: number, w: number, h: number): Rect => ({ x: cx - w / 2, y: cy - h / 2, w, h })
 
 export function el<K extends keyof HTMLElementTagNameMap>(parent: Element, tag: K, style: Partial<CSSStyleDeclaration> = {}, text?: string) {
@@ -35,16 +32,6 @@ export function el<K extends keyof HTMLElementTagNameMap>(parent: Element, tag: 
   if (text !== undefined) e.textContent = text
   parent.append(e)
   return e
-}
-
-/** Absolute box in stage px; `o` opacity, `s` scale about its centre. */
-export function place(e: HTMLElement, r: Rect, o = 1, s = 1) {
-  e.style.left = `${r.x.toFixed(2)}px`
-  e.style.top = `${r.y.toFixed(2)}px`
-  e.style.width = `${r.w.toFixed(2)}px`
-  e.style.height = `${r.h.toFixed(2)}px`
-  e.style.opacity = String(Math.max(0, Math.min(1, o)))
-  e.style.transform = s === 1 ? '' : `scale(${s.toFixed(4)})`
 }
 
 export function panel(parent: Element, accent = C.cyan) {
@@ -81,7 +68,7 @@ export function css(ctx: MountContext) {
   ctx.root.append(s)
 }
 
-// The code panel (scene `code`) and the scenes that point at its tokens share this geometry.
+// Where the code panel (key "code") stands in each section, and its text metrics.
 export const CODE = { pad: 24, gutter: 66, cw: 18, lh: 48 }
 export const PANEL_H = { x: 600, y: 300, w: 1000, h: 168 }
 export const PANEL_R = { x: 110, y: 300, w: 700, h: 168 }
