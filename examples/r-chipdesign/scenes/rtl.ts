@@ -106,12 +106,14 @@ export default scene({
     const ta = token(PANEL_R, 1, 17, 3)
     const links = [['reg', tc, `C${tc.x + tc.w / 2} 600, ${CNT.x + CNT.w / 2} 380, ${CNT.x + CNT.w / 2} ${CNT.y}`, C.orange, { x: CNT.x + 20, y: CNT.y + CNT.h + 14 }, '寄存器'],
       ['add', ta, `C${ta.x + ta.w / 2} 640, ${ADD[0]} 660, ${ADD[0]} ${ADD[1] + 56}`, C.green, { x: ADD[0] + 70, y: ADD[1] + 40 }, '加法器']] as const
+    // Each link is a full-stage layer that fades with the layouts; render points it at the token
+    // where the code panel is drawn (lay.map), so it would follow the panel if it moved.
     const drawOn = links.map(([id, tok, curve, color, lab, name]) => {
-      ctx.key(b.set(el(root, 'div', { boxSizing: 'border-box', border: `2px solid ${color}`, borderRadius: '4px' }), { [id]: { x: tok.x - 4, y: tok.y + 4, w: tok.w + 8, h: tok.h - 8 }, out: null }), `mark-${id}`)
-      const l = layer(root, [{ d: `M${tok.x + tok.w / 2} ${tok.y + tok.h} ${curve}`, color }])
+      const l = layer(root, [{ d: '', color }])
+      const mark = el(l.div, 'div', { boxSizing: 'border-box', border: `2px solid ${color}`, borderRadius: '4px' })
       ctx.key(b.set(l.div, { [id]: STAGE, out: null }), `link-${id}`)
       ctx.key(b.set(el(root, 'div', { font: `600 26px ${SANS}`, color, whiteSpace: 'nowrap' }, name), { [id]: { ...lab, w: 120, h: 34 }, out: null }), `name-${id}`, { delay: 0.4 })
-      return { path: l.paths[0]!, at: at[id] }
+      return { path: l.paths[0]!, mark, tok, curve, at: at[id] }
     })
     const lay = ctx.layouts(IDS.map((id) => ({
       id, at: at[id],
@@ -133,7 +135,12 @@ export default scene({
     const ticks = t >= T.tick ? Math.floor((t - T.tick) / P) : -1
     s.A.v.textContent = counter ? String(Math.max(0, ticks + 1)) : '3'
     s.wires.forEach((p, i) => { p.style.strokeDashoffset = String(1 - seg(t, i < 3 ? T.diagram + 0.3 : T.counter + 0.4, (i < 3 ? T.diagram : T.counter) + 0.9, outCubic)) })
-    s.drawOn.forEach((d) => { d.path.style.strokeDashoffset = String(1 - seg(t, d.at, d.at + 0.6, outCubic)) })
+    for (const d of s.drawOn) {
+      const r = s.lay.map('code', f, d.tok)
+      Object.assign(d.mark.style, { left: `${r.x - 4}px`, top: `${r.y + 4}px`, width: `${r.w + 8}px`, height: `${r.h - 8}px` })
+      d.path.setAttribute('d', `M${r.x + r.w / 2} ${r.y + r.h} ${d.curve}`)
+      d.path.style.strokeDashoffset = String(1 - seg(t, d.at, d.at + 0.6, outCubic))
+    }
 
     // Data: leave A and B at "出发", meet in the adder at "运算", land in Q at "存进"; then the
     // counter's pulse runs round the loop once per tick.
