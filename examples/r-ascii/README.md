@@ -57,4 +57,4 @@ node examples/r-ascii/term/play.ts [--audio file] [--start seconds] [--fps 30] [
   - `audio.py` analyses the music.
   - `snap.py` rasterises cell dumps.
 
-The build steps, from the repository root: `uv run --project cueframe/python python -I examples/r-ascii/tools/glyphs.py`, `bash scripts/fetch-fonts.sh` (NotoSansSC is not committed), and `uv run --project cueframe/python cueframe-py fonts examples/r-ascii/build/zh.txt examples/r-ascii/data/fonts/NotoSansSC.ttf --project examples/r-ascii` for the caption font subset.
+The build steps, from the repository root: `uv run --project cueframe/python python -I examples/r-ascii/tools/glyphs.py`, `bash scripts/fetch-fonts.sh` (NotoSansSC is not committed), `jq -r 'map(.zh) | join("")' examples/r-ascii/data/lyrics.json > examples/r-ascii/build/zh.txt` (the caption characters), and `uv run --project cueframe/python cueframe-py fonts examples/r-ascii/build/zh.txt examples/r-ascii/data/fonts/NotoSansSC.ttf --project examples/r-ascii` for the caption font subset.
