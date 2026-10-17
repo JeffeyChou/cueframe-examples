@@ -1,0 +1,6 @@
+[submodule "cueframe"]
+	path = cueframe
+	url = https://github.com/JeffeyChou/cueframe.git
+[submodule "texmorph"]
+	path = texmorph
+	url = https://github.com/JeffeyChou/Texmorph.git

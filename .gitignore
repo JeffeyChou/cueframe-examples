@@ -1,0 +1,12 @@
+node_modules/
+out/
+build/
+.cache/
+*.tsbuildinfo
+.venv/
+__pycache__/
+.DS_Store
+examples/r-ascii/data/music.*
+# large OFL fonts: scripts/fetch-fonts.sh
+examples/*/data/fonts/NotoSansSC.ttf
+examples/*/data/fonts/NotoSerifSC.ttf

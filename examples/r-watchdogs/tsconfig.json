@@ -4,9 +4,18 @@
     "noEmit": true,
     "types": [],
     "paths": {
-      "@cueframe/core": ["../../packages/core/src/index.ts"],
-      "@cueframe/gfx": ["../../packages/gfx/src/index.ts"]
-    }
+      "@cueframe/core": [
+        "../../cueframe/packages/core/src/index.ts"
+      ],
+      "@cueframe/gfx": [
+        "../../cueframe/packages/gfx/src/index.ts"
+      ]
+    },
+    "noUncheckedIndexedAccess": false
   },
-  "include": ["*.ts", "scenes", "../../packages/gfx/src/opentype.d.ts"]
+  "include": [
+    "*.ts",
+    "scenes",
+    "../../cueframe/packages/gfx/src/opentype.d.ts"
+  ]
 }

@@ -1,5 +1,5 @@
-import { INK, type Board, type Item, type Pt } from '../../../recipes/doodle.js'
-import { outBack, outCubic, seg, spring } from '../../../recipes/motion.js'
+import { INK, type Board, type Item, type Pt } from '@cueframe/recipes/doodle.js'
+import { outBack, outCubic, seg, spring } from '@cueframe/recipes/motion.js'
 
 /** Per-frame motion a shot adds on top of the drawn strokes; t = board time, T = t + idle. */
 export type Live = (t: number, T: number) => void

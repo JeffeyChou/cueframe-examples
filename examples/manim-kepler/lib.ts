@@ -1,7 +1,7 @@
 import type { Frame, MountContext } from '@cueframe/core'
 import { createMorph, mathjaxRenderer, renderFormula, type MathMorph } from '@texmorph/mathjax'
-import { M, smooth } from '../../recipes/manim.js'
-export { glyphsOf, said } from '../../recipes/subtitles.js'
+import { M, smooth } from '@cueframe/recipes/manim.js'
+export { glyphsOf, said } from '@cueframe/recipes/subtitles.js'
 import cueTable from './build/cues.json'
 
 /** Narration cues (seconds); `CUES['scene.k1.start']`. */

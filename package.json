@@ -1,0 +1,22 @@
+{
+  "name": "cueframe-examples",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@12.9.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "bootstrap": "bash scripts/setup.sh",
+    "check": "node scripts/check.mjs"
+  },
+  "devDependencies": {
+    "@cueframe/cli": "link:./cueframe/packages/cli",
+    "@types/node": "^26.6.4",
+    "@types/three": "^0.186.0",
+    "gsap": "^3.15.0",
+    "three": "^0.186.1",
+    "typescript": "^5.9.3"
+  }
+}

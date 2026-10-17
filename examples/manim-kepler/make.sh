@@ -4,13 +4,13 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 P=examples/manim-kepler
-py() { uv run --project python cueframe-py "$@"; }
+py() { uv run --project cueframe/python cueframe-py "$@"; }
 cf() { pnpm exec cueframe "$@"; }
 
 FONT=$P/data/fonts/NotoSansSC.ttf
 scripts/fetch-fonts.sh                                  # large OFL fonts are not committed
 
-uv run --project python --group align cueframe-py tts $P/script.json   # IndexTTS wavs, then Whisper alignment (cached per line)
+uv run --project cueframe/python --group align cueframe-py tts $P/script.json   # IndexTTS wavs, then Whisper alignment (cached per line)
 py fonts $P/glyphs.txt $FONT --words
 py synth $P/score.py                                    # build/stems/{bed,sfx}.wav
 py mix $P/mix.json                                      # build/audio.wav (voice + ducked bed + accents)

@@ -1,6 +1,6 @@
 import { scene } from '@cueframe/core'
-import { board, timings, type BoardOpts, type CamMove } from '../../../recipes/doodle.js'
-import { seg } from '../../../recipes/motion.js'
+import { board, timings, type BoardOpts, type CamMove } from '@cueframe/recipes/doodle.js'
+import { seg } from '@cueframe/recipes/motion.js'
 import { drawers, pageTable, pain, paging, sharing, type Live } from './shots.js'
 
 // One infinite canvas; each shot draws in its own region and the camera travels between them.

@@ -4,9 +4,9 @@
     "noEmit": true,
     "types": [],
     "paths": {
-      "@cueframe/core": ["../../packages/core/src/index.ts"],
-      "@cueframe/gfx": ["../../packages/gfx/src/index.ts"]
+      "@cueframe/core": ["../../cueframe/packages/core/src/index.ts"],
+      "@cueframe/gfx": ["../../cueframe/packages/gfx/src/index.ts"]
     }
   },
-  "include": ["*.ts", "scenes", "data/*.json", "../../packages/gfx/src/opentype.d.ts"]
+  "include": ["*.ts", "scenes", "data/*.json", "../../cueframe/packages/gfx/src/opentype.d.ts"]
 }

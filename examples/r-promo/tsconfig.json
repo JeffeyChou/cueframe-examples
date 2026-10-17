@@ -4,8 +4,15 @@
     "noEmit": true,
     "types": [],
     "paths": {
-      "@cueframe/core": ["../../packages/core/src/index.ts"]
-    }
+      "@cueframe/core": [
+        "../../cueframe/packages/core/src/index.ts"
+      ]
+    },
+    "noUncheckedIndexedAccess": false
   },
-  "include": ["*.ts", "scenes", "../../recipes/*.ts"]
+  "include": [
+    "*.ts",
+    "scenes",
+    "../../cueframe/recipes/*.ts"
+  ]
 }

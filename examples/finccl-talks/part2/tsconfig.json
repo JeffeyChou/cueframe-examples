@@ -4,7 +4,7 @@
     "noEmit": true,
     "types": ["node"],
     "paths": {
-      "@cueframe/core": ["../../../packages/core/src/index.ts"]
+      "@cueframe/core": ["../../../cueframe/packages/core/src/index.ts"]
     }
   },
   "include": ["*.ts", "../deck"]

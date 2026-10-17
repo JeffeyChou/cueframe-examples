@@ -1,7 +1,7 @@
 // Shots 3-4: kick every Δt with F ∝ 1/r². Equal triangles all round; halving Δt turns the polygon
 // into the ellipse, and the cross product shows why the rate never changes.
 import { cue, scene } from '@cueframe/core'
-import { arrow, circle, mix, M, poly, star, sub, add, mul, unit, len, trail, type P } from '../../../recipes/manim.js'
+import { arrow, circle, mix, M, poly, star, sub, add, mul, unit, len, trail, type P } from '@cueframe/recipes/manim.js'
 import { chain, CUES, fade, label, said, seg } from '../lib.js'
 import { inverseSquare, kepler, keplerVel, newton, type V2 } from '../orbit.js'
 import { A, E, PERIOD, toPx } from '../world3d.js'

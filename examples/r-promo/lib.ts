@@ -1,7 +1,7 @@
 import type { Frame } from '@cueframe/core'
-import { clamp01, outBack, slam, pop, shake, xf } from '../../recipes/motion.js'
+import { clamp01, outBack, slam, pop, shake, xf } from '@cueframe/recipes/motion.js'
 
-export * from '../../recipes/motion.js'
+export * from '@cueframe/recipes/motion.js'
 
 export const C = {
   ink: '#141414', paper: '#fffaf0', yellow: '#ffd23f', pink: '#ff4f8b', cyan: '#3ec6ff', green: '#4fdc7b',

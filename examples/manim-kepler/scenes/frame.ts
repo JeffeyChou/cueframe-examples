@@ -1,5 +1,5 @@
 import { cue, scene } from '@cueframe/core'
-import { subtitles } from '../../../recipes/subtitles.js'
+import { subtitles } from '@cueframe/recipes/subtitles.js'
 import { CJK, el, M } from '../lib.js'
 
 export const bg = scene({

@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/../.."
 P=examples/r-promo
-py() { uv run --project python cueframe-py "$@"; }
+py() { uv run --project cueframe/python cueframe-py "$@"; }
 mkdir -p $P/build
 jq -s '.[0] + {cues: .[1]}' $P/data/script.json $P/cues.json > $P/build/script.json
 py tts $P/build/script.json --project $P

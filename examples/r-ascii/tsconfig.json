@@ -5,7 +5,7 @@
     "allowImportingTsExtensions": true,
     "types": ["node"],
     "paths": {
-      "@cueframe/core": ["../../packages/core/src/index.ts"]
+      "@cueframe/core": ["../../cueframe/packages/core/src/index.ts"]
     }
   },
   "include": ["*.ts", "scenes", "engine", "term"]

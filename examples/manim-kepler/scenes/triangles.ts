@@ -1,7 +1,7 @@
 // Shots 1-2: Newton's two triangles. Without force AB = BC gives equal areas; a kick at B towards
 // S moves c to C along a line parallel to SB, which keeps the height over SB and so the area.
 import { cue, scene } from '@cueframe/core'
-import { add, area, arrow, circle, foot, line, M, mix, mul, poly, rightAngle, star, sub, ticks, trail, type P } from '../../../recipes/manim.js'
+import { add, area, arrow, circle, foot, line, M, mix, mul, poly, rightAngle, star, sub, ticks, trail, type P } from '@cueframe/recipes/manim.js'
 import { chain, CUES, fade, label, said, seg } from '../lib.js'
 
 const A: P = [300, 300]
