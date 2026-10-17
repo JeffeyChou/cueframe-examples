@@ -1,0 +1,6 @@
+{
+  "voice": { "gain": 1.0 },
+  "stems": [],
+  "target": { "lufs": -16, "tp": -1.5 },
+  "fade_out": 1.5
+}
