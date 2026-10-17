@@ -30,6 +30,15 @@ pnpm check                      # check types and a still for every example
 ```
 
 Each example's README has its own commands; `make.sh` scripts run from the repository root.
+Some examples import files their `make.sh` generates (`build/…`); `pnpm check` reports a project
+as SKIP, naming the files, until they exist. `pnpm bootstrap` builds r-algebra's font subsets.
+The others need more than a clone:
+
+| Example | Needs | Build |
+|---|---|---|
+| `r-promo` | network for TTS | `bash examples/r-promo/make.sh` |
+| `r-ascii` | your own copy of the song | `examples/r-ascii/README.md` |
+| `manim-kepler` | a local IndexTTS voice (`../index-tts`, `../voices`) | `bash examples/manim-kepler/make.sh` |
 `texmorph/` is a submodule too: CueFrame finds it beside itself.
 
 ## Licences

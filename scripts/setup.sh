@@ -8,3 +8,4 @@ pnpm -C texmorph install
 pnpm install
 uv sync --project cueframe/python
 bash scripts/fetch-fonts.sh
+bash examples/r-algebra/make.sh fonts    # font subsets r-algebra imports
