@@ -16,4 +16,5 @@ examples/manim-kepler/data/fonts/NotoSansSC.ttf $SANS
 examples/r-ascii/data/fonts/NotoSansSC.ttf $SANS
 examples/r-promo/data/fonts/NotoSansSC.ttf $SANS
 examples/r-algebra/data/fonts/NotoSerifSC.ttf $SERIF
+examples/r-gb300/data/fonts/NotoSansSC.ttf $SANS
 LIST
