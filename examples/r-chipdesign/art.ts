@@ -8,6 +8,8 @@ export const ICON = {
   core: `<svg viewBox="0 0 60 60">${[0, 1, 2].flatMap((r) => [0, 1, 2].map((c) => `<rect x="${6 + c * 17}" y="${6 + r * 17}" width="14" height="14" fill="currentColor" opacity="${0.45 + 0.18 * ((r + c) % 3)}"/>`)).join('')}</svg>`,
   chip: `<svg viewBox="0 0 60 60"><rect x="12" y="12" width="36" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="4"/><rect x="21" y="21" width="18" height="18" fill="currentColor" opacity=".6"/>${[18, 26, 34, 42].map((p) => `<path d="M${p} 4v8M${p} 48v8M4 ${p}h8M48 ${p}h8" stroke="currentColor" stroke-width="3"/>`).join('')}</svg>`,
 }
+/** One MOSFET in a 12-unit cell (an SVG symbol, `color` sets its colour), for a field of them. */
+export const FET = `<g id="fet" fill="none" stroke="currentColor" stroke-width=".7"><path d="M0 6h4M4 3.2v5.6M5.6 2.4v7.2M5.6 3.2h4.4V0M5.6 8.8h4.4V12"/></g>`
 export const PARTS = ['REG', 'MUX', 'ALU', 'CMP', 'SHL', 'DEC', 'REG', 'ADD', 'MUX', 'REG', 'CMP', 'ALU', 'SHL', 'REG', 'MUX', 'ADD', 'DEC', 'REG', 'ALU', 'MUX', 'CMP', 'REG', 'ADD', 'SHL']
 export const LEVELS = ['晶体管', '逻辑门', '加法器', '计算核心', '整颗芯片']
 export const CARDS = [
