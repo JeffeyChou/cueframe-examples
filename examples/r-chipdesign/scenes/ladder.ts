@@ -1,0 +1,131 @@
+// c1–c7: spec → circuit, too many transistors, and the abstraction ladder
+// (transistors → gate → adder → core → chip). Each level's card shrinks into cell 0 of a grid,
+// and the grid collapses into the next level's card: layouts and keys, no interpolation.
+import { cue, scene, type Motion } from '@cueframe/core'
+import { CARDS, ICON, LEVELS, nandSchematic, PARTS } from '../art.js'
+import { blocking, C, center, el, MONO, outCubic, panel, said, SANS, seg, start, type Rect } from '../lib.js'
+
+const CX = 1150
+const CY = 580
+const CARD = center(CX, CY, 360, 250)
+const SCHEM = center(CX, CY, 520, 340)
+const [COLS, CW, CH, GAP] = [6, 150, 96, 16]
+const GRID = center(CX, CY, COLS * CW + (COLS - 1) * GAP, 4 * CH + 3 * GAP)
+const cell = (i: number): Rect => ({ x: GRID.x + (i % COLS) * (CW + GAP), y: GRID.y + Math.floor(i / COLS) * (CH + GAP), w: CW, h: CH })
+const RUNG = (k: number): Rect => ({ x: 106, y: 736 - k * 100, w: 28, h: 28 })
+// Layouts: one per beat of the narration.
+const IDS = ['spec', 'circuit', 'field', 'cannot', 'ladder', 'schematic', 'gate', 'gates', 'adder', 'parts', 'core', 'cores', 'chip', 'leave'] as const
+const STEP = ['gate', 'adder', 'core', 'chip'] as const   // where card k appears
+const GRIDS = ['gates', 'parts', 'cores'] as const          // where grid k appears
+
+function card(parent: Element, c: (typeof CARDS)[number]) {
+  const p = panel(parent)
+  const icon = el(p, 'div', { left: '50%', top: '30%', width: '42%', transform: 'translate(-50%,-50%)', color: C.cyan, filter: `drop-shadow(0 0 8px ${C.cyan}88)` })
+  icon.innerHTML = c.icon
+  el(p, 'div', { left: '0', right: '0', bottom: '22%', textAlign: 'center', font: `700 34px ${SANS}`, color: C.text }, c.label)
+  el(p, 'div', { left: '0', right: '0', bottom: '10%', textAlign: 'center', font: `500 14px ${MONO}`, color: C.dim, letterSpacing: '.3em' }, c.en)
+  return p
+}
+
+function gridCell(parent: Element, k: number, i: number) {
+  const p = panel(parent, k === 2 ? C.orange : C.cyan)
+  p.style.borderRadius = '6px'
+  const inner = el(p, 'div', { left: '50%', top: '50%', transform: 'translate(-50%,-50%)', color: C.cyan, width: k === 3 ? '44%' : '58%', textAlign: 'center' })
+  if (k === 1) inner.innerHTML = [ICON.gate, ICON.nor, ICON.not][i % 3]!
+  else if (k === 2) { inner.textContent = PARTS[i]!; Object.assign(inner.style, { font: `600 26px ${MONO}`, color: C.orange }) }
+  else inner.innerHTML = ICON.core
+  return p
+}
+
+export default scene({
+  id: 'ladder',
+  at: cue('scene.c1.start'),
+  end: cue('scene.h1.start', { offset: 1.2 }),
+  mount(ctx) {
+    const root = ctx.root
+    const b = blocking(IDS)
+    const T = { billion: said(ctx, 'c2', '上千亿'), cannot: said(ctx, 'c2', '不可能') }
+
+    const spec = ctx.key(b.set(panel(root), { spec: center(CX, CY, 560, 400), circuit: center(820, CY, 460, 400), field: null }), 'spec')
+    el(spec, 'div', { left: '32px', top: '26px', font: `700 30px ${SANS}`, color: C.text }, '规格书')
+    el(spec, 'div', { right: '32px', top: '36px', font: `500 15px ${MONO}`, color: C.dim, letterSpacing: '.3em' }, 'SPEC')
+    ;[['计算核心', '144 组'], ['片上缓存', '96 MB'], ['HBM', '8 堆栈'], ['功耗上限', '1000 W']].forEach(([a, v], i) => {
+      el(spec, 'div', { left: '32px', top: `${100 + i * 64}px`, font: `500 24px ${SANS}`, color: C.dim }, a)
+      el(spec, 'div', { right: '32px', top: `${98 + i * 64}px`, font: `600 26px ${MONO}`, color: C.cyan }, v)
+      el(spec, 'div', { left: '32px', right: '32px', top: `${146 + i * 64}px`, height: '1px', background: C.edge })
+    })
+    ctx.key(b.set(el(root, 'div', { background: `linear-gradient(90deg, ${C.cyan}00, ${C.cyan})` }), { circuit: { x: 1060, y: CY - 2, w: 240, h: 4 }, field: null }), 'arrow')
+    const circuit = ctx.key(b.set(panel(root, C.orange), { circuit: center(1520, CY, 340, 240), field: null }), 'circuit', { enter: 'pop' })
+    circuit.style.borderStyle = 'dashed'
+    el(circuit, 'div', { inset: '0', display: 'grid', placeItems: 'center', font: `700 40px ${SANS}`, color: C.orange }, '电路 ?')
+
+    // A field of transistors, the count, and "one by one?" crossed out.
+    const fieldBox = ctx.key(b.set(el(root, 'div'), { field: { x: 560, y: 250, w: 1250, h: 640, opacity: 0.8 }, ladder: null }), 'field')
+    const field = ctx.canvas('field', { w: 1250, h: 640 })
+    fieldBox.append(field.canvas)
+    for (let y = 6; y < 640; y += 12) for (let x = 6; x < 1250; x += 12) {
+      field.fillStyle = (x * 7 + y * 13) % 5 === 0 ? 'rgba(255,138,61,.55)' : 'rgba(56,214,232,.35)'
+      field.fillRect(x, y, 3, 3)
+    }
+    const count = ctx.key(b.set(el(root, 'div', { textAlign: 'center', font: `700 150px ${MONO}`, color: C.orange, textShadow: `0 0 30px ${C.orange}66`, whiteSpace: 'nowrap', lineHeight: '180px' }),
+      { field: { x: CX - 450, y: 380, w: 900, h: 180 }, ladder: null }), 'count')
+    const num = el(count, 'span', { position: 'static' })
+    el(count, 'div', { left: '0', right: '0', top: '180px', font: `600 36px ${SANS}`, color: C.text, lineHeight: '1' }, '个晶体管')
+    const one = ctx.key(b.set(el(root, 'div', { textAlign: 'center', font: `600 40px ${SANS}`, color: C.dim }), { cannot: { x: CX - 200, y: 680, w: 400, h: 56 }, ladder: null }), 'one')
+    one.append('一个一个画？')
+    const strike = el(one, 'div', { left: '90px', right: '90px', top: '52%', height: '4px', background: C.red, transformOrigin: 'left' })
+
+    // The ladder: rungs come in from the bottom; the marker climbs as each level is named.
+    const rungs = LEVELS.map((name, k) => {
+      const r = ctx.key(b.set(el(root, 'div', { font: `500 26px ${SANS}`, color: C.dim, paddingLeft: '40px', boxSizing: 'border-box', whiteSpace: 'nowrap' }),
+        { ladder: { x: 112, y: 730 - k * 100, w: 220, h: 40 }, leave: null }), `rung-${k}`)
+      el(r, 'div', { left: '0', top: '12px', width: '16px', height: '16px', borderRadius: '3px', border: `2px solid ${C.faint}`, boxSizing: 'border-box' })
+      r.append(name)
+      return r
+    })
+    ctx.key(b.set(el(root, 'div', { borderRadius: '6px', border: `2px solid ${C.cyan}`, boxShadow: `0 0 14px ${C.cyan}`, boxSizing: 'border-box' }),
+      { ladder: RUNG(0), gate: RUNG(1), adder: RUNG(2), core: RUNG(3), chip: RUNG(4), leave: null }), 'marker')
+
+    // Level 0: a transistor-level schematic; then card k grows out of the level below.
+    const schem = ctx.key(b.set(panel(root), { schematic: SCHEM, gate: null }), 'schematic')
+    el(schem, 'div', { inset: '24px', color: C.cyan }).innerHTML = nandSchematic()
+    CARDS.forEach((c, k) => ctx.key(b.set(card(root, c), { [STEP[k]!]: CARD, ...(k < 3 ? { [GRIDS[k]!]: null } : { leave: null }) }), `card${k + 1}`))
+    for (let k = 1; k <= 3; k++) {
+      for (let i = 0; i < 24; i++) ctx.key(b.set(gridCell(root, k, i), { [GRIDS[k - 1]!]: cell(i), [STEP[k]!]: null }), `cell${k}-${i}`)
+    }
+    // Where the chip card goes when the section ends: an anchor that paints nothing.
+    ctx.key(b.set(el(root, 'div'), { leave: center(CX, 330, 180, 125) }), 'up')
+    CARDS.forEach((c, k) => {
+      const p = ctx.key(b.set(panel(root, C.orange), { [STEP[k]!]: { x: 1600, y: 250, w: 250, h: 120 }, ...(k < 3 ? { [STEP[k + 1]!]: null } : { leave: null }) }), `badge-${k}`)
+      el(p, 'div', { left: '24px', top: '14px', font: `700 44px ${MONO}`, color: C.orange, whiteSpace: 'nowrap' }, c.badge[0])
+      el(p, 'div', { left: '26px', top: '74px', font: `500 22px ${SANS}`, color: C.dim }, c.badge[1])
+    })
+
+    const at: Record<(typeof IDS)[number], number> = {
+      spec: start('c1'), circuit: said(ctx, 'c1', '变成电路'), field: start('c2'), cannot: T.cannot, ladder: start('c3'),
+      schematic: start('c4') + 0.2, gate: said(ctx, 'c4', '逻辑门'), gates: start('c5'), adder: said(ctx, 'c5', '加法器'),
+      parts: start('c6'), core: said(ctx, 'c6', '计算核心'), cores: start('c7'), chip: said(ctx, 'c7', '整颗芯片'), leave: start('h1'),
+    }
+    const badge = (k: number) => ({ 'badge-*': { dur: 0.3 }, [`badge-${k}`]: { delay: 0.25 } })
+    const shrink = (k: number) => ({ [`card${k}`]: { to: `cell${k}-0` }, [`cell${k}-0`]: { from: `card${k}` }, [`cell${k}-*`]: { enter: 'pop' as const, delay: 0.4, stagger: 0.025 } })
+    const collapse = (k: number) => ({ [`cell${k}-*`]: { to: `card${k + 1}`, dur: 0.45 }, [`card${k + 1}`]: { from: `cell${k}-*` }, ...badge(k) })
+    const motion: Partial<Record<(typeof IDS)[number], Record<string, Motion>>> = {
+        circuit: { circuit: { delay: 0.3 }, arrow: { delay: 0.2 } },
+        field: { count: { delay: T.billion - at.field } },
+        ladder: { 'rung-*': { enter: 'fade' as const, stagger: 0.1 } },
+        gate: { schematic: { to: 'card1' }, card1: { from: 'schematic' }, ...badge(0) },
+        gates: shrink(1), adder: collapse(1), parts: shrink(2), core: collapse(2), cores: shrink(3), chip: collapse(3),
+        leave: { card4: { to: 'up', dur: 1 } },
+    }
+    const lay = ctx.layouts(IDS.map((id) => ({ id, at: at[id], motion: motion[id] ?? {} })), b.apply)
+    return { lay, T, num, strike, field: field.canvas, rungs }
+  },
+  render(f, s) {
+    // What moves on its own: the count, the strike, the field's slow zoom, the lit rung.
+    s.num.textContent = `>${Math.round(1000 * seg(f.t, s.T.billion, s.T.billion + 1, outCubic))}亿`
+    s.strike.style.transform = `scaleX(${seg(f.t, s.T.cannot + 0.4, s.T.cannot + 0.8, outCubic).toFixed(4)})`
+    s.field.style.transform = `scale(${(1.5 - 0.5 * outCubic(Math.min(1, s.lay.since(f) / 5))).toFixed(4)})`
+    const level = STEP.filter((id) => IDS.indexOf(id) <= s.lay.index(f)).length
+    s.rungs.forEach((r, k) => { r.style.color = k === level ? C.cyan : k < level ? C.text : C.dim })
+  },
+})
