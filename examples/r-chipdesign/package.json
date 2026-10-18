@@ -6,8 +6,9 @@
     "generated": [
       "build/cues.json",
       "build/words.json",
-      "build/fonts/fonts.json"
+      "build/fonts/fonts.json",
+      "build/plates/die/manifest.json"
     ],
-    "needs": "a local IndexTTS voice (../index-tts, ../voices): bash examples/r-chipdesign/make.sh"
+    "needs": "a local IndexTTS voice (../index-tts, ../voices) and Blender 5.x: bash examples/r-chipdesign/make.sh"
   }
 }
