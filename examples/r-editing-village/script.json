@@ -1,0 +1,21 @@
+{
+  "engine": "command",
+  "command": "uv run --project ../../../index-tts python scripts/say.py {jobs}",
+  "voice": "me",
+  "align": {"model": "small", "language": "zh"},
+  "lead": 0.4,
+  "lines": [
+    {"id": "s1", "pad": 0.5, "say": "AE长老只是笑了笑。"},
+    {"id": "s2", "pad": 0.3, "say": "他抬手指向台上还在播放的动画。"},
+    {"id": "s3", "pad": 0.4, "say": "第三张卡片这里，镜头好像顿了一下。"},
+    {"id": "s4", "pad": 0.5, "say": "大家都看了过去。确实，不太顺。"},
+    {"id": "s5", "pad": 0.1, "say": "Claude刚要开口，"},
+    {"id": "s6", "pad": 0.5, "say": "我已经冲上了台。"},
+    {"id": "s7", "pad": 0.3, "say": "这个机会，我等了太久。"},
+    {"id": "s8", "pad": 0.6, "say": "为了学这些软件，我搭进去多少个夜晚。"},
+    {"id": "s9", "pad": 0.3, "say": "可现在不一样了。"},
+    {"id": "s10", "pad": 0.6, "say": "我要借Opus的力量，让这位昔日的老师，当众下不来台。"},
+    {"id": "s11", "pad": 0.3, "say": "我学着Claude的样子，对黑箱子说："},
+    {"id": "s12", "pad": 1.2, "say": "把第三张卡片的运镜，改顺一点。"}
+  ]
+}
