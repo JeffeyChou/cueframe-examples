@@ -17,6 +17,7 @@ bash examples/r-editing-village/make.sh      # needs ../index-tts and ../voices 
 |---|---|
 | `lib.ts` | palette, SVG helpers, the character rigs (ball, Claude, elder, villager, cube), camera |
 | `scenes/strip.ts` | the twelve-card animation under critique, drawn from its own clock (a "nested" piece) |
-| `scenes/elder.ts`, `stage.ts`, `books.ts`, `opus.ts` | the shots, timed by narration words |
+| `timing.ts` | when things happen (whip, rush, book landings, instruction): read by the scenes and, as events, by the score |
+| `scenes/elder.ts`, `stage.ts`, `books.ts`, `opus.ts` | the shots, timed by narration words; blur only in windows (whip, rush) |
 | `scenes/overlay.ts` | paper texture and boxed subtitles |
 | `score.py`, `mix.json` | piano waltz bed and synthesized effects |

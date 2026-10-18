@@ -2,6 +2,7 @@
 // small black box (Opus); then, alone with the box, it copies Claude and gives the instruction, which
 // flies into the box as a wobbling yellow paper blob.
 import { cue, scene } from '@cueframe/core'
+import { T as E } from '../timing.js'
 import { C, SANS, ball, blink, blobPath, bump, camera, crowd, cube, defs, elder, inOutCubic, outBack, outCubic, said, s, seg, shake, squash, stageSvg, start } from '../lib.js'
 
 export const turn = scene({
@@ -18,7 +19,7 @@ export const turn = scene({
     const ae = elder(world, 46)
     const me = ball(world, 120)
     const box = cube(world, 110)
-    return { world, sil, ae, me, box, t0: start('s9'), dark: said(ctx, 's9', '不一样'), power: said(ctx, 's10', '力量'), shame: said(ctx, 's10', '下不来台'), end: start('s11') }
+    return { world, sil, ae, me, box, t0: start('s9'), dark: E.dark, power: said(ctx, 's10', '力量'), shame: said(ctx, 's10', '下不来台'), end: start('s11') }
   },
   render(f, st) {
     const t = f.t
@@ -50,7 +51,7 @@ export const prompt = scene({
     s(blob, 'text', { x: 4, y: 12, 'text-anchor': 'middle', 'font-family': SANS, 'font-weight': 700, 'font-size': 34, fill: C.cream, transform: 'rotate(-28)' }, '流畅')
     return {
       world, box, me, blob, shape, t0: start('s11'),
-      copy: said(ctx, 's11', '样子'), say: said(ctx, 's11', '说'), pop: said(ctx, 's12', '运镜'), fly: said(ctx, 's12', '改顺'),
+      copy: said(ctx, 's11', '样子'), say: E.say, pop: E.pop, fly: E.fly,
     }
   },
   render(f, st) {

@@ -4,8 +4,8 @@ foley-like synth effects on the actions (whip, rush, books landing, the dark tur
     uv run --project cueframe/python cueframe-py synth examples/r-editing-village/score.py
     uv run --project cueframe/python cueframe-py mix examples/r-editing-village/mix.json
 
-cueframe: effect times repeat the scenes' timing rules (said(), the book schedule) because scenes
-cannot hand event times to the audio side; keep the two in step by hand.
+Effect times are the scenes' own: timing.ts declares them as events, `cueframe cues` publishes them,
+ctx.event() reads them (run `pnpm exec cueframe cues examples/r-editing-village` before synth).
 """
 
 import numpy as np
@@ -38,13 +38,6 @@ def thud(d: float = 0.35, seed: int = 0) -> np.ndarray:
     return (0.8 * body + 0.5 * slap).astype(np.float32)
 
 
-def said(ctx, line_id: str, text: str) -> float:
-    line = next(ln for ln in ctx.words['lines'] if ln['id'] == line_id)
-    at = line['text'].index(text)
-    w = next((w for w in line['words'] if at in w.get('chars', [])), None) or next(w for w in line['words'] if w['chars'][0] >= at)
-    return w['t']
-
-
 def score(ctx):
     if not ctx.words:
         raise SystemExit('score: run `cueframe-py tts` first (needs build/words.json)')
@@ -66,20 +59,19 @@ def score(ctx):
     bed.put(piano(PROG[0][1] - 24, 5.0, 0.8), t, 0.6)
     bed.put(pad([45, 52, 57, 60], max(1.0, ctx.duration - t), cutoff=900), t, 0.35)
 
-    # Actions, at the same times the scenes use.
-    sfx.put(whoosh(0.45, up=True, seed=3), ctx.cue('scene.s2.start') - 0.32, 0.5, 0.4)
-    sfx.put(pop(700, 1500, 0.08), said(ctx, 's2', '指向') - 0.1, 0.35)
-    sfx.put(whoosh(0.5, up=False, seed=5), said(ctx, 's3', '镜头'), 0.2)
-    sfx.put(whoosh(0.35, up=True, seed=9), said(ctx, 's6', '冲') - 0.1, 0.55, -0.5)
-    sfx.put(kick(0.3), said(ctx, 's6', '台'), 0.5)
-    first, a, b2 = said(ctx, 's7', '机会'), said(ctx, 's8', '软件'), said(ctx, 's8', '夜晚') - 0.4
-    lands = [first] + [a + (b2 - a) * (i - 1) / 6 for i in range(1, 8)]
-    for i, land in enumerate(lands):
+    # Actions, at the times the scenes use (timing.ts); small leads are the sounds' own pre-roll.
+    e1 = ctx.event1
+    sfx.put(whoosh(0.45, up=True, seed=3), e1('sfx.whip'), 0.5, 0.4)
+    sfx.put(pop(700, 1500, 0.08), e1('sfx.point') - 0.1, 0.35)
+    sfx.put(whoosh(0.5, up=False, seed=5), e1('sfx.ring'), 0.2)
+    sfx.put(whoosh(0.35, up=True, seed=9), e1('sfx.rush') - 0.1, 0.55, -0.5)
+    sfx.put(kick(0.3), e1('sfx.land'), 0.5)
+    for i, land in enumerate(ctx.event('sfx.books')):
         sfx.put(thud(0.35, seed=i), land, 0.7 if i == 0 else 0.5, 0.1 * (-1) ** i)
-    sfx.put(boom(0.9), said(ctx, 's9', '不一样') - 0.1, 0.45)
-    sfx.put(bonk(0.4), said(ctx, 's11', '说') - 0.1, 0.25)
-    sfx.put(pop(500, 1300, 0.09), said(ctx, 's12', '运镜') - 0.1, 0.45)
-    fly = said(ctx, 's12', '改顺')
+    sfx.put(boom(0.9), e1('sfx.dark') - 0.1, 0.45)
+    sfx.put(bonk(0.4), e1('sfx.say') - 0.1, 0.25)
+    sfx.put(pop(500, 1300, 0.09), e1('sfx.pop') - 0.1, 0.45)
+    fly = e1('sfx.fly')
     sfx.put(whoosh(0.6, up=True, seed=11), fly, 0.35, 0.3)
     sfx.put(ding(1568, 1.2), fly + 0.7, 0.3, 0.3)
     sfx.put(sparkle(1.4), fly + 0.75, 0.22, 0.3)

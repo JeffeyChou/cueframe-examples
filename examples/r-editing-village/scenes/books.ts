@@ -1,6 +1,7 @@
 // s7–s8: "this chance I waited for too long" — the narrator alone, then every tool it had to learn
 // drops onto a tower above it, the camera climbing with the stack and pulling out to show it whole.
 import { cue, scene } from '@cueframe/core'
+import { T } from '../timing.js'
 import { C, SERIF, ball, blink, bump, camera, inCubic, mulberry, outCubic, said, s, seg, squash, stageSvg, start, end } from '../lib.js'
 
 const GROUND = 930
@@ -28,11 +29,7 @@ export const books = scene({
       return { g, x: 820 + (rnd() - 0.5) * 70, rot: (rnd() - 0.5) * 2.4, i }
     })
     const me = ball(world, 40)
-    // AE lands on "机会"; the rest one by one from "软件" until just before "多少个夜晚".
-    const first = said(ctx, 's7', '机会')
-    const a = said(ctx, 's8', '软件')
-    const b = said(ctx, 's8', '夜晚') - 0.4
-    const lands = stack.map((_, i) => (i === 0 ? first : a + ((b - a) * (i - 1)) / (stack.length - 2)))
+    const lands = T.books
     return { world, stack, me, lands, wait: said(ctx, 's7', '太久'), nights: said(ctx, 's8', '夜晚'), t0: start('s7'), t1: end('s8') }
   },
   render(f, st) {

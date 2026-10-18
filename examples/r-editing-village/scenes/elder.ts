@@ -1,17 +1,17 @@
 // s1–s2: the AE elder laughs between two villagers, a whip pan, then he points at the monitor
-// where the strip is still playing. Both shots are motion-blurred for the whip.
+// where the strip is still playing. Both shots are motion-blurred during the whip only.
 import { cue, scene } from '@cueframe/core'
 import { C, H, W, blink, bump, camera, crowd, elder, inCubic, outBack, outCubic, said, s, seg, squash, stageSvg, start, villager } from '../lib.js'
 import { T0 } from './stage.js'
 import { play, strip } from './strip.js'
+import { T as E, WHIP } from '../timing.js'
 
-const WHIP = 0.32
 
 export const laugh = scene({
   id: 'laugh',
   at: 0,
   end: cue('scene.s2.start'),
-  blur: { samples: 6, shutter: 0.7 },
+  blur: { samples: 6, shutter: 0.7, when: [[E.whip, cue('scene.s2.start')]] },
   mount(ctx) {
     const svg = stageSvg(ctx.root, C.mustard)
     const world = s(svg, 'g')
@@ -39,7 +39,7 @@ export const point = scene({
   id: 'point',
   at: cue('scene.s2.start'),
   end: cue('scene.s3.start'),
-  blur: { samples: 6, shutter: 0.7 },
+  blur: { samples: 6, shutter: 0.7, when: [[cue('scene.s2.start'), E.whip + 2 * WHIP]] },
   mount(ctx) {
     const svg = stageSvg(ctx.root, C.paper)
     const world = s(svg, 'g')
@@ -51,7 +51,7 @@ export const point = scene({
     const film = strip(s(mon, 'g', { 'clip-path': 'url(#monitor)' }))
     s(mon, 'rect', { x: -24, y: -24, width: W + 48, height: H + 48, fill: 'none', stroke: C.ink, 'stroke-width': 48 })
     const ae = elder(world, 380)
-    return { world, film, trio, ae, at: said(ctx, 's2', '指向'), t0: start('s2') }
+    return { world, film, trio, ae, at: E.point, t0: start('s2') }
   },
   render(f, st) {
     const t = f.t

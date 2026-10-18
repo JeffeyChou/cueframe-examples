@@ -1,12 +1,12 @@
 // s3–s6: the strip fills the frame (s3), a red ring marks card 3 while the crowd looks up (s4), the
 // camera pulls out through the screen to the stage where Claude is about to speak (s5), and the
-// narrator rushes on (s6). One world; the rush is its own scene only so that it gets motion blur.
-// cueframe: blur is per scene, so the rush is split off and the world is built twice.
+// narrator rushes on (s6), motion-blurred only while it rushes.
 import { cue, scene, type MountContext, type Frame } from '@cueframe/core'
 import {
   C, H, W, ball, blink, bump, camAt, camera, claude, crowd, outBack, outCubic, said, s, seg, since, squash, stageSvg, start,
 } from '../lib.js'
 import { play, strip } from './strip.js'
+import { T as E } from '../timing.js'
 
 export const T0 = 7.62          // strip clock zero: the 2 → 3 stutter lands just after s3 starts
 const SCREEN = { x: 540, y: 150, w: 360, h: 270 }   // the strip's W×H frame, scaled by 1/4
@@ -42,7 +42,7 @@ type S = ReturnType<typeof build> & { times: ReturnType<typeof times> }
 function times(ctx: MountContext) {
   return {
     s3: start('s3'), ring: said(ctx, 's3', '镜头'), look: said(ctx, 's4', '看了'), shrug: said(ctx, 's4', '确实'), bad: said(ctx, 's4', '不太顺'),
-    out: start('s5') + 0.2, speak: said(ctx, 's5', '开口'), rush: said(ctx, 's6', '冲'), land: said(ctx, 's6', '台'), end: start('s7'),
+    out: start('s5') + 0.2, speak: said(ctx, 's5', '开口'), rush: E.rush, land: E.land, end: start('s7'),
   }
 }
 
@@ -97,16 +97,8 @@ function draw(f: Frame, st: S) {
 export const stage = scene({
   id: 'stage',
   at: cue('scene.s3.start'),
-  end: cue('scene.s6.vo'),
-  mount: (ctx) => ({ ...build(ctx), times: times(ctx) }),
-  render: draw,
-})
-
-export const rush = scene({
-  id: 'rush',
-  at: cue('scene.s6.vo'),
   end: cue('scene.s7.start'),
-  blur: { samples: 6, shutter: 0.6 },
+  blur: { samples: 6, shutter: 0.6, when: [[E.rush - 0.3, E.land + 0.3]] },
   mount: (ctx) => ({ ...build(ctx), times: times(ctx) }),
   render: draw,
 })

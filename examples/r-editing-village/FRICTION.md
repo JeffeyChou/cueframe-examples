@@ -102,3 +102,11 @@ marked `// cueframe:` in the code.
 ## Not attempted in the slice
 Per-shape paper texture and rough edges, crowd chatter and applause, illustrated backgrounds
 (cave painting, mosaic sun, ukiyo-e waves), the strip's second and third versions.
+
+## Follow-up (CueFrame character-animation phases 1–3)
+
+Rebuilt on the phase-3 branch: `timing.ts` declares the shared times as events, `score.py` reads them
+(`ctx.event`, no Python timing code), the `rush` duplicate scene is gone (a blur window on the stage),
+whip blur only during the whip. Same export conditions: sub-frames 3140 → 1895, blurred frames
+316 → 67, export 2 m 34 s → 1 m 13 s; the blurred frames are pixel-identical (frames 92, 99, 639,
+648, 663). Narration: four lines directed, Owner picked take 3 (PR #27).

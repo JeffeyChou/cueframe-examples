@@ -11,6 +11,7 @@ bash scripts/fetch-fonts.sh
 uv run --project cueframe/python --group align cueframe-py tts $P/script.json
 py fonts - $P/data/fonts/NotoSansSC.ttf $P/data/fonts/NotoSerifSC.ttf --project $P --words \
   --text "$(cat $P/script.json $P/*.ts $P/scenes/*.ts) 0123456789" </dev/null
+cf cues $P                                                    # events of timing.ts → build/page-cues.json
 py synth $P/score.py
 py mix $P/mix.json --project $P
 cf sheet $P --every 2 --out $P/out/sheet.png
