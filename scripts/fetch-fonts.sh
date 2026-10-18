@@ -19,6 +19,10 @@ examples/r-promo/data/fonts/NotoSansSC.ttf $SANS
 examples/r-algebra/data/fonts/NotoSerifSC.ttf $SERIF
 examples/r-gb300/data/fonts/NotoSansSC.ttf $SANS
 examples/r-chipdesign/data/fonts/NotoSansSC.ttf $SANS
+examples/r-editing-village/data/fonts/NotoSansSC.ttf $SANS
+examples/r-editing-village/data/fonts/NotoSerifSC.ttf $SERIF
 examples/r-chipdesign/data/fonts/IBMPlexMono-Regular.ttf $PLEX-Regular.ttf 2b7c2393fff41a6e1446fd6351002e1aa1a999e8
 examples/r-chipdesign/data/fonts/IBMPlexMono-Medium.ttf $PLEX-Medium.ttf d1246280a315c377a651879047723bab6e3b411e
+examples/r-pcb-routing/data/fonts/NotoSansSC.ttf $SANS
+examples/r-pcb-routing/data/fonts/IBMPlexMono-Medium.ttf $PLEX-Medium.ttf d1246280a315c377a651879047723bab6e3b411e
 LIST
