@@ -1,5 +1,5 @@
 // Shared look, layout and timing of the slice. Every time comes from the narration (cues, words).
-import type { MountContext } from '@cueframe/core'
+import { hud } from '@cueframe/recipes/hud.js'
 import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
 export { blocking } from '@cueframe/recipes/blocking.js'
@@ -8,20 +8,11 @@ export { seg, outCubic, inOutCubic, caret } from '@cueframe/recipes/motion.js'
 export const CUES: Record<string, number> = cueTable
 export const start = (id: string) => CUES[`scene.${id}.start`]!
 
-export const C = {
-  bg: '#06080b',
-  panel: 'rgba(12,20,26,0.88)',
-  edge: '#1d3843',
-  cyan: '#38d6e8',
-  orange: '#ff8a3d',
-  red: '#ff4766',
-  green: '#3ee08f',
-  text: '#e6eef2',
-  dim: '#7b8a93',
-  faint: '#3a4a52',
-}
 export const SANS = '"Noto Sans SC", sans-serif'
 export const MONO = '"Plex Mono", "Noto Sans SC", ui-monospace, monospace'
+/** Instruments, and colours by role: accent (the subject), warm (the other side), alert, good. */
+export const ui = hud({ sans: SANS, mono: MONO })
+export const C = { ...ui.theme, bg: '#06080b', edge: '#1d3843' }
 
 export interface Rect { x: number; y: number; w: number; h: number }
 export const center = (cx: number, cy: number, w: number, h: number): Rect => ({ x: cx - w / 2, y: cy - h / 2, w, h })
@@ -34,45 +25,10 @@ export function el<K extends keyof HTMLElementTagNameMap>(parent: Element, tag: 
   return e
 }
 
-export function panel(parent: Element, accent = C.cyan) {
-  return el(parent, 'div', {
-    boxSizing: 'border-box', background: C.panel, border: `1.5px solid ${accent}55`, borderRadius: '10px',
-    boxShadow: `0 0 0 1px #0008, 0 0 28px ${accent}22, inset 0 0 24px ${accent}10`, overflow: 'hidden',
-  })
-}
-
-/** "text with **keyword**" → spans, keyword in `accent`. */
-export function rich(e: HTMLElement, src: string, accent = C.cyan) {
-  e.replaceChildren()
-  src.split(/(\*\*[^*]+\*\*)/).forEach((part) => {
-    if (!part) return
-    const s = document.createElement('span')
-    const key = part.startsWith('**')
-    s.textContent = key ? part.slice(2, -2) : part
-    if (key) s.style.color = accent
-    e.append(s)
-  })
-}
-
-/** Inject the slice's stylesheet once. */
-export function css(ctx: MountContext) {
-  if (document.getElementById('chip-css')) return
-  const s = document.createElement('style')
-  s.id = 'chip-css'
-  s.textContent = `
-    .chip-code { font: 500 30px/1.6 ${MONO}; color: ${C.text}; white-space: pre; }
-    .chip-code .ln { color: ${C.faint}; display: inline-block; width: 2.2em; }
-    .chip-code .kw { color: ${C.orange}; } .chip-code .id { color: ${C.cyan}; } .chip-code .op { color: ${C.dim}; }
-    .chip-label { font: 500 26px ${SANS}; color: ${C.text}; letter-spacing: .04em; }
-    .chip-eyebrow { font: 500 15px ${MONO}; color: ${C.dim}; letter-spacing: .3em; }`
-  ctx.root.append(s)
-}
-
-// Where the code panel (key "code") stands in each section, and its text metrics.
-export const CODE = { pad: 24, gutter: 66, cw: 18, lh: 48 }
+// The code panel (key "code") three scenes hand on: a panel holding code at its natural size.
+export const VERILOG = { keywords: ['always', 'posedge', 'begin', 'end'], idents: ['count', 'a', 'b', 'avg', 'alarm'] }
+export const COUNTER = ['always @(posedge clk)', '  count <= count + 1;']
+export const HARDWARE = ['always @(posedge clk) begin', '  a     <= sensor_a;', '  b     <= sensor_b;', '  avg   <= (a + b) >> 1;', '  alarm <= avg > limit;', 'end']
 export const PANEL_H = { x: 600, y: 300, w: 1000, h: 168 }
 export const PANEL_R = { x: 110, y: 300, w: 700, h: 168 }
 export const PANEL_D = { x: 1000, y: 330, w: 810, h: 360 }
-/** Stage rect of `n` characters from column `col` on `row` of a code panel at `p`. */
-export const token = (p: Rect, row: number, col: number, n: number): Rect =>
-  ({ x: p.x + CODE.pad + CODE.gutter + col * CODE.cw, y: p.y + CODE.pad + row * CODE.lh, w: n * CODE.cw, h: CODE.lh })
