@@ -4,7 +4,7 @@
 // the next card. Layouts and keys, no interpolation.
 import { cue, scene, type Motion } from '@cueframe/core'
 import { CARDS, FET, ICON, LEVELS, nandSchematic, PARTS } from '../art.js'
-import { blocking, C, center, el, inOutCubic, MONO, outCubic, panel, said, SANS, seg, start, type Rect } from '../lib.js'
+import { blocking, C, center, el, inOutCubic, MONO, outCubic, said, SANS, seg, start, ui, type Rect } from '../lib.js'
 
 const CX = 1150
 const CY = 580
@@ -31,8 +31,8 @@ const STEP = ['gate', 'adder', 'core', 'chip'] as const   // where card k appear
 const GRIDS = ['gates', 'parts', 'cores'] as const          // where grid k appears
 
 function card(parent: Element, c: (typeof CARDS)[number]) {
-  const p = panel(parent)
-  const icon = el(p, 'div', { left: '50%', top: '30%', width: '42%', transform: 'translate(-50%,-50%)', color: C.cyan, filter: `drop-shadow(0 0 8px ${C.cyan}88)` })
+  const p = ui.panel(parent).el
+  const icon = el(p, 'div', { left: '50%', top: '30%', width: '42%', transform: 'translate(-50%,-50%)', color: C.accent, filter: `drop-shadow(0 0 8px ${C.accent}88)` })
   icon.innerHTML = c.icon
   el(p, 'div', { left: '0', right: '0', bottom: '22%', textAlign: 'center', font: `700 34px ${SANS}`, color: C.text }, c.label)
   el(p, 'div', { left: '0', right: '0', bottom: '10%', textAlign: 'center', font: `500 14px ${MONO}`, color: C.dim, letterSpacing: '.3em' }, c.en)
@@ -40,11 +40,11 @@ function card(parent: Element, c: (typeof CARDS)[number]) {
 }
 
 function gridCell(parent: Element, k: number, i: number) {
-  const p = panel(parent, k === 2 ? C.orange : C.cyan)
+  const p = ui.panel(parent, { role: k === 2 ? 'warm' : 'accent' }).el
   p.style.borderRadius = '6px'
-  const inner = el(p, 'div', { left: '50%', top: '50%', transform: 'translate(-50%,-50%)', color: C.cyan, width: k === 3 ? '44%' : '58%', textAlign: 'center' })
+  const inner = el(p, 'div', { left: '50%', top: '50%', transform: 'translate(-50%,-50%)', color: C.accent, width: k === 3 ? '44%' : '58%', textAlign: 'center' })
   if (k === 1) inner.innerHTML = [ICON.gate, ICON.nor, ICON.not][i % 3]!
-  else if (k === 2) { inner.textContent = PARTS[i]!; Object.assign(inner.style, { font: `600 26px ${MONO}`, color: C.orange }) }
+  else if (k === 2) { inner.textContent = PARTS[i]!; Object.assign(inner.style, { font: `600 26px ${MONO}`, color: C.warm }) }
   else inner.innerHTML = ICON.core
   return p
 }
@@ -58,41 +58,39 @@ export default scene({
     const b = blocking(IDS)
     const T = { billion: said(ctx, 'c2', '上千亿'), cannot: said(ctx, 'c2', '不可能') }
 
-    const spec = ctx.key(b.set(panel(root), { spec: center(CX, CY, 560, 400), circuit: center(820, CY, 460, 400), field: null }), 'spec')
+    const spec = ctx.key(b.set(ui.panel(root).el, { spec: center(CX, CY, 560, 400), circuit: center(820, CY, 460, 400), field: null }), 'spec')
     el(spec, 'div', { left: '32px', top: '26px', font: `700 30px ${SANS}`, color: C.text }, '规格书')
     el(spec, 'div', { right: '32px', top: '36px', font: `500 15px ${MONO}`, color: C.dim, letterSpacing: '.3em' }, 'SPEC')
     ;[['计算核心', '144 组'], ['片上缓存', '96 MB'], ['HBM', '8 堆栈'], ['功耗上限', '1000 W']].forEach(([a, v], i) => {
       el(spec, 'div', { left: '32px', top: `${100 + i * 64}px`, font: `500 24px ${SANS}`, color: C.dim }, a)
-      el(spec, 'div', { right: '32px', top: `${98 + i * 64}px`, font: `600 26px ${MONO}`, color: C.cyan }, v)
+      el(spec, 'div', { right: '32px', top: `${98 + i * 64}px`, font: `600 26px ${MONO}`, color: C.accent }, v)
       el(spec, 'div', { left: '32px', right: '32px', top: `${146 + i * 64}px`, height: '1px', background: C.edge })
     })
-    ctx.key(b.set(el(root, 'div', { background: `linear-gradient(90deg, ${C.cyan}00, ${C.cyan})` }), { circuit: { x: 1060, y: CY - 2, w: 240, h: 4 }, field: null }), 'arrow')
-    const circuit = ctx.key(b.set(panel(root, C.orange), { circuit: center(1520, CY, 340, 240), field: null }), 'circuit', { enter: 'pop' })
+    ctx.key(b.set(el(root, 'div', { background: `linear-gradient(90deg, ${C.accent}00, ${C.accent})` }), { circuit: { x: 1060, y: CY - 2, w: 240, h: 4 }, field: null }), 'arrow')
+    const circuit = ctx.key(b.set(ui.panel(root, { role: 'warm' }).el, { circuit: center(1520, CY, 340, 240), field: null }), 'circuit', { enter: 'pop' })
     circuit.style.borderStyle = 'dashed'
-    el(circuit, 'div', { inset: '0', display: 'grid', placeItems: 'center', font: `700 40px ${SANS}`, color: C.orange }, '电路 ?')
+    el(circuit, 'div', { inset: '0', display: 'grid', placeItems: 'center', font: `700 40px ${SANS}`, color: C.warm }, '电路 ?')
 
     // One pull-back from a few transistors to a sea of them, then the count and "one by one?".
     const fieldBox = ctx.key(b.set(el(root, 'div', { overflow: 'hidden' }), { field: { x: 560, y: 250, w: 1250, h: 640, opacity: 0.8 }, ladder: null }), 'field')
     const lens = el(fieldBox, 'div', { inset: '0' })
     const field = ctx.canvas('field', { w: 1250, h: 640 })
     lens.append(field.canvas)
-    const hue = (x: number, y: number) => ((x * 7 + y * 13) % 5 === 0 ? C.orange : C.cyan)
+    const hue = (x: number, y: number) => ((x * 7 + y * 13) % 5 === 0 ? C.warm : C.accent)
     const near: string[] = []
     for (let y = 6; y < 640; y += 12) for (let x = 6; x < 1250; x += 12) {
-      field.globalAlpha = hue(x, y) === C.orange ? 0.55 : 0.35
+      field.globalAlpha = hue(x, y) === C.warm ? 0.55 : 0.35
       field.fillStyle = hue(x, y)
       field.fillRect(x, y, 3, 3)
       if (Math.abs(x - 625) < 230 && Math.abs(y - 320) < 125) near.push(`<use href="#fet" x="${x - 4.5}" y="${y - 4.5}" color="${hue(x, y)}"/>`)
     }
     const fets = el(lens, 'div', { inset: '0' })
     fets.innerHTML = `<svg width="1250" height="640" viewBox="0 0 1250 640"><defs>${FET}</defs>${near.join('')}</svg>`
-    const count = ctx.key(b.set(el(root, 'div', { textAlign: 'center', font: `700 150px ${MONO}`, color: C.orange, textShadow: `0 0 30px ${C.orange}66`, whiteSpace: 'nowrap', lineHeight: '180px' }),
-      { field: { x: CX - 450, y: 380, w: 900, h: 180 }, ladder: null }), 'count')
-    const num = el(count, 'span', { position: 'static' })
-    el(count, 'div', { left: '0', right: '0', top: '180px', font: `600 36px ${SANS}`, color: C.text, lineHeight: '1' }, '个晶体管')
+    const num = ui.counter(root, { unit: '个晶体管', align: 'middle', role: 'warm', format: (v) => `>${Math.round(v)}亿` })
+    ctx.key(b.set(num.el, { field: ui.box(num, CX - 450, 360, 900), ladder: null }), 'count')
     const one = ctx.key(b.set(el(root, 'div', { textAlign: 'center', font: `600 40px ${SANS}`, color: C.dim }), { cannot: { x: CX - 200, y: 680, w: 400, h: 56 }, ladder: null }), 'one')
     one.append('一个一个画？')
-    const strike = el(one, 'div', { left: '90px', right: '90px', top: '52%', height: '4px', background: C.red, transformOrigin: 'left' })
+    const strike = el(one, 'div', { left: '90px', right: '90px', top: '52%', height: '4px', background: C.alert, transformOrigin: 'left' })
 
     // The ladder: rungs come in from the bottom; the marker climbs as each level is named.
     const rungs = LEVELS.map((name, k) => {
@@ -102,12 +100,12 @@ export default scene({
       r.append(name)
       return r
     })
-    ctx.key(b.set(el(root, 'div', { borderRadius: '6px', border: `2px solid ${C.cyan}`, boxShadow: `0 0 14px ${C.cyan}`, boxSizing: 'border-box' }),
+    ctx.key(b.set(el(root, 'div', { borderRadius: '6px', border: `2px solid ${C.accent}`, boxShadow: `0 0 14px ${C.accent}`, boxSizing: 'border-box' }),
       { ladder: RUNG(0), gate: RUNG(1), adder: RUNG(2), core: RUNG(3), chip: RUNG(4), leave: null }), 'marker')
 
     // Level 0: a transistor-level schematic; card 1 grows out of it, card k + 1 out of grid k.
-    const schem = ctx.key(b.set(panel(root), { schematic: SCHEM, gate: null }), 'schematic')
-    el(schem, 'div', { inset: '24px', color: C.cyan }).innerHTML = nandSchematic()
+    const schem = ctx.key(b.set(ui.panel(root).el, { schematic: SCHEM, gate: null }), 'schematic')
+    el(schem, 'div', { inset: '24px', color: C.accent }).innerHTML = nandSchematic()
     CARDS.forEach((c, k) => ctx.key(b.set(card(root, c), {
       ...(k > 0 ? { [GRIDS[k - 1]!]: hidden(scaled(CARD, 1 / PACK)) } : {}),
       [STEP[k]!]: CARD, ...(k < 3 ? { [GRIDS[k]!]: null } : { leave: null }),
@@ -120,8 +118,8 @@ export default scene({
     // Where the chip card goes when the section ends: an anchor that paints nothing.
     ctx.key(b.set(el(root, 'div'), { leave: center(CX, 330, 180, 125) }), 'up')
     CARDS.forEach((c, k) => {
-      const p = ctx.key(b.set(panel(root, C.orange), { [STEP[k]!]: { x: 1600, y: 250, w: 250, h: 120 }, ...(k < 3 ? { [STEP[k + 1]!]: null } : { leave: null }) }), `badge-${k}`)
-      el(p, 'div', { left: '24px', top: '14px', font: `700 44px ${MONO}`, color: C.orange, whiteSpace: 'nowrap' }, c.badge[0])
+      const p = ctx.key(b.set(ui.panel(root, { role: 'warm' }).el, { [STEP[k]!]: { x: 1600, y: 250, w: 250, h: 120 }, ...(k < 3 ? { [STEP[k + 1]!]: null } : { leave: null }) }), `badge-${k}`)
+      el(p, 'div', { left: '24px', top: '14px', font: `700 44px ${MONO}`, color: C.warm, whiteSpace: 'nowrap' }, c.badge[0])
       el(p, 'div', { left: '26px', top: '74px', font: `500 22px ${SANS}`, color: C.dim }, c.badge[1])
     })
 
@@ -146,13 +144,13 @@ export default scene({
   },
   render(f, s) {
     // What moves on its own: the count, the strike, the field's pull-back, the lit rung.
-    s.num.textContent = `>${Math.round(1000 * seg(f.t, s.T.billion, s.T.billion + 1, outCubic))}亿`
+    s.num.set(1000 * seg(f.t, s.T.billion, s.T.billion + 1, outCubic))
     s.strike.style.transform = `scaleX(${seg(f.t, s.T.cannot + 0.4, s.T.cannot + 0.8, outCubic).toFixed(4)})`
     const z = 8 ** (1 - seg(f.t, s.pull[0], s.pull[1], inOutCubic))
     s.lens.style.transform = `scale(${z.toFixed(4)})`
     s.fets.style.opacity = Math.min(1, Math.max(0, (z - 2) / 2.5)).toFixed(3)
     s.dots.style.opacity = Math.min(1, Math.max(0, (5 - z) / 2.5)).toFixed(3)
     const level = STEP.filter((id) => IDS.indexOf(id) <= s.lay.index(f)).length
-    s.rungs.forEach((r, k) => { r.style.color = k === level ? C.cyan : k < level ? C.text : C.dim })
+    s.rungs.forEach((r, k) => { r.style.color = k === level ? C.accent : k < level ? C.text : C.dim })
   },
 })

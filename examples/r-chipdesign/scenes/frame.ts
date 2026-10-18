@@ -2,14 +2,13 @@
 import { cue, scene } from '@cueframe/core'
 import { explainer } from '@cueframe/recipes/explainer.js'
 import script from '../script.json'
-import { C, css, CUES, el, MONO, SANS } from '../lib.js'
+import { C, CUES, el, ui } from '../lib.js'
 
 export const bg = scene({
   id: 'bg',
   at: 0,
   end: cue('total'),
   mount(ctx) {
-    css(ctx)
     el(ctx.root, 'div', { inset: '0', background: `radial-gradient(120% 90% at 60% 45%, #0d161c 0%, ${C.bg} 70%)` })
     const g = ctx.canvas('grid')
     g.strokeStyle = 'rgba(56,214,232,0.05)'
@@ -25,6 +24,6 @@ export const bg = scene({
 // Chrome from the script: chapter tags and cards, headlines with eyebrows, progress, subtitles.
 export const chrome = explainer({
   script, cues: CUES,
-  theme: { text: C.text, dim: C.dim, faint: C.faint, accent: C.cyan, warm: C.orange, alert: C.red, good: C.green, sans: SANS, mono: MONO },
+  theme: ui.theme,
   subtitles: { y: 972, font: 'Noto Sans SC', size: 38, color: C.text, shadow: '0 0 14px #000, 0 0 4px #000' },
 })
