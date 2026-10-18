@@ -1,0 +1,13 @@
+{
+  "name": "@cueframe/example-r-editing-village",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": [
+      "build/cues.json",
+      "build/words.json",
+      "build/fonts/fonts.json"
+    ],
+    "needs": "a local IndexTTS voice (../index-tts, ../voices): bash examples/r-editing-village/make.sh"
+  }
+}

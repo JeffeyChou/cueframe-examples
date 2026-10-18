@@ -1,0 +1,21 @@
+{
+  "engine": "command",
+  "command": "uv run --project ../../../index-tts python scripts/say.py {jobs}",
+  "voice": "me",
+  "align": {"model": "small", "language": "zh"},
+  "lead": 0.4,
+  "lines": [
+    {"id": "s1", "pad": 0.5, "say": "AE长老只是笑了笑。", "takes": 3, "tts": {"emo_text": "淡淡地笑，意味深长", "emo_alpha": 0.8}, "take": 3, "takeOf": "f7f88f19f6f1f11a34c29309430508616d99975a2e34019d9f40e34c166d0c16"},
+    {"id": "s2", "pad": 0.3, "say": "他抬手指向台上还在播放的动画。"},
+    {"id": "s3", "pad": 0.4, "say": "第三张卡片这里，镜头好像顿了一下。"},
+    {"id": "s4", "pad": 0.5, "say": "大家都看了过去。确实，不太顺。"},
+    {"id": "s5", "pad": 0.1, "say": "Claude刚要开口，"},
+    {"id": "s6", "pad": 0.5, "say": "我已经冲上了台。"},
+    {"id": "s7", "pad": 0.3, "say": "这个机会，我等了太久。"},
+    {"id": "s8", "pad": 0.6, "say": "为了学这些软件，我搭进去多少个夜晚。"},
+    {"id": "s9", "pad": 0.3, "say": "可现在不一样了。", "takes": 3, "tts": {"emo_text": "压低声音，得意又阴沉", "emo_alpha": 0.8}, "take": 3, "takeOf": "0c6019569a742eb91f3815d7004ac808b2788f5f3e12eba54155343f6079a64f"},
+    {"id": "s10", "pad": 0.6, "say": "我要借Opus的力量，让这位昔日的老师，当众下不来台。", "takes": 3, "tts": {"emo_text": "咬牙切齿，带着报复的快意", "emo_alpha": 0.8}, "take": 3, "takeOf": "82bb7953ff5d6285a7cb515c23762775b9f0b993520e5643e1e37448d6bb19f7"},
+    {"id": "s11", "pad": 0.3, "say": "我学着Claude的样子，对黑箱子说："},
+    {"id": "s12", "pad": 1.2, "say": "把第三张卡片的运镜，改顺一点。", "takes": 3, "tts": {"emo_text": "故作镇定，像在下命令", "emo_alpha": 0.8}, "take": 3, "takeOf": "69e714ebe79f4804e132c7ef7e74b233e78e074eac34c7f43f52c0182bc8d4f1"}
+  ]
+}
