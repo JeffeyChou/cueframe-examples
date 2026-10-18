@@ -2,6 +2,8 @@ import { timeline } from '@cueframe/core'
 import cues from './build/cues.json'
 import words from './build/words.json'
 import fonts from './build/fonts/fonts.json'
+import { scriptChapters } from '@cueframe/recipes/explainer.js'
+import script from './script.json'
 import { bg, chrome } from './scenes/frame.js'
 import die from './scenes/die.js'
 import ladder from './scenes/ladder.js'
@@ -18,6 +20,7 @@ export default timeline({
   cues,
   words,
   scenes: [bg, die, ladder, hdl, rtl, contrast, chrome],
+  chapters: scriptChapters(script, cues),
   fonts: [
     { family: 'Noto Sans SC', src: '/build/fonts/NotoSansSC.subset.woff2', weight: '500', glyphs },
     { family: 'Noto Sans SC', src: '/build/fonts/NotoSansSC.subset.woff2', weight: '600', glyphs },
