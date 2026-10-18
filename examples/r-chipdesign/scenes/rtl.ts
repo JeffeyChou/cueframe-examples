@@ -1,8 +1,8 @@
 // r1–r4: the code panel arrives from `hdl`; "RTL" shrinks into register → logic → register in one
 // clock cycle, which becomes the counter of the code, and two tokens link to what they become.
 import { cue, scene } from '@cueframe/core'
-import { codePanel, typeTo } from '../codepanel.js'
-import { blocking, C, center, el, inOutCubic, MONO, outCubic, PANEL_R, said, SANS, seg, start, token, type Rect } from '../lib.js'
+import { inside } from '@cueframe/recipes/hud.js'
+import { blocking, C, center, COUNTER, el, inOutCubic, MONO, outCubic, PANEL_R, said, SANS, seg, start, ui, VERILOG, type Rect } from '../lib.js'
 
 type Pt = [number, number]
 const A0: Rect = { x: 960, y: 330, w: 170, h: 110 }
@@ -51,12 +51,16 @@ function layer(root: HTMLElement, paths: { d: string; color: string }[]) {
 }
 const poly = (pts: Pt[]) => 'M' + pts.map((q) => q.join(' ')).join(' L')
 
-function reg(root: HTMLElement) {
-  const b = el(root, 'div', { boxSizing: 'border-box', border: `2px solid ${C.cyan}`, borderRadius: '8px', background: C.panel, boxShadow: `0 0 20px ${C.cyan}33` })
-  const name = el(b, 'div', { left: '12px', top: '8px', font: `500 16px ${MONO}`, color: C.dim, letterSpacing: '.2em' })
-  const v = el(b, 'div', { left: '0', right: '0', top: '30px', textAlign: 'center', font: `700 54px ${MONO}`, color: C.text })
-  return { b, name, v }
+/** A register: a panel with its name and a counter (−1 shows nothing), centred in it. */
+function reg(root: HTMLElement, name: string) {
+  const p = ui.panel(root)
+  const label = el(p.body, 'div', { left: '12px', top: '8px', font: `500 16px ${MONO}`, color: C.dim, letterSpacing: '.2em' }, name)
+  const v = ui.counter(p.body, { align: 'middle', role: 'text', format: (n) => (n < 0 ? '' : String(n)), box: { x: (A0.w - 300) / 2, y: 24, w: 300, h: 100 } })
+  return { b: p.el, name: label, v }
 }
+// The clock, and the count under it, scrolled so that "now" stands two cycles from the left.
+const WAVE = { x: 900, y: 750, w: 900 }
+const count = (i: number) => Math.max(0, i + 1)
 
 export default scene({
   id: 'rtl',
@@ -70,42 +74,41 @@ export default scene({
       counter: start('r3'), reg: said(ctx, 'r4', '寄存器'), add: said(ctx, 'r4', '加法'), out: start('d1') - 0.45,
     }
     const T = { go: said(ctx, 'r2', '出发'), op: said(ctx, 'r2', '运算'), store: said(ctx, 'r2', '存进'), tick: said(ctx, 'r3', '时钟每跳'), ...at }
-    const code = codePanel(root)
-    typeTo(code.counter, code.counter.n + 1)
-    ctx.key(b.set(code.p, { rtl: PANEL_R }), 'code')
+    const panel = ui.panel(root)
+    const code = ui.code(panel.body, { lines: COUNTER, ...VERILOG })
+    ctx.key(b.set(panel.el, { rtl: PANEL_R }), 'code')
 
     ;[['R', '寄存器'], ['T', '传输'], ['L', '级']].forEach(([ch, zh], i) => {
-      ctx.key(b.set(el(root, 'div', { textAlign: 'center', font: `700 170px ${MONO}`, color: C.cyan, textShadow: `0 0 36px ${C.cyan}77`, lineHeight: '210px' }, ch),
+      ctx.key(b.set(el(root, 'div', { textAlign: 'center', font: `700 170px ${MONO}`, color: C.accent, textShadow: `0 0 36px ${C.accent}77`, lineHeight: '210px' }, ch),
         { letters: { x: 1000 + i * 230, y: 410, w: 200, h: 210 }, diagram: null }), `rtl-${i}`)
       ctx.key(b.set(el(root, 'div', { textAlign: 'center', font: `600 30px ${SANS}`, color: C.text }, zh),
         { full: { x: 1000 + i * 230, y: 640, w: 200, h: 44 }, diagram: null }), `sub-${i}`)
     })
-    const A = reg(root)
-    const B = reg(root)
-    const Q = reg(root)
+    const A = reg(root, 'REG A')
+    const B = reg(root, 'REG B')
+    const Q = reg(root, 'REG Q')
     ctx.key(b.set(A.b, { diagram: A0, counter: CNT, out: null }), 'reg-a')
     ctx.key(b.set(B.b, { diagram: B0, counter: null }), 'reg-b')
     ctx.key(b.set(Q.b, { diagram: Q0, counter: null }), 'reg-q')
-    B.name.textContent = 'REG B'
-    B.v.textContent = '5'
-    Q.name.textContent = 'REG Q'
-    const adder = ctx.key(b.set(el(root, 'div', { borderRadius: '50%', boxSizing: 'border-box', border: `3px solid ${C.orange}`, background: C.panel, display: 'grid', placeItems: 'center', font: `700 44px ${MONO}`, color: C.orange }),
+    B.v.set(5)
+    const adder = ctx.key(b.set(el(root, 'div', { borderRadius: '50%', boxSizing: 'border-box', border: `3px solid ${C.warm}`, background: C.surface, display: 'grid', placeItems: 'center', font: `700 44px ${MONO}`, color: C.warm }),
       { diagram: center(ADD[0], ADD[1], 112, 112), out: null }), 'adder')
-    const w2 = layer(root, ['a', 'b', 'q'].map((k) => ({ d: poly(WIRES[k]!), color: `${C.cyan}aa` })))
+    const w2 = layer(root, ['a', 'b', 'q'].map((k) => ({ d: poly(WIRES[k]!), color: `${C.accent}aa` })))
     ctx.key(b.set(w2.div, { diagram: STAGE, counter: null }), 'wires2')
-    const w3 = layer(root, ['c', 'fb'].map((k) => ({ d: poly(WIRES[k]!), color: `${C.cyan}aa` })))
+    const w3 = layer(root, ['c', 'fb'].map((k) => ({ d: poly(WIRES[k]!), color: `${C.accent}aa` })))
     ctx.key(b.set(w3.div, { counter: STAGE, out: null }), 'wires3')
-    const clockBox = ctx.key(b.set(el(root, 'div'), { diagram: { x: 900, y: 760, w: 900, h: 100 }, out: null }), 'clock')
-    el(clockBox, 'div', { left: '0', top: '0', font: `500 16px ${MONO}`, color: C.dim, letterSpacing: '.3em' }, 'CLK')
-    const clock = ctx.canvas('clock', { y: 30, w: 900, h: 70 })
-    clockBox.append(clock.canvas)
-    const dots = [0, 1, 2].map(() => el(root, 'div', { width: '18px', height: '18px', marginLeft: '-9px', marginTop: '-9px', borderRadius: '50%', background: C.cyan, boxShadow: `0 0 16px ${C.cyan}` }))
+    const clock = ui.wave(root, { signals: [{ name: 'CLK', kind: 'clock' }], cycles: 7 })
+    ctx.key(b.set(clock.el, { diagram: ui.box(clock, WAVE.x, WAVE.y, WAVE.w), out: null }), 'clock')
+    const bus = ui.wave(root, { signals: [{ name: 'count', kind: 'bus', data: count }], cycles: 7 })
+    ctx.key(b.set(bus.el, { counter: ui.box(bus, WAVE.x, WAVE.y + 56 * WAVE.w / 1000, WAVE.w), out: null }), 'bus')
+    const dots = [0, 1, 2].map(() => el(root, 'div', { width: '18px', height: '18px', marginLeft: '-9px', marginTop: '-9px', borderRadius: '50%', background: C.accent, boxShadow: `0 0 16px ${C.accent}` }))
 
     // r4: the two tokens, the links to what they become, and the names.
-    const tc = token(PANEL_R, 1, 2, 5)
-    const ta = token(PANEL_R, 1, 17, 3)
-    const links = [['reg', tc, `C${tc.x + tc.w / 2} 600, ${CNT.x + CNT.w / 2} 380, ${CNT.x + CNT.w / 2} ${CNT.y}`, C.orange, { x: CNT.x + 20, y: CNT.y + CNT.h + 14 }, '寄存器'],
-      ['add', ta, `C${ta.x + ta.w / 2} 640, ${ADD[0]} 660, ${ADD[0]} ${ADD[1] + 56}`, C.green, { x: ADD[0] + 70, y: ADD[1] + 40 }, '加法器']] as const
+    const token = (col: number, n: number) => ui.at(code, code.token(1, col, n), inside(panel.bodyIn(PANEL_R), code.box))
+    const tc = token(2, 5)
+    const ta = token(17, 3)
+    const links = [['reg', tc, `C${tc.x + tc.w / 2} 600, ${CNT.x + CNT.w / 2} 380, ${CNT.x + CNT.w / 2} ${CNT.y}`, C.warm, { x: CNT.x + 20, y: CNT.y + CNT.h + 14 }, '寄存器'],
+      ['add', ta, `C${ta.x + ta.w / 2} 640, ${ADD[0]} 660, ${ADD[0]} ${ADD[1] + 56}`, C.good, { x: ADD[0] + 70, y: ADD[1] + 40 }, '加法器']] as const
     // Each link is a full-stage layer that fades with the layouts; render points it at the token
     // where the code panel is drawn (lay.map), so it would follow the panel if it moved.
     const drawOn = links.map(([id, tok, curve, color, lab, name]) => {
@@ -123,7 +126,7 @@ export default scene({
         : id === 'diagram' ? { 'rtl-0': { to: 'reg-a' }, 'rtl-1': { to: 'adder' }, 'rtl-2': { to: 'reg-q' }, 'reg-*': { delay: 0.2 }, adder: { delay: 0.2 } }
         : id === 'counter' ? { 'reg-a': { dur: 0.7 } } : {},
     })), b.apply)
-    return { lay, T, code, A, Q, adder, wires: [...w2.paths, ...w3.paths], dots, clock, drawOn }
+    return { lay, T, code, A, Q, adder, wires: [...w2.paths, ...w3.paths], dots, clock, bus, drawOn }
   },
   render(f, s) {
     const { T } = s
@@ -132,8 +135,8 @@ export default scene({
     // Contents that change with the layout: names and values.
     s.A.name.textContent = counter ? 'count' : 'REG A'
     s.adder.textContent = counter ? '+1' : '+'
-    const ticks = t >= T.tick ? Math.floor((t - T.tick) / P) : -1
-    s.A.v.textContent = counter ? String(Math.max(0, ticks + 1)) : '3'
+    const now = Math.max(0, (t - T.tick) / P)
+    s.A.v.set(counter ? (t >= T.tick ? count(Math.floor(now)) : 0) : 3)
     s.wires.forEach((p, i) => { p.style.strokeDashoffset = String(1 - seg(t, i < 3 ? T.diagram + 0.3 : T.counter + 0.4, (i < 3 ? T.diagram : T.counter) + 0.9, outCubic)) })
     for (const d of s.drawOn) {
       const r = s.lay.map('code', f, d.tok)
@@ -152,22 +155,14 @@ export default scene({
     put(d1, along(WIRES.b!, go), !counter && t >= T.go && go < 1)
     if (counter && t >= T.tick && t < T.out) put(d2, along([...WIRES.c!, ...WIRES.fb!.slice(1)], ((t - T.tick) % P) / P), true)
     else put(d2, along(WIRES.q!, st), !counter && t >= T.store && st < 1)
-    s.adder.style.boxShadow = `0 0 ${(10 + 40 * (t >= T.op ? Math.exp(-3 * (t - T.op)) : 0)).toFixed(1)}px ${C.orange}`
-    s.Q.v.textContent = st >= 1 ? '8' : ''
+    s.adder.style.boxShadow = `0 0 ${(10 + 40 * (t >= T.op ? Math.exp(-3 * (t - T.op)) : 0)).toFixed(1)}px ${C.warm}`
+    s.Q.v.set(st >= 1 ? 8 : -1)
     const flash = t >= T.tick && counter ? Math.exp(-4 * (((t - T.tick) % P) / P)) : 0
-    s.code.counter.rows.forEach((r) => { r.hl.style.opacity = String(flash) })
+    s.code.set({ lit: [flash, flash] })
 
-    // Clock: a square wave scrolling one period per tick.
-    const g = s.clock
-    g.clearRect(0, 0, 900, 70)
-    g.strokeStyle = '#ff4fd8'
-    g.lineWidth = 3
-    g.beginPath()
-    const shift = t >= T.tick ? (((t - T.tick) / P) * 120) % 120 : 0
-    for (let x = -120; x < 1020; x += 120) {
-      const x0 = x - shift
-      g.moveTo(x0, 60); g.lineTo(x0, 10); g.lineTo(x0 + 60, 10); g.lineTo(x0 + 60, 60); g.lineTo(x0 + 120, 60)
-    }
-    g.stroke()
+    // The clock scrolls one period per tick; the count under it changes on each rising edge.
+    const cursor = t >= T.tick ? now : null
+    s.clock.set({ phase: now - 2, cursor })
+    s.bus.set({ phase: now - 2, cursor })
   },
 })

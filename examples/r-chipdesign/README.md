@@ -21,6 +21,11 @@ progress, subtitles) comes from `script.json` through `@cueframe/recipes/explain
 (`cueframe/docs/guide/explainer.md`): `chapters`, and `title`/`eyebrow` per line. The cards before
 chapters 03 and 04 sit in the 3.5 s pads of lines c7 and r4.
 
+Panels, the code panel, registers, counters and the clock are HUD instruments from
+`@cueframe/recipes/hud` (`cueframe/docs/guide/hud.md`), with colours by role from the theme the
+chrome uses. The code panel is a panel holding `code` dials at their natural size; the links in r4
+point at tokens with `ui.at` and `lay.map`, so they follow the panel as it moves.
+
 Behind the end of the ladder a 3D die (`blender/die.py`, an EEVEE final) is placed on the narration
 with `ctx.plate(..., { timing })` (`cueframe/docs/guide/plates.md`): it holds wide, pushes in from
 "整颗芯片" to chapter 03's card and drifts under the card. Re-recording c7 or h1 moves the camera;
