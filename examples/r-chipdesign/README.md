@@ -1,6 +1,6 @@
 # r-chipdesign
 
-A 95-second replica slice of a long Chinese explainer on chip design (a 31-minute video whose
+A 100-second replica slice of a long Chinese explainer on chip design (a 31-minute video whose
 pictures run continuously: elements stay on screen and turn into the next idea instead of
 cutting). The slice covers "you cannot draw a hundred billion transistors, so you describe the
 circuit": the abstraction ladder (transistor → gate → adder → core → chip), hardware description
@@ -15,6 +15,16 @@ Elements carry over between narration lines and scenes through `ctx.layouts` and
 (`@cueframe/recipes/blocking`), and CueFrame moves the keys between them. The code panel is handed
 from scene to scene (hdl → rtl → contrast). The first version, with every move written by hand,
 is commit 7d0c15a; the comparison is in `cueframe/docs/feedback/chip-design-study.md`.
+
+The chrome (chapter tags and cards with a road map, headlines with eyebrows and coloured keywords,
+progress, subtitles) comes from `script.json` through `@cueframe/recipes/explainer`
+(`cueframe/docs/guide/explainer.md`): `chapters`, and `title`/`eyebrow` per line. The cards before
+chapters 03 and 04 sit in the 3.5 s pads of lines c7 and r4.
+
+Behind the end of the ladder a 3D die (`blender/die.py`, an EEVEE final) is placed on the narration
+with `ctx.plate(..., { timing })` (`cueframe/docs/guide/plates.md`): it holds wide, pushes in from
+"整颗芯片" to chapter 03's card and drifts under the card. Re-recording c7 or h1 moves the camera;
+the plate does not render again.
 
 ```
 bash examples/r-chipdesign/make.sh
