@@ -2,7 +2,7 @@
 // drops onto a tower above it, the camera climbing with the stack and pulling out to show it whole.
 import { cue, scene } from '@cueframe/core'
 import { T } from '../timing.js'
-import { C, SERIF, ball, blink, bump, camera, inCubic, mulberry, outCubic, said, s, seg, squash, stageSvg, start, end } from '../lib.js'
+import { BODY, C, SERIF, ball, blink, bump, camera, inCubic, look, mulberry, outCubic, pose, said, s, seg, squashed, stageSvg, start, end } from '../lib.js'
 
 const GROUND = 930
 const BH = 84
@@ -53,9 +53,11 @@ export const books = scene({
     const cam = { x: 785 - 25 * out, y: close * (1 - out) + 660 * out, zoom: 1.7 * (1 - out) + 0.95 * out }
     camera(st.world, { ...cam, y: cam.y + thud * 6 })
     // The narrator flinches at every landing, eyes close on "太久", then it looks up at the tower.
-    const flinch = Math.max(...st.lands.map((l) => bump(t, l, 0.25)))
-    const up = seg(t, st.lands[1]! - 0.3, st.lands[1]!)
-    st.me.set({ x: 400, y: GROUND, ...squash(0.18 * flinch), eyes: t > st.wait && t < st.lands[1]! - 0.3 ? 'line' : 'open', lookY: -up, look: 0.4 * up, blink: blink(t, 8) })
+    st.me.set(pose({ ...BODY, x: 400, y: GROUND, eyes: 'open' as 'open' | 'line' },
+      squashed(t, st.lands, { q: 0.18, dur: 0.25 }),
+      { mode: 'replace', w: t > st.wait && t < st.lands[1]! - 0.3 ? 1 : 0, v: { eyes: 'line' } },
+      look(t, st.lands[1]! - 0.3, { x: 0.4, y: -1, in: 0.3 }),
+      blink(t, 8)))
     // Rack focus out before the cut.
     const blurPx = 14 * seg(t, st.t1 - 0.25, st.t1 + 0.2)
     st.world.style.filter = blurPx > 0.05 ? `blur(${blurPx.toFixed(2)}px)` : 'none'
