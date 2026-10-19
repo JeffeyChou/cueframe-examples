@@ -19,7 +19,7 @@ read `cueframe/AGENTS.md` first, it is the contract for every project here.
 
 When the framework is in the way, change it, as `cueframe/AGENTS.md` ("Changing CueFrame")
 describes: in `cueframe/`, branch `feedback/<example>`, fix with a test, add a field note to
-`cueframe/docs/feedback/`, push and open a pull request there. Until it is merged, the submodule
+`cueframe/docs/feedback/` (ignored by git, it stays local), push and open a pull request there. Until it is merged, the submodule
 here may point at that branch's commit; after the merge, point it at CueFrame's main. Never edit
 files under `cueframe/` or `texmorph/` without such a branch.
 
