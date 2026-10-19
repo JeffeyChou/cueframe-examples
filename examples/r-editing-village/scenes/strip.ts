@@ -5,7 +5,7 @@
 // It is a composition: the monitor and the stage screen are two instances of `cards`, each fed the
 // film's clock by ctx.comp; annotations outside it find card 3 through its anchor.
 import { composition, scene } from '@cueframe/core'
-import { C, H, SERIF, W, clamp01, inOutCubic, lerp, s, stageSvg } from '../lib.js'
+import { C, H, SERIF, W, clamp01, inOutCubic, lerp, paperShape, s, stageSvg } from '../lib.js'
 
 export const PER = 1.5           // seconds per card
 const N = 12
@@ -58,7 +58,7 @@ export function strip(parent: Element, o: { stutter?: boolean } = {}) {
   const film = s(g, 'g', { 'data-cf-audit': 'world' })
   ICONS.forEach(([fill, icon], i) => {
     const c = s(film, 'g', { transform: `translate(${i * GAP} 0)` })
-    s(c, 'rect', { x: -CARD / 2, y: -CARD / 2, width: CARD, height: CARD, fill })
+    paperShape(c, { rect: { x: -CARD / 2, y: -CARD / 2, w: CARD, h: CARD } }, fill, { edge: 'cut', stock: 'fibre' })
     s(c, 'text', { x: -CARD / 2 + 26, y: -CARD / 2 + 74, 'font-family': SERIF, 'font-weight': 700, 'font-size': 64, fill: fill === C.navy ? C.cream : C.ink }, String(i + 1))
     icon(s(c, 'g'))
   })
@@ -91,7 +91,7 @@ export const cards = composition<{ stutter: boolean }>({
   scenes: (p) => [scene({
     id: 'strip',
     dur: LENGTH,
-    mount: (ctx) => strip(stageSvg(ctx.root), p),
+    mount: (ctx) => strip(stageSvg(ctx), p),
     render: (f, st) => st.draw(f.t),
   })],
   anchors: (p) => ({ card3: (t) => ({ x: W / 2 - camAt(t, p.stutter) + 2 * GAP, y: H / 2 }) }),
