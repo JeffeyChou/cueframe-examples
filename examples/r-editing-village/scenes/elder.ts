@@ -15,7 +15,7 @@ export const laugh = scene({
   end: cue('scene.s2.start'),
   blur: { samples: 6, shutter: 0.7, when: [[E.whip, cue('scene.s2.start')]] },
   mount(ctx) {
-    const svg = stageSvg(ctx.root, C.mustard)
+    const svg = stageSvg(ctx, C.mustard)
     const world = s(svg, 'g')
     s(world, 'rect', { x: -3000, y: 790, width: 8000, height: 600, fill: C.mustard })
     s(world, 'line', { x1: -3000, x2: 5000, y1: 790, y2: 790, stroke: C.ink, 'stroke-width': 5 })
@@ -62,7 +62,7 @@ export const point = scene({
   end: cue('scene.s3.start'),
   blur: { samples: 6, shutter: 0.7, when: [[cue('scene.s2.start'), E.whip + 2 * WHIP]] },
   mount(ctx) {
-    const svg = stageSvg(ctx.root, C.paper)
+    const svg = stageSvg(ctx, C.paper)
     const world = s(svg, 'g')
     s(world, 'line', { x1: -3000, x2: 5000, y1: 640, y2: 640, stroke: C.ink, 'stroke-width': 4 })
     const trio = crowd(world, 3, { x0: 600, x1: 840, y: 640, h: [96, 120], seed: 2, colors: [C.navy, C.cobalt, C.navy] })
@@ -70,7 +70,7 @@ export const point = scene({
     const t0 = start('s2')
     // The monitor plays the same strip (another instance of `cards`), placed through this shot's camera.
     ctx.comp(cards, { id: 'monitor', params: { stutter: true }, time: clock.loop({ start: T0, length: LENGTH }), rect: (f) => compRect(cam(f.t, t0, at), STAGE, MON), fit: 'stretch' })
-    const front = stageSvg(ctx.root)
+    const front = stageSvg(ctx)
     const fworld = s(front, 'g')
     s(fworld, 'rect', { x: MON.x - 6, y: MON.y - 6, width: MON.w + 12, height: MON.h + 12, fill: 'none', stroke: C.ink, 'stroke-width': 12 })
     const ae = elder(fworld, 380)
