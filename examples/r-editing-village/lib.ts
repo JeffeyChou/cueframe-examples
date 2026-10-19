@@ -6,7 +6,9 @@ export { said } from '@cueframe/recipes/subtitles.js'
 export { seg, win, lerp, clamp01, outCubic, inCubic, inOutCubic, outBack, spring, noise1, shake, bump } from '@cueframe/recipes/motion.js'
 export { camPath, compRect, parallax, type Cam } from '@cueframe/recipes/camera.js'
 export { pose, blink, envelope, look, hop, flinch, nod, squash as squashed, type Layer, type Style } from '@cueframe/recipes/acting.js'
+import type { MountContext } from '@cueframe/core'
 import { camSvg, type Cam } from '@cueframe/recipes/camera.js'
+import { fiber, fiberPath, roughen, type Outline } from '@cueframe/recipes/paper.js'
 import { clamp01, inOutCubic, lerp, noise1 } from '@cueframe/recipes/motion.js'
 
 export const CUES: Record<string, number> = cueTable
@@ -33,13 +35,37 @@ export function s<K extends keyof SVGElementTagNameMap>(parent: Element, tag: K,
   parent.append(e)
   return e
 }
-/** A full-stage SVG in logical px. */
-export function stageSvg(root: HTMLElement, bg?: string): SVGSVGElement {
-  const svg = s(root as unknown as Element, 'svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H }) as SVGSVGElement
+/** A full-stage SVG in logical px; shapes drawn into it with `paperShape` are printed paper. */
+export function stageSvg(ctx: Pick<MountContext, 'root' | 'id'>, bg?: string): SVGSVGElement {
+  const svg = s(ctx.root as unknown as Element, 'svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H }) as SVGSVGElement
   Object.assign(svg.style, { position: 'absolute', left: '0', top: '0', overflow: 'hidden' })
+  kits.set(svg, ctx)
   if (bg) s(svg, 'rect', { width: W, height: H, fill: bg })
   return svg
 }
+
+// ---------- printed paper ----------
+const kits = new WeakMap<SVGSVGElement, Pick<MountContext, 'id'>>()
+const dark = (hex: string) => { const n = parseInt(hex.slice(1), 16); return 0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255) < 120 }
+const hash = (x: string) => { let h = 2166136261; for (let i = 0; i < x.length; i++) h = Math.imul(h ^ x.charCodeAt(i), 16777619); return h >>> 0 }
+const sizeOf = (o: Outline): number => typeof o === 'string' ? 100
+  : 'rect' in o ? Math.max(o.rect.w, o.rect.h) : 'circle' in o ? 2 * o.circle.r : 'ellipse' in o ? 2 * Math.max(o.ellipse.rx, o.ellipse.ry)
+  : Math.max(...o.polygon.map((p) => p.x)) - Math.min(...o.polygon.map((p) => p.x))
+/**
+ * A flat shape printed on paper, as in the reference: an edge slightly off true (roughness in the
+ * shape's own units, made once) and a speckle of ink or paper over its fill (a pattern in its own
+ * space). Both move with the rig, so nothing boils.
+ */
+export function paperShape(parent: Element, outline: Outline, fill: string, attrs: Attrs = {}): SVGGElement {
+  const g = s(parent, 'g', attrs)
+  const size = sizeOf(outline)
+  const seed = hash(JSON.stringify(outline)) % 997
+  const d = roughen(outline, { amp: Math.min(1.6, Math.max(0.35, size * 0.004)), wavelength: Math.min(18, Math.max(6, size * 0.05)), seed })
+  s(g, 'path', { d, fill })
+  fiberPath(g, outline, { seed, kind: 'speckle', density: 0.9, ...ink(fill) })
+  return g
+}
+const ink = (fill: string) => (dark(fill) ? { tone: C.cream, opacity: 0.16 } : { tone: C.ink, opacity: 0.1 })
 export interface Pose { x: number; y: number; s?: number; sx?: number; sy?: number; rot?: number; o?: number }
 /** Places a group whose local origin is its pivot (characters: the middle of their feet). */
 export function place(g: SVGGElement, p: Pose) {
@@ -61,11 +87,12 @@ export type Eyes = 'open' | 'line' | 'happy' | 'dot' | 'wide'
 /** The narrator: a cream ball with a dark crescent; `dark` 0..1 turns it into its shadow side. */
 export function ball(parent: Element, r: number) {
   const g = s(parent, 'g')
-  const rim = s(g, 'circle', { cx: r * 0.16, cy: -r, r, fill: C.ink })
-  const body = s(g, 'circle', { cx: 0, cy: -r, r, fill: C.cream })
+  const disc = { circle: { cx: 0, cy: -r, r } }
+  const rim = s(g, 'path', { d: roughen(disc, { amp: Math.max(0.35, r * 0.008), wavelength: Math.max(6, r * 0.1), seed: 11 }), fill: C.ink })
+  paperShape(g, disc, C.cream)
   const clip = s(s(g, 'defs'), 'clipPath', { id: `ball-clip-${++uid}` })
   s(clip, 'circle', { cx: 0, cy: -r, r })
-  const shade = s(g, 'circle', { cx: 0, cy: -r, r: r * 1.02, fill: C.ink, 'clip-path': `url(#${clip.id})` })
+  const shade = s(s(g, 'g', { 'clip-path': `url(#${clip.id})` }), 'circle', { cx: 0, cy: -r, r: r * 1.02, fill: C.ink })
   const eyes = s(g, 'g')
   const L = s(eyes, 'path', { fill: 'none', 'stroke-linecap': 'round' })
   const R = s(eyes, 'path', { fill: 'none', 'stroke-linecap': 'round' })
@@ -75,7 +102,7 @@ export function ball(parent: Element, r: number) {
       place(g, p)
       const d = clamp01(p.dark ?? 0)
       shade.setAttribute('cx', (lerp(2.1, 0, inOutCubic(d)) * r).toFixed(2))
-      rim.setAttribute('cx', (lerp(0.16, -0.14, d) * r).toFixed(2))
+      rim.setAttribute('transform', `translate(${(lerp(0.16, -0.14, d) * r).toFixed(2)} 0)`)
       rim.setAttribute('fill', d > 0.5 ? C.cream : C.ink)
       const ink = d > 0.55 ? C.cream : C.ink
       const lx = (p.look ?? 0) * r * 0.22
@@ -106,9 +133,9 @@ function eyePaths(pp: SVGPathElement[], eyes: Eyes, cx: number, cy: number, gap:
 /** Claude: a salmon square, dark hair block behind its top-left corner, a white asterisk. */
 export function claude(parent: Element, a: number) {
   const g = s(parent, 'g')
-  s(g, 'rect', { x: -a * 0.62, y: -a * 1.18, width: a * 0.62, height: a * 0.5, fill: C.ink })
+  paperShape(g, { rect: { x: -a * 0.62, y: -a * 1.18, w: a * 0.62, h: a * 0.5 } }, C.ink)
   s(g, 'rect', { x: -a * 0.62, y: -a * 1.12 + a * 0.06, width: a * 0.2, height: a * 0.035, fill: C.mustard })
-  s(g, 'rect', { x: -a / 2, y: -a, width: a, height: a, fill: C.salmon })
+  paperShape(g, { rect: { x: -a / 2, y: -a, w: a, h: a } }, C.salmon)
   const eyes = [0, 1].map(() => s(g, 'path', { fill: 'none', 'stroke-linecap': 'butt' }))
   const star = s(g, 'g', { transform: `translate(${a * 0.32} ${-a * 0.2})`, stroke: C.cream, 'stroke-width': a * 0.035, 'stroke-linecap': 'round' })
   for (let k = 0; k < 4; k++) s(star, 'line', { x1: 0, y1: -a * 0.07, x2: 0, y2: a * 0.07, transform: `rotate(${k * 45})` })
@@ -124,8 +151,8 @@ export function claude(parent: Element, a: number) {
 /** The AE elder: a navy square, ^ ^ eyes, a triangle mouth and a red diamond hat. */
 export function elder(parent: Element, a: number) {
   const g = s(parent, 'g')
-  const hat = s(g, 'rect', { x: -a * 0.17, y: -a * 0.17, width: a * 0.34, height: a * 0.34, fill: C.red })
-  s(g, 'rect', { x: -a / 2, y: -a, width: a, height: a, fill: C.navy })
+  const hat = paperShape(g, { rect: { x: -a * 0.17, y: -a * 0.17, w: a * 0.34, h: a * 0.34 } }, C.red)
+  paperShape(g, { rect: { x: -a / 2, y: -a, w: a, h: a } }, C.navy)
   const eyes = [0, 1].map(() => s(g, 'path', { fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }))
   const mouth = s(g, 'path', { fill: C.lavender })
   return {
@@ -160,7 +187,7 @@ export function villager(parent: Element, h: number, fill: string) {
   const legs = s(g, 'g', { stroke: C.ink, 'stroke-width': Math.max(2, h * 0.018) })
   s(legs, 'line', { x1: -b * 0.16, y1: 0, x2: -b * 0.16, y2: -h * 0.09 })
   s(legs, 'line', { x1: b * 0.16, y1: 0, x2: b * 0.16, y2: -h * 0.09 })
-  s(g, 'path', { d: `M${-b / 2} ${-h * 0.08} L0 ${-h} L${b / 2} ${-h * 0.08} Z`, fill })
+  paperShape(g, { polygon: [{ x: -b / 2, y: -h * 0.08 }, { x: 0, y: -h }, { x: b / 2, y: -h * 0.08 }] }, fill)
   const face = s(g, 'g')
   const ink = fill === C.ink ? C.cream : C.ink
   const eye = s(face, 'circle', { r: h * 0.022, fill: ink })
@@ -201,7 +228,15 @@ export function cube(parent: Element, a: number) {
   const shadow = s(g, 'path', { fill: '#FFFFFF', opacity: 0.18 })
   const top = s(g, 'path', { fill: '#2E2A28' })
   const side = s(g, 'path', { fill: '#171413' })
-  s(g, 'rect', { x: -a / 2, y: -a, width: a, height: a, fill: '#232020' })
+  // The faces change shape with depth; their print texture is a pattern in the rig's space, so it
+  // stays put while the outline moves.
+  const svg = parent.closest('svg'), kit = svg && kits.get(svg)
+  const faces = kit ? [0, 1].map((k) => {
+    const clip = s(s(g, 'defs'), 'clipPath', { id: kit.id(`cube-face-${++uid}`) })
+    s(s(g, 'g', { 'clip-path': `url(#${clip.id})` }), 'path', { d: fiber({ rect: { x: -a / 2, y: -a * 1.6, w: a * 1.6, h: a * 1.6 } }, { seed: 20 + k, density: 0.9 }), fill: C.cream, opacity: 0.16 })
+    return s(clip, 'path')
+  }) : []
+  paperShape(g, { rect: { x: -a / 2, y: -a, w: a, h: a } }, '#232020')
   const slit = s(g, 'rect', { x: -a * 0.22, y: -a * 0.42, width: a * 0.44, height: a * 0.045, fill: C.cream })
   const glow = s(g, 'rect', { x: -a * 0.3, y: -a * 0.46, width: a * 0.6, height: a * 0.13, fill: C.mustard, opacity: 0, filter: 'url(#soft)' })
   return {
@@ -211,6 +246,7 @@ export function cube(parent: Element, a: number) {
       const d = (p.depth ?? 0.22) * a
       top.setAttribute('d', `M${-a / 2} ${-a} L${-a / 2 + d} ${-a - d * 0.75} L${a / 2 + d} ${-a - d * 0.75} L${a / 2} ${-a} Z`)
       side.setAttribute('d', `M${a / 2} ${-a} L${a / 2 + d} ${-a - d * 0.75} L${a / 2 + d} ${-d * 0.75} L${a / 2} 0 Z`)
+      faces.forEach((f, i) => f.setAttribute('d', (i ? side : top).getAttribute('d')!))
       shadow.setAttribute('d', `M${-a * 0.62} ${a * 0.0} L${a * 0.62 + d} ${a * 0.0} L${a * 0.78 + d} ${a * 0.12} L${-a * 0.78} ${a * 0.12} Z`)
       slit.setAttribute('fill', p.slit ?? C.cream)
       glow.setAttribute('opacity', String(p.glow ?? 0))

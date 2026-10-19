@@ -2,7 +2,7 @@
 // drops onto a tower above it, the camera climbing with the stack and pulling out to show it whole.
 import { cue, scene } from '@cueframe/core'
 import { T } from '../timing.js'
-import { BODY, C, SERIF, ball, blink, bump, camera, inCubic, look, mulberry, outCubic, pose, said, s, seg, squashed, stageSvg, start, end } from '../lib.js'
+import { BODY, C, SERIF, ball, blink, bump, camera, inCubic, look, mulberry, outCubic, pose, said, s, seg, squashed, stageSvg, start, end, paperShape } from '../lib.js'
 
 const GROUND = 930
 const BH = 84
@@ -16,14 +16,14 @@ export const books = scene({
   at: cue('scene.s7.start'),
   end: cue('scene.s9.start'),
   mount(ctx) {
-    const svg = stageSvg(ctx.root, C.paper)
+    const svg = stageSvg(ctx, C.paper)
     const world = s(svg, 'g')
     s(world, 'line', { x1: -3000, x2: 5000, y1: GROUND, y2: GROUND, stroke: C.ink, 'stroke-width': 5 })
     const rnd = mulberry(17)
     const stack = BOOKS.map(([name, fill], i) => {
       const w = 560 + rnd() * 160
       const g = s(world, 'g')
-      s(g, 'rect', { x: -w / 2, y: -BH, width: w, height: BH, fill })
+      paperShape(g, { rect: { x: -w / 2, y: -BH, w, h: BH } }, fill)
       s(g, 'rect', { x: -w / 2, y: -BH, width: w, height: 7, fill: '#000', opacity: 0.12 })
       s(g, 'text', { x: 0, y: -BH / 2 + 15, 'text-anchor': 'middle', 'font-family': SERIF, 'font-weight': 700, 'font-size': 42, 'letter-spacing': 2, fill: C.cream }, name)
       return { g, x: 820 + (rnd() - 0.5) * 70, rot: (rnd() - 0.5) * 2.4, i }

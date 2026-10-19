@@ -36,7 +36,7 @@ function build(ctx: MountContext) {
   const cam = cameraOf(T)
   // Back: villagers on the horizon, the posts. Then the strip, playing on the screen. Front: its frame,
   // Claude behind the lectern, the narrator, the ring, the foreground crowd.
-  const svg = stageSvg(ctx.root, C.paper)
+  const svg = stageSvg(ctx, C.paper)
   const world = s(svg, 'g')
   const back = crowd(world, 26, { x0: -300, x1: 1740, y: GROUND, h: [60, 96], seed: 4, spread: 14 })
   s(world, 'line', { x1: -2000, x2: 3400, y1: GROUND, y2: GROUND, stroke: C.ink, 'stroke-width': 4 })
@@ -45,7 +45,7 @@ function build(ctx: MountContext) {
     id: 'screen', params: { stutter: true }, time: clock.loop({ start: T0, length: LENGTH }),
     rect: (f) => compRect(cam(f.t), STAGE, SCREEN), fit: 'stretch',
   })
-  const front = stageSvg(ctx.root)
+  const front = stageSvg(ctx)
   const fworld = s(front, 'g')
   s(fworld, 'rect', { x: SCREEN.x - 5, y: SCREEN.y - 5, width: SCREEN.w + 10, height: SCREEN.h + 10, fill: 'none', stroke: C.ink, 'stroke-width': 10 })
   const cl = claude(fworld, 76)

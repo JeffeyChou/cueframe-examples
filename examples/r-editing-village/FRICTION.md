@@ -110,3 +110,13 @@ Rebuilt on the phase-3 branch: `timing.ts` declares the shared times as events, 
 whip blur only during the whip. Same export conditions: sub-frames 3140 → 1895, blurred frames
 316 → 67, export 2 m 34 s → 1 m 13 s; the blurred frames are pixel-identical (frames 92, 99, 639,
 648, 663). Narration: four lines directed, Owner picked take 3 (PR #27).
+
+## Follow-up (CueFrame phase 6b, paper)
+
+The characters, the strip's cards and the books are printed paper (`lib.ts` `paperShape`: a slightly
+rough edge from `roughen` in the rig's own units and a speckle of ink or paper from `fiber`), and the
+overlay is `sheet()`. The reference has no cast shadows, so none are drawn. Measured on the way:
+an SVG `<pattern>` texture failed `check determinism` (its raster tile is reused across scales), and
+a canvas page over the stage was order-dependent, as an `<img>` it doubled the export; the recipe now
+uses geometry for textures and static SVG turbulence for the page. Determinism 7/7, audit 0 errors,
+export 76.8 s against 71.7 s.

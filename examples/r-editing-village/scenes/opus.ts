@@ -10,7 +10,7 @@ export const turn = scene({
   at: cue('scene.s9.start'),
   end: cue('scene.s11.start'),
   mount(ctx) {
-    const svg = stageSvg(ctx.root, C.paper)
+    const svg = stageSvg(ctx, C.paper)
     defs(svg)
     const world = s(svg, 'g')
     s(world, 'circle', { cx: 760, cy: 430, r: 330, fill: C.red })
@@ -42,7 +42,7 @@ export const prompt = scene({
   at: cue('scene.s11.start'),
   end: cue('total'),
   mount(ctx) {
-    const svg = stageSvg(ctx.root, C.paper)
+    const svg = stageSvg(ctx, C.paper)
     defs(svg)
     const world = s(svg, 'g')
     s(world, 'line', { x1: -3000, x2: 5000, y1: 830, y2: 830, stroke: C.ink, 'stroke-width': 4 })
