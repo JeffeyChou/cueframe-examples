@@ -1,9 +1,9 @@
 // s1–s2: the AE elder laughs between two villagers, a whip pan, then he points at the monitor
 // where the strip is still playing. Both shots are motion-blurred during the whip only.
-import { cue, scene } from '@cueframe/core'
-import { C, H, W, blink, bump, camera, crowd, elder, inCubic, outBack, outCubic, said, s, seg, squash, stageSvg, start, villager } from '../lib.js'
+import { clock, cue, scene, type Rect } from '@cueframe/core'
+import { C, H, W, blink, bump, camera, crowd, elder, inCubic, outBack, outCubic, said, s, seg, squash, stageSvg, start, villager, type Cam } from '../lib.js'
 import { T0 } from './stage.js'
-import { play, strip } from './strip.js'
+import { cards, LENGTH } from './strip.js'
 import { T as E, WHIP } from '../timing.js'
 
 
@@ -35,6 +35,16 @@ export const laugh = scene({
   },
 })
 
+/** The monitor, top right of the point shot (the strip at 0.24 of its size). */
+const MON: Rect = { x: 960, y: 70, w: W * 0.24, h: H * 0.24 }
+/** The point shot's camera: whip in, then a slow push toward the monitor. */
+const cam = (t: number, t0: number, at: number): Cam => {
+  const whipIn = 1 - seg(t, t0, t0 + WHIP, outCubic)
+  const push = seg(t, at, at + 3, outCubic)
+  return { x: 720 - whipIn * 1400 + push * 90, y: 540 - push * 50, zoom: 1 + 0.1 * push }
+}
+const onScreen = (c: Cam, r: Rect): Rect => ({ x: (r.x - c.x) * c.zoom + W / 2, y: (r.y - c.y) * c.zoom + H / 2, w: r.w * c.zoom, h: r.h * c.zoom })
+
 export const point = scene({
   id: 'point',
   at: cue('scene.s2.start'),
@@ -45,20 +55,21 @@ export const point = scene({
     const world = s(svg, 'g')
     s(world, 'line', { x1: -3000, x2: 5000, y1: 640, y2: 640, stroke: C.ink, 'stroke-width': 4 })
     const trio = crowd(world, 3, { x0: 600, x1: 840, y: 640, h: [96, 120], seed: 2, colors: [C.navy, C.cobalt, C.navy] })
-    const mon = s(world, 'g', { transform: `translate(960 70) scale(0.24)` })
-    const clip = s(s(svg, 'defs'), 'clipPath', { id: 'monitor' })
-    s(clip, 'rect', { width: W, height: H })
-    const film = strip(s(mon, 'g', { 'clip-path': 'url(#monitor)' }))
-    s(mon, 'rect', { x: -24, y: -24, width: W + 48, height: H + 48, fill: 'none', stroke: C.ink, 'stroke-width': 48 })
-    const ae = elder(world, 380)
-    return { world, film, trio, ae, at: E.point, t0: start('s2') }
+    const at = E.point
+    const t0 = start('s2')
+    // The monitor plays the same strip (another instance of `cards`), placed through this shot's camera.
+    ctx.comp(cards, { id: 'monitor', params: { stutter: true }, time: clock.loop({ start: T0, length: LENGTH }), rect: (f) => onScreen(cam(f.t, t0, at), MON), fit: 'stretch' })
+    const front = stageSvg(ctx.root)
+    const fworld = s(front, 'g')
+    s(fworld, 'rect', { x: MON.x - 6, y: MON.y - 6, width: MON.w + 12, height: MON.h + 12, fill: 'none', stroke: C.ink, 'stroke-width': 12 })
+    const ae = elder(fworld, 380)
+    return { world, fworld, trio, ae, at, t0 }
   },
   render(f, st) {
     const t = f.t
-    const whipIn = 1 - seg(t, st.t0, st.t0 + WHIP, outCubic)
-    const push = seg(t, st.at, st.at + 3, outCubic)
-    camera(st.world, { x: 720 - whipIn * 1400 + push * 90, y: 540 - push * 50, zoom: 1 + 0.1 * push })
-    st.film.draw(play(t, T0))
+    const c = cam(t, st.t0, st.at)
+    camera(st.world, c)
+    camera(st.fworld, c)
     // The point: a small hop, the body leans and the diamond swings toward the monitor.
     const p = seg(t, st.at - 0.15, st.at + 0.35, outBack)
     const hop = bump(t, st.at - 0.15, 0.35)
