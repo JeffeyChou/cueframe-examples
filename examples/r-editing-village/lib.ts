@@ -8,7 +8,9 @@ export { camPath, compRect, parallax, type Cam } from '@cueframe/recipes/camera.
 export { pose, blink, envelope, look, hop, flinch, nod, squash as squashed, type Layer, type Style } from '@cueframe/recipes/acting.js'
 import type { MountContext } from '@cueframe/core'
 import { camSvg, type Cam } from '@cueframe/recipes/camera.js'
-import { cut, fiber, fiberPath, roughen, type Outline } from '@cueframe/recipes/paper.js'
+import { fiber } from '@cueframe/recipes/paper.js'
+import { paper } from '@cueframe/recipes/materials.js'
+import { dress, material, roughen, type Material, type Outline } from '@cueframe/recipes/texture.js'
 import { clamp01, inOutCubic, lerp, noise1 } from '@cueframe/recipes/motion.js'
 
 export const CUES: Record<string, number> = cueTable
@@ -46,7 +48,6 @@ export function stageSvg(ctx: Pick<MountContext, 'root' | 'id'>, bg?: string): S
 
 // ---------- printed paper ----------
 const kits = new WeakMap<SVGSVGElement, Pick<MountContext, 'id'>>()
-const dark = (hex: string) => { const n = parseInt(hex.slice(1), 16); return 0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255) < 120 }
 const hash = (x: string) => { let h = 2166136261; for (let i = 0; i < x.length; i++) h = Math.imul(h ^ x.charCodeAt(i), 16777619); return h >>> 0 }
 const sizeOf = (o: Outline): number => typeof o === 'string' ? 100
   : 'rect' in o ? Math.max(o.rect.w, o.rect.h) : 'circle' in o ? 2 * o.circle.r : 'ellipse' in o ? 2 * Math.max(o.ellipse.rx, o.ellipse.ry)
@@ -55,23 +56,23 @@ const sizeOf = (o: Outline): number => typeof o === 'string' ? 100
  * A flat shape printed on paper, as in the reference: an edge slightly off true and a texture over
  * its fill, both geometry in the shape's own units made once, so they move with the rig and nothing
  * boils. Edges: 'print' (a faint wobble, the characters) or 'cut' (a scissor-cut wander, cards and
- * books). Stocks: speckle (paper flecks on dark fills, ink flecks on light ones) or 'fibre'.
+ * books). Stocks: speckle (paper flecks on dark fills, ink flecks on light ones) or 'fibre'. It is
+ * the `paper` material preset of recipes/materials.ts; `material` prints the shape in another.
  */
-export function paperShape(parent: Element, outline: Outline, fill: string, o: { edge?: 'print' | 'cut'; stock?: 'speckle' | 'fibre' } = {}): SVGGElement {
+export function paperShape(parent: Element, outline: Outline, fill: string, o: { edge?: 'print' | 'cut'; stock?: 'speckle' | 'fibre'; material?: Material } = {}): SVGGElement {
   const g = s(parent, 'g')
-  const size = sizeOf(outline)
+  // The seed of each shape is pinned to its outline, as it was before materials.
   const seed = hash(JSON.stringify(outline)) % 997
-  const scissor = o.edge === 'cut'
-  const d = roughen(outline, scissor
-    ? { amp: Math.min(3, Math.max(0.8, size * 0.007)), wavelength: Math.min(60, Math.max(16, size * 0.12)), seed }
-    : { amp: Math.min(1.6, Math.max(0.35, size * 0.004)), wavelength: Math.min(18, Math.max(6, size * 0.05)), seed })
-  const texture = o.stock === 'fibre' ? { seed, kind: 'fibre' as const, density: 1.2, ...ink(fill), opacity: dark(fill) ? 0.22 : 0.16 } : { seed, kind: 'speckle' as const, density: 0.9, ...ink(fill) }
+  const m = o.material ?? paper(fill, { stock: o.stock ?? 'speckle', edge: o.edge ?? 'print', size: sizeOf(outline), seed })
   const svg = parent.closest('svg'), kit = svg && kits.get(svg)
-  if (kit) cut(kit, g, d, { fill, texture })
-  else { s(g, 'path', { d, fill }); fiberPath(g, d, texture) }
+  if (kit) material(kit, g, outline, fill, m, { seed })
+  else {
+    const plan = dress(outline, fill, m, { seed })
+    s(g, 'path', { d: plan.drawn, fill })
+    for (const l of plan.layers) s(g, 'path', { d: l.d, ...l.attrs, 'data-cf-audit': 'texture' })
+  }
   return g
 }
-const ink = (fill: string) => (dark(fill) ? { tone: C.cream, opacity: 0.16 } : { tone: C.ink, opacity: 0.1 })
 export interface Pose { x: number; y: number; s?: number; sx?: number; sy?: number; rot?: number; o?: number }
 /** Places a group whose local origin is its pivot (characters: the middle of their feet). */
 export function place(g: SVGGElement, p: Pose) {
@@ -239,7 +240,7 @@ export function cube(parent: Element, a: number) {
   const svg = parent.closest('svg'), kit = svg && kits.get(svg)
   const faces = kit ? [0, 1].map((k) => {
     const clip = s(s(g, 'defs'), 'clipPath', { id: kit.id(`cube-face-${++uid}`) })
-    s(s(g, 'g', { 'clip-path': `url(#${clip.id})` }), 'path', { d: fiber({ rect: { x: -a / 2, y: -a * 1.6, w: a * 1.6, h: a * 1.6 } }, { seed: 20 + k, density: 0.9 }), fill: C.cream, opacity: 0.16 })
+    s(s(g, 'g', { 'clip-path': `url(#${clip.id})` }), 'path', { d: fiber({ rect: { x: -a / 2, y: -a * 1.6, w: a * 1.6, h: a * 1.6 } }, { seed: 20 + k, density: 0.9 }), fill: C.cream, opacity: 0.16, 'data-cf-audit': 'texture' })
     return s(clip, 'path')
   }) : []
   paperShape(g, { rect: { x: -a / 2, y: -a, w: a, h: a } }, '#232020')
