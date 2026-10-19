@@ -5,6 +5,7 @@ import fonts from './build/fonts/fonts.json'
 import { subtitles } from '@cueframe/recipes/subtitles.js'
 import field from './scenes/field.js'
 import stack from './scenes/stack.js'
+import { T } from './timing.js'
 
 const glyphs = fonts.text
 
@@ -21,6 +22,7 @@ export default timeline({
   beats: { bpm: 120, offset: 0, perBar: 4 },
   cues,
   words,
+  events: [T],
   scenes: [field, stack, subs],
   fonts: [
     { family: 'Noto Sans SC', src: '/build/fonts/NotoSansSC.subset.woff2', weight: '500', glyphs },

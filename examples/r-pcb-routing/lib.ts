@@ -2,6 +2,7 @@
 // and the bed's beat grid; worlds and layer art are seeded, built once in mount.
 import { seeded } from '@cueframe/core'
 import { follow } from '@cueframe/recipes/camera.js'
+import { assertClear, clearance, lanes, path, travel, type Lane, type Path, type Travel, type Waypoint } from '@cueframe/recipes/paths.js'
 import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
 export { seg, outCubic, inOutCubic, outBack, clamp01, lerp } from '@cueframe/recipes/motion.js'
@@ -104,103 +105,104 @@ export function stone(g: CanvasRenderingContext2D, x: number, y: number, px: num
 
 // ── A routing world: a bus of parallel traces with 45° bends, stones beside it ────────────────
 export interface Pt { x: number; y: number }
+export const BUS = { n: 4, gap: 20 }
+/** Stones stay this far from the bus's outer traces (as the slice had it). */
+const MARGIN = 34
+/** Fast enough to stay readable on the outer lane. */
+const MAX_SPEED = 600
+
+export interface Boulder { x: number; y: number; big: boolean }
 export interface World {
-  path: Pt[]           // centreline, 45° multiples
-  lens: number[]       // cumulative length at each vertex
-  total: number
-  lanes: Pt[][]        // offset polylines, one per trace, vertex for vertex with `path`
-  stones: { x: number; y: number; big: boolean }[]
+  path: Path
+  lanes: Lane[]
+  /** Centreline distance of the heads at a local time. */
+  go: Travel
+  stones: Boulder[]
   color: string
   hat: string
-  speed: number        // px per second
-  t0: number           // world time at which the bus starts
 }
 
 const DIRS: Pt[] = [{ x: 1, y: 0 }, { x: 1, y: -1 }, { x: 0, y: -1 }, { x: -1, y: -1 }, { x: -1, y: 0 }, { x: -1, y: 1 }, { x: 0, y: 1 }, { x: 1, y: 1 }]
 
-export function world(seed: number, color: string, hat: string, o: { lanes?: number; gap?: number; speed?: number; t0?: number } = {}): World {
-  const rnd = seeded(seed)
-  const nl = o.lanes ?? 4, gap = o.gap ?? 20
-  // Wander mostly east, turning by 45° at a time, never back on itself.
-  const path: Pt[] = [{ x: 0, y: 0 }]
-  let d = 0
-  for (let i = 0; i < 40; i++) {
+/** A seeded walk from `from`, mostly east, turning by 45° at a time, never back on itself. */
+function walk(rnd: () => number, from: Pt, n: number, d0 = 0): Waypoint[] {
+  const out: Waypoint[] = []
+  let p = from, d = d0
+  for (let i = 0; i < n; i++) {
     const turn = i === 0 ? 0 : rnd() < 0.75 ? (rnd() < 0.5 ? 1 : -1) : 0
     d = [7, 0, 1].includes((d + turn + 8) % 8) ? (d + turn + 8) % 8 : 0
-    const L = 110 + rnd() * 200
-    const p = path[path.length - 1]!
-    const u = DIRS[d]!
-    const n = Math.hypot(u.x, u.y)
-    path.push({ x: p.x + (u.x / n) * L, y: p.y + (u.y / n) * L })
+    const L = 110 + rnd() * 200, u = DIRS[d]!, m = Math.hypot(u.x, u.y)
+    p = { x: p.x + (u.x / m) * L, y: p.y + (u.y / m) * L }
+    out.push(p)
   }
-  const lens = [0]
-  for (let i = 1; i < path.length; i++) lens.push(lens[i - 1]! + Math.hypot(path[i]!.x - path[i - 1]!.x, path[i]!.y - path[i - 1]!.y))
-  const lanes: Pt[][] = []
-  for (let k = 0; k < nl; k++) lanes.push(offset(path, (k - (nl - 1) / 2) * gap))
-  // Stones on a jittered grid, kept off the bus; a boulder where the bus would have gone straight on.
-  const stones: World['stones'] = []
-  const minX = -600, maxX = path[path.length - 1]!.x + 600
-  const ys = path.map((p) => p.y)
-  const minY = Math.min(...ys) - 700, maxY = Math.max(...ys) + 700
-  for (let x = minX; x < maxX; x += 92) for (let y = minY; y < maxY; y += 92) {
+  return out
+}
+
+/** Stones on a jittered grid kept off the bus, and a boulder where the bus would have gone straight on
+ * at each turn (unless `boulders` already has one there). */
+function field(rnd: () => number, p: Path, boulders: Boulder[]): Boulder[] {
+  const half = (BUS.n * BUS.gap) / 2
+  const xs = p.pts.map((q) => q.x), ys = p.pts.map((q) => q.y)
+  const grid: Boulder[] = []
+  for (let x = Math.min(...xs) - 600; x < Math.max(...xs) + 600; x += 92) for (let y = Math.min(...ys) - 700; y < Math.max(...ys) + 700; y += 92) {
     const sx = x + (rnd() - 0.5) * 40, sy = y + (rnd() - 0.5) * 40
     if (rnd() < 0.35) continue
-    if (distToPath(path, sx, sy) < (nl * gap) / 2 + 34) continue
-    stones.push({ x: sx, y: sy, big: false })
+    grid.push({ x: sx, y: sy, big: false })
   }
-  for (let i = 1; i < path.length - 1; i++) {
-    const a = path[i - 1]!, b = path[i]!, c = path[i + 1]!
-    const ux = b.x - a.x, uy = b.y - a.y, n = Math.hypot(ux, uy)
-    const turned = Math.abs((ux / n) * (c.y - b.y) - (uy / n) * (c.x - b.x)) > 1
-    if (!turned) continue
-    const bx = b.x + (ux / n) * 120, by = b.y + (uy / n) * 120
-    if (distToPath(path, bx, by) > (nl * gap) / 2 + 40) stones.push({ x: bx, y: by, big: true })
+  const off = new Set(clearance(p, grid.map((s) => ({ ...s, r: 0 })), { min: MARGIN, halfWidth: half }).map((v) => v.obstacle))
+  const out = grid.filter((_, i) => !off.has(i))
+  for (const b of p.bends()) {
+    const v = p.pts[b.i]!, u = p.pts[b.i - 1]!, k = 120 / Math.hypot(v.x - u.x, v.y - u.y)
+    const c = { x: v.x + (v.x - u.x) * k, y: v.y + (v.y - u.y) * k, big: true }
+    if (boulders.some((o) => Math.hypot(o.x - c.x, o.y - c.y) < 60)) continue
+    if (!clearance(p, [{ ...c, r: 0 }], { min: 40, halfWidth: half }).length) out.push(c)
   }
-  return { path, lens, total: lens[lens.length - 1]!, lanes, stones, color, hat, speed: o.speed ?? 260, t0: o.t0 ?? 0 }
+  return [...out, ...boulders]
 }
 
-function offset(path: Pt[], d: number): Pt[] {
-  return path.map((p, i) => {
-    const a = path[Math.max(0, i - 1)]!, b = path[Math.min(path.length - 1, i + 1)]!
-    const n1 = norm(i > 0 ? sub(p, a) : sub(b, p)), n2 = norm(i < path.length - 1 ? sub(b, p) : sub(p, a))
-    const m = norm({ x: -(n1.y + n2.y), y: n1.x + n2.x })
-    const cos = m.x * -n1.y + m.y * n1.x
-    return { x: p.x + (m.x * d) / cos, y: p.y + (m.y * d) / cos }
-  })
+/** One of the nine seeded rides: a walk at constant speed from local time 0. */
+export function world(seed: number, color: string, hat: string, o: { speed?: number } = {}): World {
+  const rnd = seeded(seed)
+  const p = path([{ x: 0, y: 0 }, ...walk(rnd, { x: 0, y: 0 }, 40)], { angles: 45 })
+  const ls = lanes(p, BUS)
+  const go = travel(p, [{ t: 0, s: 0 }], { after: { speed: o.speed ?? 260 }, maxSpeed: MAX_SPEED, lanes: ls })
+  return { path: p, lanes: ls, go, stones: field(rnd, p, []), color, hat }
 }
-const sub = (a: Pt, b: Pt) => ({ x: a.x - b.x, y: a.y - b.y })
-const norm = (v: Pt) => { const n = Math.hypot(v.x, v.y) || 1; return { x: v.x / n, y: v.y / n } }
 
-function distToPath(path: Pt[], x: number, y: number): number {
-  let best = Infinity
-  for (let i = 1; i < path.length; i++) {
-    const a = path[i - 1]!, b = path[i]!
-    const vx = b.x - a.x, vy = b.y - a.y
-    const k = Math.max(0, Math.min(1, ((x - a.x) * vx + (y - a.y) * vy) / (vx * vx + vy * vy)))
-    best = Math.min(best, Math.hypot(a.x + vx * k - x, a.y + vy * k - y))
+/**
+ * The hero's ride, authored: out of the chip pins, a 45° turn on "拐弯", a jog on "绕开", up again on
+ * "一起拐弯", and the dodge on "躲" — a boulder sits on its heading and the bus turns away from it on
+ * the word. `at` are the narration's times on the ride's local clock; distances are only the drawing,
+ * `travel` makes the heads pass each mark at its time.
+ */
+export function heroWorld(seed: number, color: string, hat: string, at: { turn: number; around: number; turn2: number; dodge: number }): World {
+  const rnd = seeded(seed)
+  const route: Waypoint[] = [
+    { x: 0, y: 0 },
+    { x: 1900, y: 0, name: 'turn' },
+    { x: 2152, y: 252, name: 'around' },
+    { x: 3200, y: 252, name: 'turn2' },
+    { x: 3377, y: 75, name: 'dodge' },
+    { x: 3700, y: 75 },
+  ]
+  const p = path([...route, ...walk(rnd, route[route.length - 1]!, 30)], { angles: 45 })
+  const ls = lanes(p, BUS)
+  const go = travel(p, [
+    { t: 0, s: 0 }, { t: at.turn, mark: 'turn' }, { t: at.around, mark: 'around' }, { t: at.turn2, mark: 'turn2' }, { t: at.dodge, mark: 'dodge' },
+  ], { after: { speed: 260 }, maxSpeed: MAX_SPEED, lanes: ls })
+  for (const [name, t] of Object.entries(at)) {
+    if (Math.abs(go(t) - p.mark(name)) > p.eps) throw new Error(`heroWorld: the heads miss "${name}" at ${t}`)
   }
-  return best
+  const dodge = p.at(p.mark('dodge')), before = p.at(p.mark('dodge') - 1)
+  const u = { x: dodge.x - before.x, y: dodge.y - before.y }
+  const boulder = { x: dodge.x + u.x * 120, y: dodge.y + u.y * 120, big: true }
+  assertClear(ls, [{ ...boulder, r: 40 }], { min: 8, halfWidth: 2 })
+  return { path: p, lanes: ls, go, stones: field(rnd, p, [boulder]), color, hat }
 }
-
-/** Segment index and fraction at centreline length s. */
-function at(w: World, s: number): [number, number] {
-  let i = 1
-  while (i < w.lens.length - 1 && w.lens[i]! < s) i++
-  return [i, (s - w.lens[i - 1]!) / (w.lens[i]! - w.lens[i - 1]!)]
-}
-const mix = (a: Pt, b: Pt, k: number) => ({ x: a.x + (b.x - a.x) * k, y: a.y + (b.y - a.y) * k })
-
-/** Where the head of lane k (or the centreline, k = -1) is at length s. */
-export function headAt(w: World, s: number, k = -1): Pt {
-  const [i, f] = at(w, Math.max(0, s))
-  const line = k < 0 ? w.path : w.lanes[k]!
-  return mix(line[i - 1]!, line[i]!, f)
-}
-export const lengthAt = (w: World, t: number) => Math.max(0, (t - w.t0) * w.speed)
 
 /** The camera: the head smoothed over the last 1.3 s (a pure function of t), so turns swing the rider on screen. */
 export const cameraAt = (w: World, t: number): Pt =>
-  follow((u) => headAt(w, lengthAt(w, u)), t, { window: 1.17, taps: 10, lead: { x: 160, y: 0 } })
+  follow((u) => { const q = w.path.at(w.go(u)); return { x: q.x, y: q.y } }, t, { window: 1.17, taps: 10, lead: { x: 160, y: 0 } })
 
 /**
  * Draw world `w` at time t into rect r of g: the camera follows the head, `zoom` scales the world
@@ -214,10 +216,9 @@ export function drawWorld(g: CanvasRenderingContext2D, w: World, t: number, r: {
   const cam = cameraAt(w, t)
   g.translate(r.x + r.w / 2, r.y + r.h / 2); g.scale(zoom, zoom); g.translate(-cam.x, -cam.y)
   const hw = r.w / 2 / zoom + 60, hh = r.h / 2 / zoom + 60
-  const px = 6
   for (const s of w.stones) {
     if (Math.abs(s.x - cam.x) > hw || Math.abs(s.y - cam.y) > hh) continue
-    stone(g, s.x, s.y, s.big ? 12 : px, s.big)
+    stone(g, s.x, s.y, s.big ? 12 : 6, s.big)
   }
   // The chip the bus leaves from, pins on its right edge.
   if (Math.abs(cam.x + 140) < hw + 200) {
@@ -226,23 +227,20 @@ export function drawWorld(g: CanvasRenderingContext2D, w: World, t: number, r: {
     g.fillStyle = C.gold
     for (let k = -8; k < 8; k++) g.fillRect(-36, (k + 0.5) * 20 - 4, 36, 8)
   }
-  const L = lengthAt(w, t)
+  const L = w.go(t)
   if (L > 0) {
-    const [i, f] = at(w, L)
     g.lineWidth = 4; g.lineJoin = 'miter'; g.strokeStyle = w.color
     for (const lane of w.lanes) {
-      g.beginPath(); g.moveTo(lane[0]!.x, lane[0]!.y)
-      for (let j = 1; j < i; j++) g.lineTo(lane[j]!.x, lane[j]!.y)
-      const h = mix(lane[i - 1]!, lane[i]!, f)
-      g.lineTo(h.x, h.y); g.stroke()
+      const pts = lane.slice(0, lane.fromCentre(L))
+      g.beginPath(); pts.forEach((q, j) => (j ? g.lineTo(q.x, q.y) : g.moveTo(q.x, q.y))); g.stroke()
     }
     g.save()
     g.shadowColor = C.glow; g.shadowBlur = 18; g.fillStyle = C.glow
-    for (let k = 0; k < w.lanes.length; k++) { const h = headAt(w, L, k); g.beginPath(); g.arc(h.x, h.y, 6, 0, Math.PI * 2); g.fill() }
+    for (const lane of w.lanes) { const h = lane.at(lane.fromCentre(L)); g.beginPath(); g.arc(h.x, h.y, 6, 0, Math.PI * 2); g.fill() }
     g.restore()
     // Sparks thrown back from the heads, positions keyed on length so any frame draws the same.
-    const head = headAt(w, L)
-    const back = headAt(w, L - 30)
+    const head = w.path.at(L)
+    const back = w.path.at(Math.max(0, L - 30))
     for (let k = 0; k < 6; k++) {
       const a = (Math.sin((L * 0.05 + k * 1.7) * 3.1) * 0.5 + 0.5) * Math.PI * 2
       const rr = 10 + ((L * 0.7 + k * 23) % 30)
@@ -288,9 +286,8 @@ export function layerArt(L: Layer): HTMLCanvasElement {
         x += (u.x / m) * len; y += (u.y / m) * len
         pts.push({ x, y })
       }
-      for (let k = 0; k < n; k++) {
-        const lane = offset(pts, (k - (n - 1) / 2) * 7)
-        g.beginPath(); lane.forEach((p, j) => (j ? g.lineTo(p.x, p.y) : g.moveTo(p.x, p.y))); g.stroke()
+      for (const lane of lanes(path(pts), { n, gap: 7 })) {
+        g.beginPath(); lane.slice(0, lane.total).forEach((p, j) => (j ? g.lineTo(p.x, p.y) : g.moveTo(p.x, p.y))); g.stroke()
       }
     }
     // Footprints: pad rows of a few parts.

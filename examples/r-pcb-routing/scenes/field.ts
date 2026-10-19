@@ -9,6 +9,7 @@ import {
   said, seg, sprite, tiles, type Rect,
 } from '../lib.js'
 import { ride } from './ride.js'
+import { T } from '../timing.js'
 
 const COUNTS = [1, 2, 4, 8, 10]
 
@@ -18,7 +19,7 @@ export default scene({
   end: cue('scene.k1.start'),
   mount(ctx: MountContext) {
     el(ctx.root, 'div', { inset: '0', background: C.bg })
-    const t0 = said(ctx, 'r1', '出发')
+    const t0 = T.leave
     // Splits land on the beat after the words that ask for them.
     const sp = [
       0,

@@ -8,7 +8,10 @@ tiles, which fly into an exploded 3D stack, align, are drilled through and press
 The script is our own wording, narrated with a local IndexTTS voice; every event time comes from the
 narration (`said()` on Whisper word times), snapped to the next beat of a 120 BPM chiptune bed
 (`score.py`) where the picture splits. Routes, stones and layer copper are seeded and drawn on
-Canvas2D (`lib.ts`); the stack is CSS 3D. It was built with CueFrame as it is, to measure friction:
+Canvas2D (`lib.ts`); the stack is CSS 3D. The hero's route is authored with
+`@cueframe/recipes/paths.js`: its bus turns on "拐弯", jogs on "绕开" and dodges a boulder on "躲"
+because `travel` pins the path's marks to those word times (`timing.ts`), which the score also reads
+as events. It was built with CueFrame as it is, to measure friction:
 see `FRICTION.md`.
 
 ```

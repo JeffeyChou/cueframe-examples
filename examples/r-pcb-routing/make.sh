@@ -10,6 +10,7 @@ cf() { pnpm exec cueframe "$@"; }
 bash scripts/fetch-fonts.sh                                   # Noto Sans SC and Plex Mono are not committed
 uv run --project cueframe/python --group align cueframe-py tts $P/script.json   # wavs, then Whisper word times (cached per line)
 py fonts - $P/data/fonts/NotoSansSC.ttf --project $P --text "$(cat $P/script.json $P/*.ts $P/scenes/*.ts) 0123456789" </dev/null
+cf cues $P                                                    # timing.ts events → build/page-cues.json
 py synth $P/score.py --project $P                            # build/stems/{bed,sfx}.wav on the 120 BPM grid
 py mix $P/mix.json --project $P                               # build/audio.wav: voice over ducked bed, −16 LUFS
 cf sheet $P --every 2 --out $P/out/sheet.png
