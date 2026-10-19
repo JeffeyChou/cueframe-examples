@@ -3,7 +3,7 @@
 // flies into the box as a wobbling yellow paper blob.
 import { cue, scene } from '@cueframe/core'
 import { T as E } from '../timing.js'
-import { BODY, C, SANS, VILLAGE, ball, blink, blobPath, bump, camera, crowd, cube, defs, elder, envelope, hop, inOutCubic, look, outBack, outCubic, pose, said, s, seg, shake, squashed, stageSvg, start } from '../lib.js'
+import { BODY, C, SANS, VILLAGE, ball, blink, blobPath, bump, camera, crowd, cube, defs, elder, envelope, hop, inOutCubic, look, nod, outBack, outCubic, pose, said, s, seg, shake, squashed, stageSvg, start } from '../lib.js'
 
 export const turn = scene({
   id: 'turn',
@@ -54,7 +54,7 @@ export const prompt = scene({
     s(blob, 'text', { x: 4, y: 12, 'text-anchor': 'middle', 'font-family': SANS, 'font-weight': 700, 'font-size': 34, fill: C.cream, transform: 'rotate(-28)' }, '流畅')
     return {
       world, box, me, blob, shape, t0: start('s11'),
-      copy: said(ctx, 's11', '样子'), say: E.say, pop: E.pop, fly: E.fly,
+      copy: said(ctx, 's11', '样子'), done: said(ctx, 's12', '一点'), say: E.say, pop: E.pop, fly: E.fly,
     }
   },
   render(f, st) {
@@ -64,6 +64,8 @@ export const prompt = scene({
     const step = seg(t, st.say - 0.1, st.say + 0.3, outCubic)
     st.me.set(pose({ ...BODY, x: 250 + 90 * step, y: 830, look: 0.6, eyes: 'open' as 'open' | 'line' },
       hop(t, st.say - 0.1, { height: 60, dur: 0.4, stretch: 0.15 }),
+      nod(t, st.done, { depth: 1.4, dur: 0.5 }, VILLAGE),
+      squashed(t, st.done, { q: 0.14, dur: 0.5 }, VILLAGE),
       { mode: 'replace', w: t > st.copy ? 1 : 0, v: { eyes: 'line' } },
       blink(t, 3)))
     // The instruction: pops up beside the narrator, wobbles, then arcs into the slit and lights it.

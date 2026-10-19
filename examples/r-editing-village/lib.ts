@@ -5,7 +5,7 @@ import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
 export { seg, win, lerp, clamp01, outCubic, inCubic, inOutCubic, outBack, spring, noise1, shake, bump } from '@cueframe/recipes/motion.js'
 export { camPath, compRect, parallax, type Cam } from '@cueframe/recipes/camera.js'
-export { pose, blink, envelope, look, hop, flinch, squash as squashed, type Layer, type Style } from '@cueframe/recipes/acting.js'
+export { pose, blink, envelope, look, hop, flinch, nod, squash as squashed, type Layer, type Style } from '@cueframe/recipes/acting.js'
 import { camSvg, type Cam } from '@cueframe/recipes/camera.js'
 import { clamp01, inOutCubic, lerp, noise1 } from '@cueframe/recipes/motion.js'
 

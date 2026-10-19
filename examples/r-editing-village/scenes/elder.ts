@@ -1,7 +1,7 @@
 // s1–s2: the AE elder laughs between two villagers, a whip pan, then he points at the monitor
 // where the strip is still playing. Both shots are motion-blurred during the whip only.
 import { clock, cue, scene, type Rect } from '@cueframe/core'
-import { BODY, C, H, STAGE, VILLAGE, W, blink, camera, compRect, crowd, elder, envelope, hop, inCubic, outCubic, pose, said, s, seg, stageSvg, start, villager, type Cam } from '../lib.js'
+import { BODY, C, H, STAGE, VILLAGE, W, blink, camPath, camera, compRect, crowd, elder, envelope, hop, inCubic, outCubic, pose, said, s, seg, stageSvg, start, villager, type Cam } from '../lib.js'
 import { T0 } from './stage.js'
 import { cards, LENGTH } from './strip.js'
 import { T as E, WHIP } from '../timing.js'
@@ -24,12 +24,16 @@ export const laugh = scene({
     const ae = elder(world, 230)
     const ELDER = { ...BODY, eyes: 'flat' as ElderEyes, open: 0, hat: 0 }
     const FACE = { ...BODY, brow: 0, up: 0 }
-    return { world, left, right, ae, ELDER, FACE, at: said(ctx, 's1', '笑'), end: start('s2') }
+    const at = said(ctx, 's1', '笑')
+    // A push onto the elder as he laughs.
+    const push = camPath([{ t: at - 0.1, x: 720, y: 560, zoom: 1 }, { t: at + 0.8, y: 600, zoom: 1.14, ease: outCubic }])
+    return { world, left, right, ae, ELDER, FACE, push, at, end: start('s2') }
   },
   render(f, st) {
     const t = f.t
     const whip = seg(t, st.end - WHIP, st.end, inCubic)
-    camera(st.world, { x: 720 + whip * 1400, y: 560, zoom: 1 + 0.06 * seg(t, 0, st.end) })
+    const c = st.push(t)
+    camera(st.world, { ...c, x: c.x + whip * 1400, zoom: c.zoom * (1 + 0.06 * seg(t, 0, st.end)) })
     // A chuckle: three quick squashes with the mouth open, the hat bobbing.
     const k = t - st.at
     const chuckle = k > 0 && k < 1.1 ? Math.abs(Math.sin(k * Math.PI * 3 / 1.1)) * (1 - k / 1.1) : 0
