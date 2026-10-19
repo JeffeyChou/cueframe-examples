@@ -1,13 +1,14 @@
 // One rider routes a bus between stones; the camera pulls back, the frame splits on the beat into
 // ten panels (one per layer, each its own routing world), and the panels become the ten layer tiles.
-// cueframe: one scene with one canvas, because each panel is a whole sub-animation with its own
-// clock; CueFrame has no nested composition to instance, so the worlds are drawn by hand per rect.
-import { cue, scene } from '@cueframe/core'
+// Each panel is an instance of the `ride` composition on its own clock (it appears on its split beat);
+// the field moves the instances' rects and draws the copper, borders and labels over them.
+import { clock, cue, scene } from '@cueframe/core'
 import type { MountContext } from '@cueframe/core'
 import {
-  ART_H, ART_W, BEAT, C, LAYERS, MONO, W, H, drawWorld, el, grid, layerArt, lerpRect, onBeat, outBack, inOutCubic,
-  said, seg, sprite, start, tiles, world, type Rect, type World,
+  ART_H, ART_W, BEAT, C, LAYERS, MONO, W, H, el, grid, layerArt, lerpRect, onBeat, outBack, inOutCubic,
+  said, seg, sprite, tiles, type Rect,
 } from '../lib.js'
+import { ride } from './ride.js'
 
 const COUNTS = [1, 2, 4, 8, 10]
 
@@ -17,10 +18,7 @@ export default scene({
   end: cue('scene.k1.start'),
   mount(ctx: MountContext) {
     el(ctx.root, 'div', { inset: '0', background: C.bg })
-    const g = ctx.canvas('field')
     const t0 = said(ctx, 'r1', '出发')
-    // Panel worlds: the hero (F.Cu) starts on "出发"; the others are already under way when they appear.
-    const worlds: World[] = LAYERS.map((L, i) => world(L.seed, L.color, L.hat, { t0: i === 0 ? t0 : t0 - 2 - i * 0.7, speed: 260 - (i % 3) * 20 }))
     // Splits land on the beat after the words that ask for them.
     const sp = [
       0,
@@ -43,30 +41,36 @@ export default scene({
       return d
     })
     const arts = LAYERS.map(layerArt)
-    return { g, worlds, sp, zoomOut, toTiles, reveal, labels, arts }
+    const toTilesK = (t: number) => seg(t, toTiles, toTiles + 0.9, inOutCubic)
+    const st = { sp, toTiles, toTilesK }
+    // Panel i: the hero (F.Cu) is there from the start and leaves its pins on "出发"; the others are
+    // already under way when they split off. Each appears on the split that first shows it.
+    const panels = LAYERS.map((_, i) => {
+      const k = COUNTS.findIndex((n) => n > i)
+      const tStart = i === 0 ? t0 : t0 - 2 - i * 0.7
+      const shown = sp[k]!
+      return ctx.comp(ride, {
+        id: `p${i}`,
+        params: { i, ...(i === 0 ? { zoomOut: [zoomOut[0]! - tStart, zoomOut[1]! - tStart] as [number, number] } : {}) },
+        time: clock.segments([{ from: shown, to: 999, clock: clock.offset(tStart) }]),
+        rect: (f) => panelRect(st, i, f.t),
+        fit: 'cover',
+        outside: 'clamp',            // before its clock starts the world waits at its beginning
+      })
+    })
+    const g = ctx.canvas('over', { frame: true })
+    return { g, st, panels, reveal, labels, arts }
   },
   render(f, s) {
     const g = s.g
-    g.clearRect(0, 0, W, H)
     const t = f.t
-    // Which split stage, and how far through its move.
-    let k = 0
-    while (k + 1 < s.sp.length && t >= s.sp[k + 1]!) k++
-    const move = k > 0 ? seg(t, s.sp[k]!, s.sp[k]! + 0.42, (x) => outBack(x, 1.3)) : 1
-    const n = COUNTS[k]!, prev = COUNTS[Math.max(0, k - 1)]!
-    const to = grid(n, n > 1 ? 4 : 0), from = grid(prev, prev > 1 ? 4 : 0)
-    const tileK = seg(t, s.toTiles, s.toTiles + 0.9, inOutCubic)
-    const tl = tiles()
-    const zoom0 = 1 - 0.45 * seg(t, s.zoomOut[0]!, s.zoomOut[1]!, inOutCubic)
+    const k = stageAt(s.st, t)
+    const n = COUNTS[k]!
+    const tileK = s.st.toTilesK(t)
     for (let i = 0; i < n; i++) {
-      // A new panel grows out of the one it split from (i - prev); old panels move to their new cell.
-      const a = i < prev ? from[i]! : from[i - prev]!
-      let r: Rect = lerpRect(a, to[i]!, move)
-      if (tileK > 0) r = lerpRect(r, tl[i]!, tileK)
-      const z = zoom0 * Math.pow(r.h / H, 0.55)
+      const r = panelRect(s.st, i, t)
       const px = Math.max(3, Math.round(7 * Math.pow(r.h / H, 0.35)))
-      drawWorld(g, s.worlds[i]!, t, r, z, px)
-      // The layer's copper fades in over the world when it is named; the rider stays on top.
+      // The layer's copper fades in over the world when it is named; the rider sits on top.
       const art = seg(t, s.reveal[i]!, s.reveal[i]! + 0.5)
       if (art > 0) {
         g.save()
@@ -77,13 +81,9 @@ export default scene({
         g.restore()
         sprite(g, r.x + r.w / 2, r.y + r.h * 0.42, px, LAYERS[i]!.hat, t)
       }
-      // cueframe: a 2D context keeps its state between frames, and lineWidth = 0 is silently ignored,
-      // so a "no border" frame drawn after a bordered one used to stroke anyway (determinism FAIL).
       if (n > 1 || tileK > 0) { g.strokeStyle = C.gold; g.lineWidth = 2; g.strokeRect(r.x + 1, r.y + 1, r.w - 2, r.h - 2) }
       const lab = s.labels[i]!
       lab.style.left = `${r.x + 10}px`; lab.style.top = `${r.y + r.h + 6}px`
-      // cueframe: fading text by element opacity differed by render order (determinism FAIL, ≤11 levels);
-      // fading the colour's alpha does not.
       const la = Math.min(tileK, seg(t, s.reveal[i]!, s.reveal[i]! + 0.3))
       lab.style.color = `rgba(238,241,246,${la.toFixed(3)})`
       lab.style.visibility = la > 0 ? 'visible' : 'hidden'   // audit reads a transparent colour as visible text
@@ -91,3 +91,24 @@ export default scene({
     for (let i = n; i < 10; i++) s.labels[i]!.style.visibility = 'hidden'
   },
 })
+
+interface Split { sp: number[]; toTilesK: (t: number) => number }
+/** Which split stage holds t. */
+function stageAt(st: Split, t: number): number {
+  let k = 0
+  while (k + 1 < st.sp.length && t >= st.sp[k + 1]!) k++
+  return k
+}
+/** Panel i's rect at t: grown out of the panel it split from, moved to its cell, then to its tile. */
+function panelRect(st: Split, i: number, t: number): Rect {
+  const k = stageAt(st, t)
+  const move = k > 0 ? seg(t, st.sp[k]!, st.sp[k]! + 0.42, (x) => outBack(x, 1.3)) : 1
+  const n = COUNTS[k]!, prev = COUNTS[Math.max(0, k - 1)]!
+  const to = grid(n, n > 1 ? 4 : 0), from = grid(prev, prev > 1 ? 4 : 0)
+  const j = Math.min(i, n - 1)
+  const a = j < prev ? from[j]! : from[j - prev]!
+  let r = lerpRect(a, to[j]!, move)
+  const tileK = st.toTilesK(t)
+  if (tileK > 0) r = lerpRect(r, tiles()[j]!, tileK)
+  return r
+}

@@ -2,11 +2,14 @@
 // camera following it. It plays on the stage screen and on the monitor in another shot, so it is
 // drawn in its own W×H frame from its own clock (`play`), and every shot that shows it builds an
 // instance. The flaw is the camera stopping dead on card 3, then snapping on.
-// cueframe: no nested compositions — each shot instantiates this by hand and passes it a clock.
-import { C, H, SERIF, W, clamp01, inOutCubic, lerp, s } from '../lib.js'
+// It is a composition: the monitor and the stage screen are two instances of `cards`, each fed the
+// film's clock by ctx.comp; annotations outside it find card 3 through its anchor.
+import { composition, scene } from '@cueframe/core'
+import { C, H, SERIF, W, clamp01, inOutCubic, lerp, s, stageSvg } from '../lib.js'
 
 export const PER = 1.5           // seconds per card
 const N = 12
+export const LENGTH = N * PER
 const GAP = 560
 const CARD = 400
 /** Narrative time at which the strip's clock reads 0 (card 1); the 2 → 3 stutter lands on s3. */
@@ -81,3 +84,15 @@ export function strip(parent: Element, o: { stutter?: boolean } = {}) {
     },
   }
 }
+
+/** The strip as a piece of its own: 18 s of cards in a W×H frame; `card3` is card 3's centre. */
+export const cards = composition<{ stutter: boolean }>({
+  size: { w: W, h: H },
+  scenes: (p) => [scene({
+    id: 'strip',
+    dur: LENGTH,
+    mount: (ctx) => strip(stageSvg(ctx.root), p),
+    render: (f, st) => st.draw(f.t),
+  })],
+  anchors: (p) => ({ card3: (t) => ({ x: W / 2 - camAt(t, p.stutter) + 2 * GAP, y: H / 2 }) }),
+})
