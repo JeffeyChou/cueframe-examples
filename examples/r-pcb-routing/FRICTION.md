@@ -189,3 +189,18 @@ and the dodge whoosh). The other nine panels build `path`s from their seeded wal
 - Code: lib.ts 350 → 347 lines; the hand-written offset, distance and length-lookup helpers (~50
   lines) are gone, the hero's route (~30 lines) is new. Export 56.1 s before and after (1462
   frames); determinism 5/5; audit 0 errors.
+
+## Follow-up (CueFrame phase 6c, music-first narration)
+
+The bed is composed first (`bed.py`: drums in at bar 11, the arpeggio lifts at bar 17, the last chord
+at bar 23; it writes `build/beats.json`), and `tts` places the narration on it (`script.json` "music").
+`land` puts "躲" on bar 9, "不止" on bar 11 and "每一层" on bar 12 beat 2 exactly (16.0, 20.0, 22.5 s);
+the split, the turns and the dodge follow the words, so voice, music and picture agree by
+construction. `placement.json` gives each line's bar:beat and its slack.
+
+- `land` refused three lines whose Whisper alignment matched under 80 % (r2 79 %, k1 71 %, k3 40 %:
+  "时层不晚了"); they are anchored by voice start (`"at": "bar 17 - 0.6"`, the lead) instead. The rule
+  did its job; a better engine (or `speak`) would make those words usable as anchors.
+- Moving "每一层" to bar 12 reports `collision: lines s1 and s2 overlap by 0.068 s` and the overrun with
+  the latest start that fits, and publishes nothing (words.json unchanged).
+- Gates: determinism 5/5, audit 0 errors, measure PASS (−16.00 LUFS, voice over bed 17.1 dB).
