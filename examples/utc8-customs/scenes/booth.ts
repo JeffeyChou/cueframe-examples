@@ -1,24 +1,31 @@
 // The counter shots, side elevation: Claude in its booth on the right, the traveler at the counter on
-// the left. s02 establishes the hall (wall clocks, the sign dropping, the queue posts); s05 is
-// Kevin's full-width comma; s07 is Lim and the fan of cards.
-import { cue, scene } from '@cueframe/core'
+// the left. s02 the hall and the sign; s04–s05 Kevin; s06 Tanaka; s07 Lim; s09 Mike; s12 Claude's own
+// lunch break; s14 Kevin again, in a kimono. Every time comes from timing.ts (the narration).
+import { scene, type MountContext } from '@cueframe/core'
 import {
-  BODY, BOOTH, C, GROUND, JOST, SANS, STYLE, blink, booth, bubble, camera, card, envelope, lens, mixAt, officer, outBack, outCubic,
-  passport, pieces, pose, punct, ring, room, s, seg, stageSvg, stamp, stampMark, stanchion, start, text, traveler, wallClock,
+  BODY, BOOTH, C, GROUND, JOST, MONO, SANS, STYLE, blink, booth, bubble, camera, card, envelope, inOutCubic, lens, mixAt, officer,
+  outBack, outCubic, passport, pieces, pose, punct, ring, room, s, seg, stageSvg, stamp, stampMark, stanchion, text, traveler, wallClock,
+  type Disguise,
 } from '../lib.js'
+import { K, SHOT } from '../timing.js'
 
-/** Claude behind the counter and its stamp hand; the stamp comes down at `hit`. */
+const AT_COUNTER = 760
+
+/** Claude behind the counter and its stamp arm: the stamp rests on the counter and presses onto
+ * `target` at the nearest hit. */
 function claudeAt(mid: Element, front: Element) {
   const claude = officer(mid, 200)
-  // The arm: a salmon stroke from Claude's side, over the counter, to the stamp's handle.
   const arm = s(front, 'path', { fill: 'none', stroke: C.claude, 'stroke-width': 26, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })
   const hand = stamp(front, 0.9)
   return {
-    /** The stamp rests on the counter, rises, presses onto `target` (the passport) at `hit`, comes back. */
-    set(t: number, hit: number, look = -1, target = { x: 1030, y: BOOTH.counter - 50 }) {
+    claude,
+    set(t: number, hits: readonly number[], o: { look?: number; lookY?: number; eyes?: 'open' | 'line' | 'wide'; target?: { x: number; y: number }; extra?: Partial<typeof BODY & { cap: number }> } = {}) {
+      const target = o.target ?? { x: 1030, y: BOOTH.counter - 50 }
+      const hit = hits.reduce((b, h) => (Math.abs(t - h) < Math.abs(t - b) ? h : b), hits[0] ?? -99)
       const down = envelope(t, hit - 0.15, { in: 0.12, hold: 0.25, out: 0.35 }, STYLE)
       const reach = seg(t, hit - 0.6, hit - 0.15, outCubic) * (1 - seg(t, hit + 0.45, hit + 0.9, outCubic))
-      claude.set(pose({ ...BODY, x: 1410, y: BOOTH.counter + 40, look }, blink(t, 3), { mode: 'add', w: down, v: { sy: -0.06, sx: 0.04 } }))
+      claude.set(pose({ ...BODY, lookY: 0, cap: 0, eyes: o.eyes ?? 'open', x: 1410, y: BOOTH.counter + 40, look: o.look ?? -1, ...o.extra }, blink(t, 3),
+        { mode: 'add', w: down, v: { sy: -0.06, sx: 0.04 } }, { mode: 'add', w: 1, v: { lookY: o.lookY ?? 0 } }))
       const rest = { x: 1100, y: BOOTH.counter - 12 }
       const hx = rest.x + (target.x + 30 - rest.x) * reach, hy = rest.y + (target.y - rest.y) * reach - 70 * reach * (1 - down) + down * 8
       hand.set({ x: hx, y: hy, rot: -6 + reach * 10 * (1 - down) })
@@ -27,122 +34,315 @@ function claudeAt(mid: Element, front: Element) {
   }
 }
 
+/** Walk in from the left to the counter, then (after `out`) walk back out: x, a step bob, facing. */
+function walk(t: number, inAt: number, out = Infinity, from = -260) {
+  const k = seg(t, inAt, inAt + 1.2, outCubic)
+  const back = seg(t, out, out + 1.3, inOutCubic)
+  const x = from + (AT_COUNTER - from) * k - (AT_COUNTER - from) * back
+  const moving = (k > 0 && k < 1) || (back > 0 && back < 1)
+  return { x, y: GROUND - (moving ? Math.abs(Math.sin(t * 11)) * 14 : 0), face: back > 0 ? -1 : 1 }
+}
+
+/** The common counter set: room, posts, booth, Claude and a traveler with a passport. */
+function counter(ctx: MountContext, who: Disguise, country: string, cover: string, o: { kimono?: boolean; hat?: boolean } = {}) {
+  const svg = stageSvg(ctx, C.paper)
+  const world = s(svg, 'g')
+  room(world)
+  stanchion(world, 120, 360)
+  stanchion(world, 360)
+  const back = s(world, 'g')
+  const b = booth(world)
+  const person = traveler(world, who, who === 'lim' || who === 'mike' ? 360 : 400, o)
+  const pass = passport(b.front, country, cover, 130)
+  const mark = stampMark(b.front, 0.42, country.length)
+  const c = claudeAt(b.mid, b.front)
+  const top = s(world, 'g')
+  return { svg, world, b, back, who: person, pass, mark, c, top }
+}
+type Counter = ReturnType<typeof counter>
+
+/** The passport flies from the traveler's hand to the counter at `slap`; the mark appears at `hit`. */
+function passportOn(st: Counter, t: number, slap: number, hit: number, rot = -4) {
+  const k = seg(t, slap - 0.25, slap, outCubic)
+  st.pass.set({ x: mixAt(k, 0, 1, AT_COUNTER + 90, 1010), y: mixAt(k, 0, 1, GROUND - 180, BOOTH.counter - 94) - Math.sin(k * Math.PI) * 60, rot, o: t >= slap - 0.25 ? 1 : 0 })
+  st.mark.set({ x: 1010, y: BOOTH.counter - 80, rot: rot * 2, o: t >= hit ? 1 : 0 })
+}
+
+/** A message card above the counter: a small heading, then lines of pieces (for rings). */
+function message(parent: Element, head: string, lines: string[][], o: { x?: number; y?: number; w?: number; size?: number; font?: string } = {}) {
+  const g = s(parent, 'g')
+  const x = o.x ?? 226, y = o.y ?? 100, w = o.w ?? 1100, size = o.size ?? 50
+  const h = 80 + lines.length * size * 1.45
+  s(g, 'rect', { x: x + 12, y: y + 14, width: w, height: h, fill: C.ink, opacity: 0.16 })
+  s(g, 'rect', { x, y, width: w, height: h, fill: C.cream, stroke: C.ink, 'stroke-width': 5 })
+  text(g, x + 36, y + 50, head, { size: 26, font: JOST, weight: 700, fill: C.grey, spacing: 3 })
+  const boxes = lines.map((parts, i) => pieces(g, x + 36, y + 80 + size * 1.0 + i * size * 1.45, parts, { size, font: o.font ?? JOST, weight: 700 }))
+  return { g, boxes, set(p: { y?: number; o: number }) { g.setAttribute('transform', `translate(0 ${(p.y ?? 0).toFixed(1)})`); g.style.opacity = String(p.o) } }
+}
+
 export const hall = scene({
-  id: 's02',
-  at: cue('scene.s02.start'),
-  end: cue('scene.s02.end'),
+  id: 'hall',
+  at: SHOT.s02[0],
+  end: SHOT.s02[1],
   mount(ctx) {
     const svg = stageSvg(ctx, C.paper)
     const world = s(svg, 'g')
     room(world)
-    const zones: [string, number, number, boolean][] = [['LOS ANGELES', 18, 0, false], ['TOKYO', 10, 0, false], ['SINGAPORE', 9, 0, false], ['BEIJING', 9, 0, true]]
+    const zones: [string, number, number, boolean][] = [['LOS ANGELES', 18, 41, false], ['TOKYO', 10, 41, false], ['SINGAPORE', 9, 41, false], ['BEIJING', 9, 41, true]]
     zones.forEach(([city, hh, mm, taped], i) => wallClock(world, 190 + i * 250, 230, 78, city, hh, mm, taped))
     for (let i = 0; i < 4; i++) stanchion(world, 140 + i * 240, i < 3 ? 380 + i * 240 : undefined)
     const b = booth(world)
     const sign = s(world, 'g')
-    s(sign, 'line', { x1: 1250, x2: 1250, y1: 0, y2: 120, stroke: C.ink, 'stroke-width': 4 })
-    s(sign, 'line', { x1: 1570, x2: 1570, y1: 0, y2: 120, stroke: C.ink, 'stroke-width': 4 })
+    s(sign, 'line', { x1: 1250, x2: 1250, y1: -400, y2: 120, stroke: C.ink, 'stroke-width': 4 })
+    s(sign, 'line', { x1: 1570, x2: 1570, y1: -400, y2: 120, stroke: C.ink, 'stroke-width': 4 })
     s(sign, 'rect', { x: 1150, y: 120, width: 520, height: 210, fill: C.red })
     text(sign, 1410, 186, '本口岸暂不接待', { size: 46, font: SANS, weight: 900, fill: C.cream, anchor: 'middle', spacing: 6 })
     text(sign, 1410, 296, 'UTC+8', { size: 104, font: JOST, weight: 700, fill: C.cream, anchor: 'middle', spacing: 4 })
     const c = claudeAt(b.mid, b.front)
-    const t0 = start('s02')
-    return { world, sign, c, t0, drop: t0 + 1.2, hit: t0 + 5.2, hit2: t0 + 6.1 }
+    return { world, sign, c }
   },
   render(f, st) {
     const t = f.t
-    camera(st.world, { x: 960 + 40 * seg(t, st.t0, st.t0 + 8), y: 540, zoom: 1 + 0.03 * seg(t, st.t0, st.t0 + 8) })
-    // The sign drops on its wires and swings to rest.
-    const k = seg(t, st.drop, st.drop + 0.5, outBack)
-    const swing = Math.sin((t - st.drop) * 7) * Math.exp(-(t - st.drop) * 3) * (t > st.drop + 0.5 ? 1.6 : 0)
-    st.sign.setAttribute('transform', `translate(0 ${(-360 * (1 - k)).toFixed(1)}) rotate(${swing.toFixed(2)} 1410 0)`)
-    // Two taps on the ink pad.
-    st.c.set(t, t < st.hit + 0.6 ? st.hit : st.hit2, 0.4)
+    const [a, z] = SHOT.s02
+    camera(st.world, { x: 960 + 40 * seg(t, a, z), y: 540, zoom: 1 + 0.03 * seg(t, a, z) })
+    const k = seg(t, K.drop, K.drop + 0.5, outBack)
+    const swing = t > K.drop + 0.5 ? Math.sin((t - K.drop) * 7) * Math.exp(-(t - K.drop - 0.5) * 2.5) * 2 : 0
+    st.sign.setAttribute('transform', `translate(0 ${(-420 * (1 - k)).toFixed(1)}) rotate(${swing.toFixed(2)} 1410 0)`)
+    // Claude looks up at the sign as it lands, then stamps the counter on "不入境".
+    const up = envelope(t, K.drop + 0.3, { in: 0.3, hold: 1.4, out: 0.4 })
+    st.c.set(t, [K.tap2], { look: 0.3, lookY: -up, target: { x: 1060, y: BOOTH.counter - 10 } })
   },
 })
 
 export const kevin = scene({
-  id: 's05',
-  at: cue('scene.s05.start'),
-  end: cue('scene.s05.end'),
+  id: 'kevin',
+  at: SHOT.s04[0],
+  end: SHOT.s05[1],
+  mount(ctx) {
+    const st = counter(ctx, 'kevin', 'USA', C.navy)
+    const say = bubble(st.top, 'Hello，在吗？', { size: 50 })
+    const msg = message(st.top, 'MESSAGE · KEVIN (CA, USA)', [['Hello', '，', '在吗', '？'], ['Please help me check this code', '，', 'thanks', '！']])
+    const l1 = msg.boxes[0]!, l2 = msg.boxes[1]!
+    const rings = [ring(msg.g, l1[2]!, 5, { pad: 12 }), ring(msg.g, punct(l1[1]!), 7, { pad: 10 }), ring(msg.g, punct(l2[1]!), 11, { pad: 12 }), ring(msg.g, punct(l2[3]!), 23, { pad: 12 })]
+    const glass = lens(st.top, 96)
+    return { ...st, say, msg, rings, glass, l1, l2 }
+  },
+  render(f, st) {
+    const t = f.t
+    camera(st.world, { x: 960, y: 540, zoom: 1 + 0.02 * seg(t, K.ringZaima - 1, K.stamp5) })
+    const w = walk(t, K.kevinIn, K.stamp5 + 1.2)
+    const jolt = seg(t, K.stamp5, K.stamp5 + 0.25, outBack)
+    st.who.set(pose({ ...BODY, hat: 0, x: w.x, y: w.y, look: w.face, sx: w.face },
+      blink(t, 2), { mode: 'add', w: envelope(t, K.stamp5, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05 } }, { mode: 'add', w: jolt, v: { hat: 1 } },
+      { mode: 'add', w: envelope(t, K.hello, { in: 0.12, hold: 0.5, out: 0.3 }, STYLE), v: { rot: 6, sy: 0.04 } }))
+    passportOn(st, t, K.slap, K.stamp5)
+    // "Hello，在吗？" as a bubble, then as the first line of the message card.
+    const b = seg(t, K.hello - 0.1, K.hello + 0.15, outBack) * (1 - seg(t, SHOT.s05[0] - 0.2, SHOT.s05[0]))
+    st.say.set({ x: w.x + 40, y: GROUND - 430, o: b > 0 ? 1 : 0, s: Math.max(0.001, b) })
+    st.msg.set({ y: -30 * (1 - seg(t, SHOT.s05[0] - 0.2, SHOT.s05[0] + 0.3, outCubic)), o: seg(t, SHOT.s05[0] - 0.2, SHOT.s05[0] + 0.2) })
+    st.rings[0]!.set(seg(t, K.ringZaima, K.ringZaima + 0.4, outCubic))
+    st.rings[1]!.set(seg(t, K.ringComma - 0.2, K.ringComma + 0.15, outCubic))
+    st.rings[2]!.set(seg(t, K.ringComma + 0.25, K.ringComma + 0.6, outCubic))
+    st.rings[3]!.set(seg(t, K.ringComma + 0.7, K.ringComma + 1.05, outCubic))
+    // The lens hovers over "在吗", then over the full-width marks of the second line.
+    const z = st.l1[2]!, c2 = st.l2[3]!
+    const gx = mixAt(t, K.ringZaima - 0.8, K.ringZaima - 0.1, 300, z.x + z.w / 2) + mixAt(t, K.ringComma - 0.9, K.ringComma + 0.6, 0, c2.x - z.x)
+    const gy = mixAt(t, K.ringComma - 0.9, K.ringComma - 0.3, z.y + z.h / 2, c2.y + c2.h / 2)
+    st.glass.set({ x: gx, y: gy + 6 * Math.sin(t * 3), o: seg(t, K.ringZaima - 1, K.ringZaima - 0.7) * (1 - seg(t, K.stamp5 - 0.6, K.stamp5 - 0.3)) })
+    st.c.set(t, [K.stamp5], { look: -1 })
+  },
+})
+
+export const tanaka = scene({
+  id: 'tanaka',
+  at: SHOT.s06[0],
+  end: SHOT.s06[1],
+  mount(ctx) {
+    const st = counter(ctx, 'tanaka', 'JAPAN', '#7A1F2B')
+    const say = bubble(st.top, 'すみません。', { size: 50 })
+    const msg = message(st.top, 'MESSAGE · TANAKA (TOKYO, JP)', [['帮我把这段话', '翻译成日语']], { font: SANS, w: 820, x: 240 })
+    const r = ring(msg.g, msg.boxes[0]![1]!, 31, { pad: 12 })
+    return { ...st, say, msg, r }
+  },
+  render(f, st) {
+    const t = f.t
+    camera(st.world, { x: 960, y: 540, zoom: 1 + 0.025 * seg(t, K.request, K.stamp6) })
+    const w = walk(t, SHOT.s06[0] - 0.4, K.stamp6 + 1.0)
+    const bows = K.bows.reduce((m, b) => Math.max(m, envelope(t, b, { in: 0.16, hold: 0.08, out: 0.2 })), 0)
+    st.who.set(pose({ ...BODY, bow: 0, x: w.x, y: w.y, look: w.face, sx: w.face }, blink(t, 4), { mode: 'add', w: bows, v: { bow: 1 } },
+      { mode: 'add', w: envelope(t, K.stamp6, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05 } }))
+    passportOn(st, t, K.bows[2]! + 0.5, K.stamp6)
+    const b = seg(t, K.bows[1]!, K.bows[1]! + 0.2, outBack) * (1 - seg(t, K.request - 0.2, K.request))
+    st.say.set({ x: w.x + 40, y: GROUND - 440, o: b > 0 ? 1 : 0, s: Math.max(0.001, b) })
+    st.msg.set({ y: -30 * (1 - seg(t, K.request, K.request + 0.4, outCubic)), o: seg(t, K.request, K.request + 0.3) })
+    st.r.set(seg(t, K.ringJa, K.ringJa + 0.5, outCubic))
+    // "他的母语": Claude holds still a beat (eyes flat), then stamps.
+    st.c.set(t, [K.stamp6], { look: -1, ...(t > K.ringJa + 1.2 && t < K.stamp6 - 0.3 ? { eyes: 'line' as const } : {}) })
+  },
+})
+
+export const lim = scene({
+  id: 'lim',
+  at: SHOT.s07[0],
+  end: SHOT.s07[1],
+  mount(ctx) {
+    const st = counter(ctx, 'lim', 'SINGAPORE', C.red)
+    // Two clocks above the booth showing the same time: Singapore is UTC+8 too.
+    const clocks = s(st.back, 'g')
+    wallClock(clocks, 1400, 160, 56, 'SINGAPORE', 9, 41)
+    wallClock(clocks, 1620, 160, 56, 'BEIJING', 9, 41, true)
+    const eq = text(clocks, 1510, 186, '=', { size: 90, font: JOST, weight: 700, fill: C.red, anchor: 'middle' })
+    const fan = s(st.top, 'g')
+    const cards = ['年终总结', '述职报告', '公积金提取', '思想汇报'].map((l) => card(fan, l, { w: 320, h: 196, size: 44 }))
+    const last = cards[3]!
+    const box = last.label.getBBox()
+    const r = ring(last.g, { x: box.x, y: box.y, w: box.width, h: box.height }, 41, { pad: 16 })
+    const say = bubble(st.top, '我是新加坡人 lah，帮我写个年终总结 lah。', { size: 44 })
+    return { ...st, cards, r, say, eq }
+  },
+  render(f, st) {
+    const t = f.t
+    camera(st.world, { x: 960, y: 540, zoom: 1 + 0.025 * seg(t, K.fan, K.stamp7) })
+    const w = walk(t, SHOT.s07[0] - 0.5)
+    st.who.set(pose({ ...BODY, hat: 0, x: w.x - 40, y: w.y, look: 1 }, blink(t, 6),
+      { mode: 'add', w: envelope(t, K.lim + 0.3, { in: 0.1, hold: 0.1, out: 0.2 }) + envelope(t, K.lim + 2.3, { in: 0.1, hold: 0.1, out: 0.2 }), v: { sy: 0.05 } },
+      { mode: 'add', w: envelope(t, K.stamp7, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05, hat: 0.6 } }))
+    passportOn(st, t, K.lim + 0.6, K.stamp7, 4)
+    const b = seg(t, K.lim - 0.1, K.lim + 0.15, outBack) * (1 - seg(t, K.fan - 0.3, K.fan))
+    st.say.set({ x: w.x, y: GROUND - 400, o: b > 0 ? 1 : 0, s: Math.max(0.001, 0.9 * b) })
+    st.cards.forEach((cd, i) => {
+      const k = seg(t, K.fan + i * 0.45, K.fan + i * 0.45 + 0.5, outBack)
+      const front = i === 3 ? seg(t, K.ringReport - 0.5, K.ringReport, outCubic) : 0
+      cd.set({ x: mixAt(k, 0, 1, 1300, 230 + i * 250) + front * 60, y: mixAt(k, 0, 1, 560, 290 - (i % 2) * 36) + front * 30, rot: (i - 1.5) * 5 * k * (1 - front), s: Math.max(0.001, (0.4 + 0.6 * k) * (1 + 0.15 * front)), o: k > 0 ? 1 : 0 })
+    })
+    st.r.set(seg(t, K.ringReport, K.ringReport + 0.45, outCubic))
+    // The glance: Claude looks up at the two clocks (same time), an "=" shows; it lets it go.
+    const g = envelope(t, K.glance, { in: 0.25, hold: 0.7, out: 0.25 })
+    st.eq.style.opacity = String(g)
+    st.c.set(t, [K.stamp7], { look: g > 0.1 ? 0 : -1, lookY: -1.2 * g })
+  },
+})
+
+export const mike = scene({
+  id: 'mike',
+  at: SHOT.s09[0],
+  end: SHOT.s09[1],
+  mount(ctx) {
+    const st = counter(ctx, 'mike', 'USA', C.navy)
+    // Mike's day on New York time, 18:00 → 14:00 the next day: on from 21:00, off 00:00–01:30, on until 11:30.
+    const bar = s(st.top, 'g')
+    const X0 = 260, X1 = 1300, Y = 220, HOURS = 20
+    const pos = (h: number) => X0 + (h - 18) / HOURS * (X1 - X0)
+    s(bar, 'rect', { x: X0 - 40, y: Y - 120, width: X1 - X0 + 80, height: 250, fill: C.cream, stroke: C.ink, 'stroke-width': 5 })
+    text(bar, X0, Y - 70, 'MIKE · ACTIVE HOURS · NEW YORK TIME', { size: 26, font: JOST, weight: 700, fill: C.grey, spacing: 3 })
+    s(bar, 'rect', { x: X0, y: Y - 30, width: X1 - X0, height: 60, fill: '#E5D6B6' })
+    const on: [number, number][] = [[21, 24], [25.5, 35.5]]
+    const fills = on.map(([a]) => s(bar, 'rect', { x: pos(a), y: Y - 30, width: 0, height: 60, fill: C.sage }))
+    for (let h = 18; h <= 38; h += 3) {
+      s(bar, 'line', { x1: pos(h), x2: pos(h), y1: Y + 30, y2: Y + 44, stroke: C.ink, 'stroke-width': 3 })
+      text(bar, pos(h), Y + 82, `${String(h % 24).padStart(2, '0')}:00`, { size: 28, font: MONO, weight: 500, anchor: 'middle' })
+    }
+    const lunch = text(bar, (pos(24) + pos(25.5)) / 2, Y + 11, '午休', { size: 30, font: SANS, weight: 900, fill: C.red, anchor: 'middle' })
+    const r = ring(bar, { x: pos(24), y: Y - 30, w: pos(25.5) - pos(24), h: 60 }, 51, { pad: 14 })
+    const say = bubble(st.top, "I'm just… 作息健康。", { size: 48 })
+    return { ...st, bar, fills, on, pos, lunch, r, say }
+  },
+  render(f, st) {
+    const t = f.t
+    camera(st.world, { x: 960, y: 540, zoom: 1 + 0.02 * seg(t, K.barOn, K.stamp9) })
+    const w = walk(t, SHOT.s09[0] - 0.3, K.stamp9 + 0.9)
+    st.who.set(pose({ ...BODY, hat: 0, x: w.x, y: w.y, look: w.face, sx: w.face }, blink(t, 7),
+      { mode: 'add', w: envelope(t, K.mike, { in: 0.2, hold: 1.6, out: 0.3 }), v: { rot: -5, look: -0.6 } },
+      { mode: 'add', w: envelope(t, K.stamp9, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05, hat: 0.7 } }))
+    passportOn(st, t, SHOT.s09[0] + 1.0, K.stamp9)
+    st.bar.style.opacity = String(seg(t, K.barOn - 0.3, K.barOn))
+    // The day lights up from 21:00 as the narration reaches midnight, then the rest after the gap.
+    const sweep = 18 + mixAt(t, K.barOn, K.ringLunch + 1.2, 0, 1) * 20
+    st.fills.forEach((r, i) => {
+      const [a, b] = st.on[i]!
+      r.setAttribute('width', Math.max(0, st.pos(Math.min(b, sweep)) - st.pos(a)).toFixed(1))
+    })
+    st.lunch.style.opacity = String(seg(t, K.ringLunch, K.ringLunch + 0.3))
+    st.r.set(seg(t, K.ringLunch, K.ringLunch + 0.45, outCubic))
+    const b = seg(t, K.mike - 0.1, K.mike + 0.15, outBack) * (1 - seg(t, K.stamp9 - 0.4, K.stamp9 - 0.2))
+    st.say.set({ x: w.x + 30, y: GROUND - 350, o: b > 0 ? 1 : 0, s: Math.max(0.001, b) })
+    st.c.set(t, [K.stamp9], { look: -1 })
+  },
+})
+
+export const lunch = scene({
+  id: 'lunch',
+  at: SHOT.s12[0],
+  end: SHOT.s12[1],
   mount(ctx) {
     const svg = stageSvg(ctx, C.paper)
     const world = s(svg, 'g')
     room(world)
     stanchion(world, 120, 360)
     stanchion(world, 360)
+    wallClock(world, 420, 250, 100, 'BEIJING', 12, 0, true)
     const b = booth(world)
-    const kev = traveler(world, 'kevin', 400)
-    const pass = passport(b.front, 'USA', C.navy, 130)
-    const mark = stampMark(b.front, 0.42, 5)
-    // The message, on a card pinned above the counter.
-    const msg = s(world, 'g')
-    s(msg, 'rect', { x: 238, y: 128, width: 1100, height: 190, fill: C.ink, opacity: 0.16 })
-    s(msg, 'rect', { x: 226, y: 114, width: 1100, height: 190, fill: C.cream, stroke: C.ink, 'stroke-width': 5 })
-    text(msg, 262, 168, 'MESSAGE · KEVIN (CA, USA)', { size: 26, font: JOST, weight: 600, fill: C.grey, spacing: 3 })
-    const parts = pieces(msg, 262, 262, ['Please help me check this code', '，', 'thanks', '！'], { size: 52, font: JOST, weight: 500 })
-    const r1 = ring(msg, punct(parts[1]!), 11, { pad: 14 })
-    const r2 = ring(msg, punct(parts[3]!), 23, { pad: 14 })
-    const glass = lens(world, 96)
+    // The booth clock, 11:59 → 12:00.
+    const bc = s(b.front, 'g')
+    s(bc, 'circle', { cx: 1600, cy: 360, r: 34, fill: C.cream, stroke: C.ink, 'stroke-width': 5 })
+    const hand = s(bc, 'line', { x1: 1600, y1: 360, x2: 1600, y2: 334, stroke: C.red, 'stroke-width': 4, 'stroke-linecap': 'round' })
+    s(bc, 'line', { x1: 1600, y1: 360, x2: 1600, y2: 340, stroke: C.ink, 'stroke-width': 6, 'stroke-linecap': 'round' })
     const c = claudeAt(b.mid, b.front)
-    const t0 = start('s05')
-    return { world, kev, pass, mark, r1, r2, glass, c, parts, t0, scan: t0 + 0.8, ring1: t0 + 2.4, ring2: t0 + 3.4, hit: t0 + 4.6 }
+    const sign = s(b.front, 'g')
+    const Y = BOOTH.counter + 24
+    s(sign, 'line', { x1: 1300, x2: 1300, y1: Y - 10, y2: Y + 20, stroke: C.ink, 'stroke-width': 3 })
+    s(sign, 'line', { x1: 1520, x2: 1520, y1: Y - 10, y2: Y + 20, stroke: C.ink, 'stroke-width': 3 })
+    s(sign, 'rect', { x: 1260, y: Y + 20, width: 300, height: 120, fill: C.mustard, stroke: C.ink, 'stroke-width': 4 })
+    text(sign, 1410, Y + 74, '午休中', { size: 46, font: SANS, weight: 900, anchor: 'middle', spacing: 4 })
+    text(sign, 1410, Y + 122, '12:00 – 13:30', { size: 32, font: JOST, weight: 700, anchor: 'middle' })
+    return { world, hand, c, sign }
   },
   render(f, st) {
     const t = f.t
-    camera(st.world, { x: 960, y: 540, zoom: 1 + 0.02 * seg(t, st.t0, st.hit) })
-    // The lens slides along the line to the comma, then to the exclamation mark.
-    const p1 = st.parts[1]!, p3 = st.parts[3]!
-    const gx = mixAt(t, st.scan, st.ring1, 420, p1.x + p1.w / 2) + mixAt(t, st.ring1 + 0.3, st.ring2, 0, p3.x - p1.x + (p3.w - p1.w) / 2)
-    st.glass.set({ x: gx, y: 230 + 6 * Math.sin(t * 3), o: 1 - seg(t, st.hit - 0.5, st.hit - 0.2) })
-    st.r1.set(seg(t, st.ring1, st.ring1 + 0.45, outCubic))
-    st.r2.set(seg(t, st.ring2, st.ring2 + 0.45, outCubic))
-    // The stamp lands on the passport; Kevin's hat jumps askew and stays.
-    const jolt = seg(t, st.hit, st.hit + 0.25, outBack)
-    st.kev.set(pose({ ...BODY, hat: 0, x: 760, y: GROUND, look: 1 }, { mode: 'add', w: envelope(t, st.hit, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05, sx: 0.04 } }, { mode: 'add', w: jolt, v: { hat: 1 } }))
-    st.pass.set({ x: 1010, y: BOOTH.counter - 94, rot: -4 })
-    st.mark.set({ x: 1010, y: BOOTH.counter - 80, rot: -8, o: t >= st.hit ? 1 : 0 })
-    st.c.set(t, st.hit, -1)
+    // A snap push onto Claude's face as it realises, held until it sits up straight.
+    const push = seg(t, K.realise + 0.5, K.realise + 0.75, outCubic) * (1 - seg(t, K.yank + 0.8, K.yank + 1.4, inOutCubic))
+    camera(st.world, { x: 960 + push * 450, y: 540 - push * 20, zoom: 1 + push * 0.6 })
+    const m = t < K.noon ? 59 : 60
+    const a = (m / 60) * Math.PI * 2
+    st.hand.setAttribute('x2', (1600 + Math.sin(a) * 26).toFixed(1))
+    st.hand.setAttribute('y2', (360 - Math.cos(a) * 26).toFixed(1))
+    // Stretch, hang the sign, look at it, look at the taped Beijing clock, snatch it back, sit up.
+    const stretch = envelope(t, K.noon + 0.6, { in: 0.5, hold: 0.6, out: 0.4 }, STYLE)
+    const hung = seg(t, K.sign - 0.3, K.sign, outBack) * (1 - seg(t, K.yank, K.yank + 0.18, inOutCubic))
+    st.sign.setAttribute('transform', `translate(0 ${(-90 * (1 - hung)).toFixed(1)})`)
+    st.sign.style.opacity = hung > 0.01 ? '1' : '0'
+    const atSign = envelope(t, K.sign + 0.4, { in: 0.2, hold: 0.8, out: 0.2 })
+    const atClock = envelope(t, K.realise, { in: 0.25, hold: 0.9, out: 0.15 })
+    const straight = seg(t, K.yank + 0.2, K.yank + 0.4, outBack)
+    st.c.set(t, [], {
+      look: -1.4 * atClock + 0.2 * atSign, lookY: 1.0 * atSign - 0.6 * atClock,
+      eyes: t > K.realise + 0.3 && t < K.yank + 0.6 ? 'wide' : t > K.noon + 0.6 && t < K.sign + 0.2 ? 'line' : 'open',
+      extra: { sy: 1 + 0.12 * stretch + 0.05 * straight, sx: 1 - 0.06 * stretch, cap: 8 * stretch },
+    })
   },
 })
 
-export const lim = scene({
-  id: 's07',
-  at: cue('scene.s07.start'),
-  end: cue('scene.s07.end'),
+export const again = scene({
+  id: 'again',
+  at: SHOT.s14[0],
+  end: SHOT.s14[1],
   mount(ctx) {
-    const svg = stageSvg(ctx, C.paper)
-    const world = s(svg, 'g')
-    room(world)
-    const b = booth(world)
-    const fan = s(world, 'g')
-    const labels = ['年终总结', '述职报告', '公积金提取', '思想汇报']
-    const cards = labels.map((l) => card(fan, l, { w: 330, h: 200, size: 46 }))
-    const who = traveler(world, 'lim', 360)
-    const say = bubble(world, '我是新加坡人 lah，帮我写个年终总结 lah。', { size: 44 })
-    const last = cards[3]!
-    const box = last.label.getBBox()
-    const r = ring(last.g, { x: box.x, y: box.y, w: box.width, h: box.height }, 41, { pad: 18 })
-    const pass = passport(b.front, 'SINGAPORE', C.red, 130)
-    const mark = stampMark(b.front, 0.42, 9)
-    const c = claudeAt(b.mid, b.front)
-    const t0 = start('s07')
-    return { world, cards, who, say, r, pass, mark, c, t0, talk: t0 + 0.3, fan: t0 + 3.6, ring: t0 + 7.2, hit: t0 + 8.6 }
+    const st = counter(ctx, 'kevin', 'JAPAN', '#7A1F2B', { kimono: true, hat: false })
+    const say = bubble(st.top, 'すみません，在吗？', { size: 50 })
+    return { ...st, say }
   },
   render(f, st) {
     const t = f.t
-    camera(st.world, { x: 960, y: 540, zoom: 1 + 0.025 * seg(t, st.fan, st.hit) })
-    st.who.set(pose({ ...BODY, hat: 0, x: 720, y: GROUND, look: 1 }, blink(t, 6), { mode: 'add', w: envelope(t, st.hit, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05, hat: 0.6 } }))
-    st.say.set({ x: 760, y: 470, o: seg(t, st.talk, st.talk + 0.2) * (1 - seg(t, st.fan - 0.3, st.fan)), s: 0.9 + 0.1 * seg(t, st.talk, st.talk + 0.25, outBack) })
-    // The cards fly out of the booth one by one and fan above Lim; the last one comes forward.
-    st.cards.forEach((cd, i) => {
-      const k = seg(t, st.fan + i * 0.55, st.fan + i * 0.55 + 0.5, outBack)
-      const front = i === 3 ? seg(t, st.ring - 0.6, st.ring - 0.1, outCubic) : 0
-      cd.set({ x: mixAt(k, 0, 1, 1300, 300 + i * 290) + front * 120, y: mixAt(k, 0, 1, 560, 330 - (i % 2) * 40) + front * 40, rot: (i - 1.5) * 5 * k * (1 - front), s: (0.4 + 0.6 * k) * (1 + 0.18 * front), o: k > 0 ? 1 : 0 })
-    })
-    st.r.set(seg(t, st.ring, st.ring + 0.5, outCubic))
-    st.pass.set({ x: 1010, y: BOOTH.counter - 94, rot: -4 })
-    st.mark.set({ x: 1010, y: BOOTH.counter - 80, rot: 7, o: t >= st.hit ? 1 : 0 })
-    st.c.set(t, st.hit, -1)
+    // The same framing as s04, then a slow push onto Claude's stare.
+    const stare = seg(t, K.bowBack + 2.2, K.stamp14 - 0.4, inOutCubic)
+    camera(st.world, { x: 960 + stare * 250, y: 540 - stare * 40, zoom: 1 + 0.25 * stare })
+    const w = walk(t, K.kevinBack)
+    const bow = envelope(t, K.bowBack, { in: 0.3, hold: 0.6, out: 0.3 }, STYLE)
+    st.who.set(pose({ ...BODY, bow: 0, x: w.x, y: w.y, look: 1 }, { mode: 'add', w: bow, v: { bow: 1 } },
+      { mode: 'add', w: envelope(t, K.stamp14, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05 } }))
+    passportOn(st, t, K.kevinBack + 1.3, K.stamp14)
+    const b = seg(t, K.bowBack + 0.2, K.bowBack + 0.45, outBack) * (1 - seg(t, K.stamp14 - 0.5, K.stamp14 - 0.3))
+    st.say.set({ x: w.x + 40, y: GROUND - 440, o: b > 0 ? 1 : 0, s: Math.max(0.001, b) })
+    st.c.set(t, [K.stamp14], { look: -1, eyes: t > K.bowBack + 1.6 && t < K.stamp14 - 0.2 ? 'line' : 'open' })
   },
 })

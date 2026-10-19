@@ -1,8 +1,9 @@
 // s08: the developer says nothing and turns the laptop round. The screen fills the frame: an editor
 // over a terminal, lines typed on one by one, three clues ringed in red, then the stamp lands on
 // the screen glass.
-import { cue, scene } from '@cueframe/core'
-import { C, JOST, MONO, camera, mixAt, outCubic, pieces, ring, s, seg, stageSvg, stampMark, start, text } from '../lib.js'
+import { scene } from '@cueframe/core'
+import { C, JOST, MONO, camera, mixAt, outCubic, pieces, ring, s, seg, stageSvg, stampMark, text } from '../lib.js'
+import { K, SHOT } from '../timing.js'
 
 const SIZE = 40
 /** Each editor line as pieces; a piece named in RINGS gets a ring. */
@@ -19,8 +20,8 @@ const RINGS = ['yongHuMing', '// 老板说明天上线，先这样', 'registry.n
 
 export const code = scene({
   id: 's08',
-  at: cue('scene.s08.start'),
-  end: cue('scene.s08.end'),
+  at: SHOT.s08[0],
+  end: SHOT.s08[1],
   mount(ctx) {
     const svg = stageSvg(ctx, C.paper)
     const world = s(svg, 'g')
@@ -51,8 +52,7 @@ export const code = scene({
     s(hood, 'rect', { x: -20, y: 880, width: 420, height: 400, rx: 120, fill: '#5E5A55' })
     s(hood, 'rect', { x: 50, y: 950, width: 280, height: 300, rx: 90, fill: C.grey })
     const mark = stampMark(world, 1.1, 13, C.screen)
-    const t0 = start('s08')
-    return { world, lines, rings, hood, mark, t0, type: t0 + 0.6, ring: t0 + 5.2, hit: t0 + 11 }
+    return { world, lines, rings, hood, mark, t0: SHOT.s08[0], type: K.typing, hit: K.stamp8 }
   },
   render(f, st) {
     const t = f.t
@@ -60,7 +60,7 @@ export const code = scene({
     const turn = seg(t, st.t0, st.t0 + 0.7, outCubic)
     camera(st.world, { x: 960 + (1 - turn) * 700, y: 540, zoom: 1 + 0.04 * seg(t, st.t0 + 0.7, st.hit) })
     st.lines.forEach((g, i) => { g.style.opacity = String(seg(t, st.type + i * 0.55, st.type + i * 0.55 + 0.2)) })
-    st.rings.forEach((r, i) => r.set(seg(t, st.ring + i * 1.6, st.ring + i * 1.6 + 0.45, outCubic)))
+    st.rings.forEach((r, i) => r.set(seg(t, K.rings8[i]!, K.rings8[i]! + 0.45, outCubic)))
     st.mark.set({ x: 1380, y: 560, rot: -10, s: mixAt(t, st.hit, st.hit + 0.12, 1.25, 1), o: t >= st.hit ? 1 : 0 })
   },
 })

@@ -5,8 +5,9 @@
   "cueframe": {
     "generated": [
       "build/cues.json",
+      "build/words.json",
       "build/fonts/fonts.json"
     ],
-    "needs": "bash examples/utc8-customs/make.sh"
+    "needs": "MOSS-TTS on mlx-audio (../mlx-audio, ../voices): bash examples/utc8-customs/make.sh"
   }
 }

@@ -47,7 +47,11 @@ export function stageSvg(ctx: Pick<MountContext, 'root' | 'id'>, bg?: string): S
   if (bg) s(svg, 'rect', { width: W, height: H, fill: bg })
   return svg
 }
-export const camera = (g: SVGGElement, c: Cam) => g.setAttribute('transform', camSvg(c, { w: W, h: H }))
+/** Points a stage-size group at a world point; the group is a camera world for the audit (the frame may crop it). */
+export function camera(g: SVGGElement, c: Cam) {
+  g.setAttribute('transform', camSvg(c, { w: W, h: H }))
+  if (g.dataset.cfAudit !== 'world') g.dataset.cfAudit = 'world'
+}
 
 const hash = (x: string) => { let h = 2166136261; for (let i = 0; i < x.length; i++) h = Math.imul(h ^ x.charCodeAt(i), 16777619); return h >>> 0 }
 const sizeOf = (o: Outline): number => typeof o === 'string' ? 100
@@ -228,11 +232,11 @@ export function officer(parent: Element, a: number) {
   return {
     g,
     /** `back`: seen from behind (no face, the visor turned away). */
-    set(p: Pose & { eyes?: Eyes; look?: number; blink?: number; cap?: number; back?: boolean }) {
+    set(p: Pose & { eyes?: Eyes; look?: number; lookY?: number; blink?: number; cap?: number; capY?: number; back?: boolean }) {
       place(g, p)
       face.style.display = p.back ? 'none' : ''
-      cap.setAttribute('transform', `rotate(${(p.cap ?? 0).toFixed(2)} 0 ${-a})`)
-      eyes(p.eyes ?? 'open', (p.look ?? 0) * a * 0.1 - a * 0.08, -a * 0.7, a * 0.15, a, p.blink ?? 0)
+      cap.setAttribute('transform', `translate(0 ${(p.capY ?? 0).toFixed(2)}) rotate(${(p.cap ?? 0).toFixed(2)} 0 ${-a})`)
+      eyes(p.eyes ?? 'open', (p.look ?? 0) * a * 0.1 - a * 0.08, -a * 0.7 + (p.lookY ?? 0) * a * 0.08, a * 0.15, a, p.blink ?? 0)
     },
   }
 }
@@ -251,7 +255,7 @@ export type Disguise = 'kevin' | 'tanaka' | 'lim' | 'dev' | 'mike'
  * hoodie. mike: sage circle in a navy NY cap. `h` is the height without the hat; origin at the feet.
  * `hat` 0..1 knocks the hat askew (the stamp's jolt).
  */
-export function traveler(parent: Element, kind: Disguise, h: number) {
+export function traveler(parent: Element, kind: Disguise, h: number, o: { kimono?: boolean; hat?: boolean } = {}) {
   const g = s(parent, 'g')
   const lift = h * 0.08
   const body = h - lift
@@ -265,6 +269,12 @@ export function traveler(parent: Element, kind: Disguise, h: number) {
     paperShape(g, poly(-b / 2, -lift, 0, -h, b / 2, -lift), C.red)
     face = { x: 0, y: -h * 0.52, size: h * 0.4 }
     hatPivot = { x: 0, y: -h * 0.86 }
+    if (o.kimono) {
+      // Kevin again, as a Japanese traveler: a cream collar crossing the triangle and a navy obi
+      s(g, 'path', { d: `M${-b * 0.16} ${-h * 0.72} L${b * 0.12} ${-h * 0.38} L${b * 0.22} ${-h * 0.38} L${-b * 0.06} ${-h * 0.74} Z`, fill: C.cream })
+      s(g, 'path', { d: `M${b * 0.14} ${-h * 0.7} L${-b * 0.02} ${-h * 0.5} L${b * 0.04} ${-h * 0.45} L${b * 0.2} ${-h * 0.66} Z`, fill: C.cream })
+      paperShape(g, poly(-b * 0.3, -h * 0.4, b * 0.3, -h * 0.4, b * 0.34, -h * 0.31, -b * 0.34, -h * 0.31), C.navy)
+    }
     paperShape(hatG, { ellipse: { cx: 0, cy: -h * 0.86, rx: b * 0.55, ry: h * 0.035 } }, C.mustard)
     paperShape(hatG, poly(-b * 0.24, -h * 0.87, -b * 0.2, -h * 1.06, -b * 0.04, -h * 1.02, 0, -h * 1.05, b * 0.04, -h * 1.02, b * 0.2, -h * 1.06, b * 0.24, -h * 0.87), C.mustard)
     s(hatG, 'rect', { x: -b * 0.235, y: -h * 0.915, width: b * 0.47, height: h * 0.03, fill: C.ink })
@@ -316,6 +326,7 @@ export function traveler(parent: Element, kind: Disguise, h: number) {
     s(shades, 'rect', { x: -u * 0.06, y: face.y - u * 0.08, width: u * 0.12, height: u * 0.04, fill: ink })
   }
   g.append(hatG)
+  if (o.hat === false) hatG.style.display = 'none'
   return {
     g,
     set(p: Pose & { eyes?: Eyes; look?: number; blink?: number; hat?: number; bow?: number }) {
