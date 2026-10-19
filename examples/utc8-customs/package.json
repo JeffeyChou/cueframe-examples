@@ -1,0 +1,13 @@
+{
+  "name": "@cueframe/example-utc8-customs",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": [
+      "build/cues.json",
+      "build/words.json",
+      "build/fonts/fonts.json"
+    ],
+    "needs": "MOSS-TTS on mlx-audio (../mlx-audio, ../voices): bash examples/utc8-customs/make.sh"
+  }
+}

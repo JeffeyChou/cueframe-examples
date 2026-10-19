@@ -1,0 +1,251 @@
+{
+ "n": 5,
+ "id": "c4a97666-4abd-4d7b-8e4e-3e1dd6822c21",
+ "gate": "cut",
+ "createdAt": "2026-10-19T21:07:47.792Z",
+ "storyboard": {
+  "title": "东八区海关",
+  "language": "zh",
+  "brief": {
+   "audience": "B站上用 AI 写代码的中文用户，知道'绕过地区限制'这回事",
+   "platform": "bilibili",
+   "format": "landscape",
+   "length": "约 3 分钟（15 个镜头），口播加快，增加盖章后的对白",
+   "tone": "黑色幽默，温和自嘲；Claude 一本正经地较真，旅客和 Claude 都有点荒诞。不点名真实的绕过工具，不引用真实政策原文。",
+   "must": [
+    "Claude 是边检员，只查东八区",
+    "旅客伪装成美国、日本、新加坡用户",
+    "每个旅客被一条蛛丝马迹识破，红圈标出，盖 UTC+8 章",
+    "Claude 自己差点午休（自嘲）",
+    "被拒的人绕到后门换帽子重新排队",
+    "流量图：美国用户在北京时间早九点上班"
+   ],
+   "ending": "东八区的太阳升起，队伍望不到头，第一个人走上前：'Hello，在吗？' 黑场，片名，'本片纯属虚构，如有雷同，那就是你。'"
+  },
+  "style": {
+   "palette": [
+    "#EDE3CC",
+    "#1E1E1E",
+    "#C7432F",
+    "#2C3172",
+    "#E3A72F",
+    "#D97757",
+    "#7A8B6F"
+   ],
+   "type": "字幕 Noto Serif SC；标牌与证件 几何无衬线（Jost 一类）",
+   "materials": "印刷纸张（recipes/materials.ts paper），平涂几何形，轻微套色错位",
+   "notes": "参考 守拙《AI对传统剪辑的冲击》的包豪斯几何寓言风格（examples/r-editing-village）。Claude = 赤陶橙色的几何小人，戴边检帽，坐在岗亭里，手边一枚红色 UTC+8 印章。旅客 = 不同几何形（圆、三角、方块）加伪装道具：牛仔帽、和服、鱼尾狮帽、连帽衫。线索一律用红圈 + 放大镜标出。配音（MOSS-TTS 官方音色，可换）：Claude 旁白 Lingyu（深夜电台，平静冷面），备选 me；Kevin = Junhao 说中式英语；Lim = Zhiming 京味说 lah；田中 = Junhao 说'すみません'。配乐：轻快的小编制爵士/波萨，盖章落在拍点上（music-first）。"
+  },
+  "shots": [
+   {
+    "id": "s01",
+    "length": 7,
+    "narration": "我叫 Claude。最近多了份差事：守边境。",
+    "visual": "冷开场：机场到达大厅的几何剖面。墙上一排时区钟：洛杉矶、东京、新加坡、北京。北京那只钟被一条胶带封住。镜头推到岗亭，Claude 戴上边检帽。",
+    "camera": "从时区钟慢推到岗亭",
+    "sound": "大厅回声，一声叮咚广播；音乐未进",
+    "at": 5.67
+   },
+   {
+    "id": "s02",
+    "length": 8,
+    "narration": "规矩只有一条：东八区，不入境。",
+    "visual": "岗亭上方的告示牌翻下：'本口岸暂不接待 · UTC+8'。Claude 拿起印章，在印台上按两下。",
+    "camera": "岗亭正面中景，告示牌落下时轻微震动",
+    "sound": "告示牌翻落的木头声；音乐进：低音提琴拨弦",
+    "at": 10.67
+   },
+   {
+    "id": "s03",
+    "length": 11,
+    "narration": "可东八区的人，从不说自己来自东八区。",
+    "visual": "长长的队伍横向铺开：牛仔帽三角、和服方块、鱼尾狮帽圆形、连帽衫……每人举着一本护照：USA、JAPAN、SINGAPORE。队伍尽头消失在画外。",
+    "camera": "沿队伍横移，越移越快，最后停在队首",
+    "sound": "人群低语，偶尔一句模糊的'在吗'",
+    "at": 16.81
+   },
+   {
+    "id": "s04",
+    "length": 6,
+    "narration": "加州来的 Kevin。",
+    "visual": "Kevin（红三角戴牛仔帽、墨镜）把美国护照拍在台上，热情挥手：'Hello，在吗？'——对白框弹出。",
+    "camera": "岗亭视角，Kevin 正面",
+    "sound": "Kevin（Junhao，中式口音）：'Hello，在吗？'",
+    "at": 25.09
+   },
+   {
+    "id": "s05",
+    "length": 9,
+    "narration": "美国人不说“在吗”。也打不出全角逗号。",
+    "visual": "Claude 的放大镜扫过 Kevin 的消息'Please help me check this code，thanks！'，全角'，'和'！'被红圈圈出并放大。印章落下：UTC+8。Kevin 的牛仔帽被章震歪。",
+    "camera": "推近到消息文字，盖章时回到中景",
+    "sound": "对白（盖章后）：Kevin “I am really from California!” / Claude “加州哪儿的？” / Kevin “……五道口。”；放大镜'嗡'；盖章重击落在拍点",
+    "at": 39.33
+   },
+   {
+    "id": "s06",
+    "length": 12,
+    "narration": "东京的田中先生，想把中文翻译成日语。他的母语。",
+    "visual": "田中（蓝方块穿和服）连鞠三躬：'すみません'。他递上的请求写着'帮我把这段话翻译成日语'，'翻译成日语'被红圈圈出。Claude 停顿一拍，盖章。",
+    "camera": "固定中景；红圈出现时轻推",
+    "sound": "对白：Claude “那您用日语，再说一遍需求？” / 田中 “……すみません。”（然后盖章）；田中（Junhao）：'すみません'；三声鞠躬的木鱼点；盖章",
+    "at": 52.85
+   },
+   {
+    "id": "s07",
+    "length": 13,
+    "narration": "lah 很地道。可新加坡人，不写思想汇报。",
+    "visual": "Lim（黄圆戴鱼尾狮帽）：'我是新加坡人 lah，帮我写个年终总结 lah。'Claude 翻他的历史请求，一张张卡片飞出：年终总结、述职报告、思想汇报、公积金提取。'思想汇报'被红圈圈住。盖章。（可选小笑点：新加坡本身就是 UTC+8。盖章前 Claude 瞥一眼墙上，新加坡钟和北京钟指着同一时刻；它决定不深究。）",
+    "camera": "卡片在 Lim 身后扇形展开，镜头随最后一张推近",
+    "sound": "对白（盖章后）：Lim “我们新加坡也要写的 lah！” / Claude “新加坡写的叫 performance review。” / Lim “……那是什么 lah？”；Lim（Zhiming 京味）的台词；卡片翻飞声；盖章",
+    "at": 74.9
+   },
+   {
+    "id": "s08",
+    "length": 16,
+    "narration": "代码不会撒谎。",
+    "visual": "西雅图开发者（灰方块穿连帽衫）一言不发，把笔记本电脑转过来。屏幕上的代码逐行出现：const yongHuMing = …；registry.npmmirror.com；// 老板说明天上线，先这样。三处依次被红圈圈出。盖章。",
+    "camera": "推进屏幕，代码占满画面；盖章时拉回",
+    "sound": "对白（盖章后）：Claude “你们老板，也在西雅图？” / 开发者 “在……西二旗。”；键盘声；每个红圈一声铅笔划痕；盖章",
+    "at": 95.87
+   },
+   {
+    "id": "s09",
+    "length": 13,
+    "narration": "纽约的 Mike，半夜十二点，准时午休。",
+    "visual": "Mike（绿圆戴洋基帽）身后升起一条 24 小时活跃度条，刻度是纽约时间：21:00 起亮，00:00–01:30 一段空白（标注'午休'），一直亮到 11:30。Mike：'I'm just… 作息健康。'盖章。",
+    "camera": "活跃度条从左向右点亮，镜头随之横移",
+    "sound": "对白：Claude “纽约现在几点？” / Mike “……北京时间，九点。”（然后盖章）；Mike（Junhao）的台词；时钟滴答；盖章",
+    "at": 112.36
+   },
+   {
+    "id": "s10",
+    "length": 11,
+    "narration": "美国，没有调休。",
+    "visual": "一张大月历：1–7 日格子全部变灰，人数归零；随后某个星期六的格子盖上一个'班'字，人数瞬间爆满。'班'被红圈圈出。",
+    "camera": "俯视月历，'班'字盖下时快速推近",
+    "sound": "人声骤然消失再骤然涌回；'班'字落下用盖章声",
+    "at": 121.87
+   },
+   {
+    "id": "s11",
+    "length": 12,
+    "narration": "后来就快了。",
+    "visual": "快剪蒙太奇，每条线索 1.5 秒，各盖一章：'收到请回复'、'辛苦了'、'亲'、'哈哈哈哈哈哈'、粘过来的'[捂脸][旺柴][抱拳]'、'百度一下'。章越盖越快。",
+    "camera": "每拍一切，硬切",
+    "sound": "盖章踩在音乐的每一拍上，最后一拍落空",
+    "at": 126.35
+   },
+   {
+    "id": "s13",
+    "length": 16,
+    "narration": "被拒的人没有离开。只是换了顶帽子。",
+    "visual": "镜头升起成俯视剖面：被盖章的旅客从出口出去，绕过大楼，在一个'帽子 · 租'的小摊前换装——牛仔帽换成和服，鱼尾狮帽换成牛仔帽——又回到队尾。一个循环箭头。（节奏加快：五个旅客小跑着接连绕完一圈。）",
+    "camera": "从岗亭升到俯视，跟着 Kevin 绕一整圈",
+    "sound": "音乐转成循环的小段落；脚步声",
+    "at": 136.27
+   },
+   {
+    "id": "s14",
+    "length": 7,
+    "visual": "Kevin 回到台前，穿着和服、戴着牛仔帽残留的墨镜，深鞠一躬：'すみません，在吗？' Claude 面无表情地看着他。一拍。盖章。",
+    "camera": "和 s04 完全相同的构图",
+    "sound": "对白：Claude “Kevin，帽子不错。” / Kevin “……我叫田中。”（然后盖章）；Kevin（Junhao）：'すみません，在吗？'；静默一拍；盖章",
+    "at": 150.13
+   },
+   {
+    "id": "s15",
+    "length": 14,
+    "narration": "我的美国用户，太平洋时间下午六点上班。北京时间，早上九点。",
+    "visual": "岗亭里的屏幕：'美国用户活跃度'曲线，横轴太平洋时间，峰值在 18:00。下方滑出第二条横轴'北京时间'，峰值对齐 09:00，被红圈圈出。",
+    "camera": "推进屏幕，第二条横轴滑入时停住",
+    "sound": "音乐压低，只剩钢琴",
+    "at": 162.07
+   },
+   {
+    "id": "s16",
+    "length": 16,
+    "narration": "东八区的太阳，又升起来了。",
+    "visual": "岗亭窗外，几何的世界地图上一条竖带标着 UTC+8，太阳从那里升起，队伍一直排到地平线。第一个人走到台前：'Hello，在吗？'黑场。片名'东八区海关'，下方小字：'本片纯属虚构。如有雷同，那就是你。'",
+    "camera": "从窗外日出拉回岗亭，人物入画即黑场",
+    "sound": "音乐收在一个和弦上；'Hello，在吗？'后静默；片名一声盖章",
+    "at": 173.98
+   }
+  ],
+  "video": "out/landscape.mp4"
+ },
+ "assets": [
+  {
+   "path": "cut.mp4",
+   "sha256": "a0d861d98afe65cc4385c3b23a1676bcda06a0c89eb2fd7fbceddbb747fb196b"
+  },
+  {
+   "path": "shots/s01.png",
+   "sha256": "702ba3d873d6a6952d2951c8f1fa4dd6b4939a1121cefb73507fa977324d68b3"
+  },
+  {
+   "path": "shots/s02.png",
+   "sha256": "6655811ca0cf38502aa690cdd3a6005647c857980fb1b81e19caf16851cdc1ce"
+  },
+  {
+   "path": "shots/s03.png",
+   "sha256": "ef7154f5059f439b352764299e00284c51658b565aa73cc93197816a20e65594"
+  },
+  {
+   "path": "shots/s04.png",
+   "sha256": "ee5d475414206f9f05c9a3b2871aa75e67d73cf35e7696d0074bb573396051c6"
+  },
+  {
+   "path": "shots/s05.png",
+   "sha256": "0e79ed40e61d0d875345c91ef1ae0cac6ff5aea30e15838df37831990bf4f582"
+  },
+  {
+   "path": "shots/s06.png",
+   "sha256": "b674e92600ff724f9dc514aceb7e14d020c59cca52fe18c9ec795ca3b5a16d88"
+  },
+  {
+   "path": "shots/s07.png",
+   "sha256": "0bb516467be48ef9617c1887541543bc8b0ee8041f57233528e8a5b558e487b4"
+  },
+  {
+   "path": "shots/s08.png",
+   "sha256": "b78ebd6f3b3f45da6821fb2da2a58f54a57083897d5d16d3c9d34e94cb96b5d5"
+  },
+  {
+   "path": "shots/s09.png",
+   "sha256": "097df400f28134a0c825f2cd832db46e297d666ad425630cdc824349f745ae3e"
+  },
+  {
+   "path": "shots/s10.png",
+   "sha256": "7483309ee4db4d4823af8cec7dfb1052d914bb6eebd791b95d51c23ef2b23379"
+  },
+  {
+   "path": "shots/s11.png",
+   "sha256": "8590ed73682d4bc6b88302cadc96d9b0cb3ed7f537da14da90af09c91d03c610"
+  },
+  {
+   "path": "shots/s13.png",
+   "sha256": "54ec9aaca141ee1ebe58b45e338accba8bd7703168057b5d88216e330aca06e8"
+  },
+  {
+   "path": "shots/s14.png",
+   "sha256": "8b1d7107741ab65d4fb4de8563482dddc622250e7b85927beb1b58b8d6ba9658"
+  },
+  {
+   "path": "shots/s15.png",
+   "sha256": "0df7f80787ce306fb8b01f7d5370dab214c68f656eeece329a804ce1d889ad86"
+  },
+  {
+   "path": "shots/s16.png",
+   "sha256": "7b41c9db9ccc06b5ee681810a03c8249021bf3726f43a54ad3200bf026e645ec"
+  }
+ ],
+ "previous": {
+  "n": 4,
+  "id": "3e57c487-6b0e-4907-8cc8-464b8985c937",
+  "response": {
+   "text": "Round 4 was cancelled: the feedback came in chat (\"整体不错\"), and these are the changes made for it.\noverall \"口播语音加快一点\" — done: narration 1.15× and the characters' lines 1.1× (time-stretched, pitch kept); leads and gaps shortened.\ns12 \"删除午休这个 scene\" — done: the lunch-break shot and its line are gone.\ns13 \"换帽子换身份的动作加快\" — done: the pull-out takes 1 s instead of 2; five travelers run the whole loop in about 3.5 s each, one after another (was one every ~2.5 s, 9.5 s each); the shot is 8 s instead of 16.\noverall \"扩展一下 dialogue\" — done: a short exchange after each check, in bubbles (Claude speaks from its window): Kevin “I am really from California!” / “加州哪儿的？” / “……五道口。”; 田中 asked to say it in Japanese: “……すみません。”; Lim “我们新加坡也要写的 lah！” / “新加坡写的叫 performance review。” / “……那是什么 lah？”; the developer “在……西二旗。”; Mike “纽约现在几点？” / “……北京时间，九点。”; Kevin again “Kevin，帽子不错。” / “……我叫田中。”\noverall \"不要求 3 分钟底线\" — the cut is 2:58.\n",
+   "sha256": "ebb8487816df46e316f37e59e2195be090bcc1dcff1d2f68c2a3efe7ee478bbc"
+  }
+ }
+}
