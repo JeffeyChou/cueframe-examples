@@ -1,0 +1,264 @@
+{
+ "n": 4,
+ "id": "3e57c487-6b0e-4907-8cc8-464b8985c937",
+ "gate": "cut",
+ "createdAt": "2026-10-19T20:48:37.502Z",
+ "storyboard": {
+  "title": "东八区海关",
+  "language": "zh",
+  "brief": {
+   "audience": "B站上用 AI 写代码的中文用户，知道'绕过地区限制'这回事",
+   "platform": "bilibili",
+   "format": "landscape",
+   "length": "约 3 分 01 秒（16 个镜头），旁白精简，画面和台词承担笑点",
+   "tone": "黑色幽默，温和自嘲；Claude 一本正经地较真，旅客和 Claude 都有点荒诞。不点名真实的绕过工具，不引用真实政策原文。",
+   "must": [
+    "Claude 是边检员，只查东八区",
+    "旅客伪装成美国、日本、新加坡用户",
+    "每个旅客被一条蛛丝马迹识破，红圈标出，盖 UTC+8 章",
+    "Claude 自己差点午休（自嘲）",
+    "被拒的人绕到后门换帽子重新排队",
+    "流量图：美国用户在北京时间早九点上班"
+   ],
+   "ending": "东八区的太阳升起，队伍望不到头，第一个人走上前：'Hello，在吗？' 黑场，片名，'本片纯属虚构，如有雷同，那就是你。'"
+  },
+  "style": {
+   "palette": [
+    "#EDE3CC",
+    "#1E1E1E",
+    "#C7432F",
+    "#2C3172",
+    "#E3A72F",
+    "#D97757",
+    "#7A8B6F"
+   ],
+   "type": "字幕 Noto Serif SC；标牌与证件 几何无衬线（Jost 一类）",
+   "materials": "印刷纸张（recipes/materials.ts paper），平涂几何形，轻微套色错位",
+   "notes": "参考 守拙《AI对传统剪辑的冲击》的包豪斯几何寓言风格（examples/r-editing-village）。Claude = 赤陶橙色的几何小人，戴边检帽，坐在岗亭里，手边一枚红色 UTC+8 印章。旅客 = 不同几何形（圆、三角、方块）加伪装道具：牛仔帽、和服、鱼尾狮帽、连帽衫。线索一律用红圈 + 放大镜标出。配音（MOSS-TTS 官方音色，可换）：Claude 旁白 Lingyu（深夜电台，平静冷面），备选 me；Kevin = Junhao 说中式英语；Lim = Zhiming 京味说 lah；田中 = Junhao 说'すみません'。配乐：轻快的小编制爵士/波萨，盖章落在拍点上（music-first）。"
+  },
+  "shots": [
+   {
+    "id": "s01",
+    "length": 7,
+    "narration": "我叫 Claude。最近多了份差事：守边境。",
+    "visual": "冷开场：机场到达大厅的几何剖面。墙上一排时区钟：洛杉矶、东京、新加坡、北京。北京那只钟被一条胶带封住。镜头推到岗亭，Claude 戴上边检帽。",
+    "camera": "从时区钟慢推到岗亭",
+    "sound": "大厅回声，一声叮咚广播；音乐未进",
+    "at": 6.6
+   },
+   {
+    "id": "s02",
+    "length": 8,
+    "narration": "规矩只有一条：东八区，不入境。",
+    "visual": "岗亭上方的告示牌翻下：'本口岸暂不接待 · UTC+8'。Claude 拿起印章，在印台上按两下。",
+    "camera": "岗亭正面中景，告示牌落下时轻微震动",
+    "sound": "告示牌翻落的木头声；音乐进：低音提琴拨弦",
+    "at": 12.66
+   },
+   {
+    "id": "s03",
+    "length": 11,
+    "narration": "可东八区的人，从不说自己来自东八区。",
+    "visual": "长长的队伍横向铺开：牛仔帽三角、和服方块、鱼尾狮帽圆形、连帽衫……每人举着一本护照：USA、JAPAN、SINGAPORE。队伍尽头消失在画外。",
+    "camera": "沿队伍横移，越移越快，最后停在队首",
+    "sound": "人群低语，偶尔一句模糊的'在吗'",
+    "at": 18.5
+   },
+   {
+    "id": "s04",
+    "length": 6,
+    "narration": "加州来的 Kevin。",
+    "visual": "Kevin（红三角戴牛仔帽、墨镜）把美国护照拍在台上，热情挥手：'Hello，在吗？'——对白框弹出。",
+    "camera": "岗亭视角，Kevin 正面",
+    "sound": "Kevin（Junhao，中式口音）：'Hello，在吗？'",
+    "at": 30.2
+   },
+   {
+    "id": "s05",
+    "length": 9,
+    "narration": "美国人不说“在吗”。也打不出全角逗号。",
+    "visual": "Claude 的放大镜扫过 Kevin 的消息'Please help me check this code，thanks！'，全角'，'和'！'被红圈圈出并放大。印章落下：UTC+8。Kevin 的牛仔帽被章震歪。",
+    "camera": "推近到消息文字，盖章时回到中景",
+    "sound": "放大镜'嗡'；盖章重击落在拍点",
+    "at": 38.84
+   },
+   {
+    "id": "s06",
+    "length": 12,
+    "narration": "东京的田中先生，想把中文翻译成日语。他的母语。",
+    "visual": "田中（蓝方块穿和服）连鞠三躬：'すみません'。他递上的请求写着'帮我把这段话翻译成日语'，'翻译成日语'被红圈圈出。Claude 停顿一拍，盖章。",
+    "camera": "固定中景；红圈出现时轻推",
+    "sound": "田中（Junhao）：'すみません'；三声鞠躬的木鱼点；盖章",
+    "at": 48.68
+   },
+   {
+    "id": "s07",
+    "length": 13,
+    "narration": "lah 很地道。可新加坡人，不写思想汇报。",
+    "visual": "Lim（黄圆戴鱼尾狮帽）：'我是新加坡人 lah，帮我写个年终总结 lah。'Claude 翻他的历史请求，一张张卡片飞出：年终总结、述职报告、思想汇报、公积金提取。'思想汇报'被红圈圈住。盖章。（可选小笑点：新加坡本身就是 UTC+8。盖章前 Claude 瞥一眼墙上，新加坡钟和北京钟指着同一时刻；它决定不深究。）",
+    "camera": "卡片在 Lim 身后扇形展开，镜头随最后一张推近",
+    "sound": "Lim（Zhiming 京味）的台词；卡片翻飞声；盖章",
+    "at": 65.82
+   },
+   {
+    "id": "s08",
+    "length": 16,
+    "narration": "代码不会撒谎。",
+    "visual": "西雅图开发者（灰方块穿连帽衫）一言不发，把笔记本电脑转过来。屏幕上的代码逐行出现：const yongHuMing = …；registry.npmmirror.com；// 老板说明天上线，先这样。三处依次被红圈圈出。盖章。",
+    "camera": "推进屏幕，代码占满画面；盖章时拉回",
+    "sound": "键盘声；每个红圈一声铅笔划痕；盖章",
+    "at": 79.02
+   },
+   {
+    "id": "s09",
+    "length": 13,
+    "narration": "纽约的 Mike，半夜十二点，准时午休。",
+    "visual": "Mike（绿圆戴洋基帽）身后升起一条 24 小时活跃度条，刻度是纽约时间：21:00 起亮，00:00–01:30 一段空白（标注'午休'），一直亮到 11:30。Mike：'I'm just… 作息健康。'盖章。",
+    "camera": "活跃度条从左向右点亮，镜头随之横移",
+    "sound": "Mike（Junhao）的台词；时钟滴答；盖章",
+    "at": 92.64
+   },
+   {
+    "id": "s10",
+    "length": 11,
+    "narration": "美国，没有调休。",
+    "visual": "一张大月历：1–7 日格子全部变灰，人数归零；随后某个星期六的格子盖上一个'班'字，人数瞬间爆满。'班'被红圈圈出。",
+    "camera": "俯视月历，'班'字盖下时快速推近",
+    "sound": "人声骤然消失再骤然涌回；'班'字落下用盖章声",
+    "at": 105.49
+   },
+   {
+    "id": "s11",
+    "length": 12,
+    "narration": "后来就快了。",
+    "visual": "快剪蒙太奇，每条线索 1.5 秒，各盖一章：'收到请回复'、'辛苦了'、'亲'、'哈哈哈哈哈哈'、粘过来的'[捂脸][旺柴][抱拳]'、'百度一下'。章越盖越快。",
+    "camera": "每拍一切，硬切",
+    "sound": "盖章踩在音乐的每一拍上，最后一拍落空",
+    "at": 110.52
+   },
+   {
+    "id": "s12",
+    "length": 10,
+    "narration": "中午十二点。我也该……",
+    "visual": "岗亭里的钟走到 12:00。Claude 伸个懒腰，熟练地挂出牌子'午休中 12:00–13:30'。停顿。Claude 低头看牌子，看看墙上被封住的北京钟，迅速把牌子收回去，坐直。",
+    "camera": "固定中景，收牌时一个快速推近到 Claude 的脸",
+    "sound": "午休铃；收牌时音乐一个急停",
+    "at": 124.07
+   },
+   {
+    "id": "s13",
+    "length": 16,
+    "narration": "被拒的人没有离开。只是换了顶帽子。",
+    "visual": "镜头升起成俯视剖面：被盖章的旅客从出口出去，绕过大楼，在一个'帽子 · 租'的小摊前换装——牛仔帽换成和服，鱼尾狮帽换成牛仔帽——又回到队尾。一个循环箭头。",
+    "camera": "从岗亭升到俯视，跟着 Kevin 绕一整圈",
+    "sound": "音乐转成循环的小段落；脚步声",
+    "at": 136.54
+   },
+   {
+    "id": "s14",
+    "length": 7,
+    "visual": "Kevin 回到台前，穿着和服、戴着牛仔帽残留的墨镜，深鞠一躬：'すみません，在吗？' Claude 面无表情地看着他。一拍。盖章。",
+    "camera": "和 s04 完全相同的构图",
+    "sound": "Kevin（Junhao）：'すみません，在吗？'；静默一拍；盖章",
+    "at": 149.48
+   },
+   {
+    "id": "s15",
+    "length": 14,
+    "narration": "我的美国用户，太平洋时间下午六点上班。北京时间，早上九点。",
+    "visual": "岗亭里的屏幕：'美国用户活跃度'曲线，横轴太平洋时间，峰值在 18:00。下方滑出第二条横轴'北京时间'，峰值对齐 09:00，被红圈圈出。",
+    "camera": "推进屏幕，第二条横轴滑入时停住",
+    "sound": "音乐压低，只剩钢琴",
+    "at": 162.24
+   },
+   {
+    "id": "s16",
+    "length": 16,
+    "narration": "东八区的太阳，又升起来了。",
+    "visual": "岗亭窗外，几何的世界地图上一条竖带标着 UTC+8，太阳从那里升起，队伍一直排到地平线。第一个人走到台前：'Hello，在吗？'黑场。片名'东八区海关'，下方小字：'本片纯属虚构。如有雷同，那就是你。'",
+    "camera": "从窗外日出拉回岗亭，人物入画即黑场",
+    "sound": "音乐收在一个和弦上；'Hello，在吗？'后静默；片名一声盖章",
+    "at": 177.04
+   }
+  ],
+  "video": "out/landscape.mp4"
+ },
+ "assets": [
+  {
+   "path": "cut.mp4",
+   "sha256": "acd5e7bf74cf392c57651a9d0cf44df47e2b2380912c9089e7d9d39a35462078"
+  },
+  {
+   "path": "shots/s01.png",
+   "sha256": "280599bad0ca53e3d8675706fed32ac5be8c253047c7a3a9c3f733c8f45b5c53"
+  },
+  {
+   "path": "shots/s02.png",
+   "sha256": "d553fe76a3f10d5dfea641b097c0ce0a2789a58e4049352a3352296515c3ee95"
+  },
+  {
+   "path": "shots/s03.png",
+   "sha256": "38588b16258e93452fce5f644db7acdc8ed2343694349431acca1add8c7cf741"
+  },
+  {
+   "path": "shots/s04.png",
+   "sha256": "adab391c1ab45d9f320cb57cb2f23dc53a9b7a1529c4a0320117b3c81a506350"
+  },
+  {
+   "path": "shots/s05.png",
+   "sha256": "4827c9ff10c11e12f4591f2538515803e18863e76da0c70f47498aa40b59dbbf"
+  },
+  {
+   "path": "shots/s06.png",
+   "sha256": "8e680537d9764bd24c8e77ef508bbcff1facce2c515b3a900db899ac4afb9c91"
+  },
+  {
+   "path": "shots/s07.png",
+   "sha256": "992f3a07e2e2fef77f0d6434db99c7df4f33f2b3e60b5ac9d718809d542f5da9"
+  },
+  {
+   "path": "shots/s08.png",
+   "sha256": "3b945451ce0b1860671537b15fac8453ada1ff1cd760c36d823e12ddb395361a"
+  },
+  {
+   "path": "shots/s09.png",
+   "sha256": "e2beccbd9c8cd064e8f332a8da8022f6905d39b455e21ff1dac13ae316d9e5ff"
+  },
+  {
+   "path": "shots/s10.png",
+   "sha256": "308b62695d760399cfdb9a8028864b57f5fab06c87a1e462e7f2671e4f586583"
+  },
+  {
+   "path": "shots/s11.png",
+   "sha256": "6c7a8e236cd024edc676b4c5e5e4d11cb4487484e3c84c3b461fbe4e2029417e"
+  },
+  {
+   "path": "shots/s12.png",
+   "sha256": "d35ba7c770ffd3c5b5ff6e6eb1b9c42e44798091d177e67177c4ed959cb64ce4"
+  },
+  {
+   "path": "shots/s13.png",
+   "sha256": "ee35003dce806955708704b4d44f148546ee9682abf582a41d80c99a5d534562"
+  },
+  {
+   "path": "shots/s14.png",
+   "sha256": "6608202baee1d295dd023f7530490d850333b91b60df198e76cbc56a94638aa4"
+  },
+  {
+   "path": "shots/s15.png",
+   "sha256": "478f87104d87a22933601146986c4a458e75615207792dd45bf03989eebb8769"
+  },
+  {
+   "path": "shots/s16.png",
+   "sha256": "dc067653da00f06c831c577de9af40f13c943927558d67cf9821e2c00619aa57"
+  }
+ ],
+ "previous": {
+  "n": 3,
+  "id": "6193546b-0197-4a4f-9ce5-782242d0574b",
+  "response": {
+   "text": "look round approved — production built all 16 shots on the approved look; no visible change to it.\ns07 optional beat — kept (approved): Claude glances at the Singapore and Beijing clocks, an \"=\" lights, it stamps anyway.\n",
+   "sha256": "7e53f265efe5b4d4fdb6c38988e28d2c09292ac8e374819ffde32075938093cd"
+  }
+ }
+}

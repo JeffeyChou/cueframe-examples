@@ -1,0 +1,72 @@
+{
+ "round": 3,
+ "roundId": "6193546b-0197-4a4f-9ce5-782242d0574b",
+ "verdict": "approve",
+ "shots": [
+  {
+   "id": "s01",
+   "verdict": "ok"
+  },
+  {
+   "id": "s02",
+   "verdict": "ok"
+  },
+  {
+   "id": "s03",
+   "verdict": "ok"
+  },
+  {
+   "id": "s04",
+   "verdict": "ok"
+  },
+  {
+   "id": "s05",
+   "verdict": "ok"
+  },
+  {
+   "id": "s06",
+   "verdict": "ok"
+  },
+  {
+   "id": "s07",
+   "verdict": "ok"
+  },
+  {
+   "id": "s08",
+   "verdict": "ok"
+  },
+  {
+   "id": "s09",
+   "verdict": "ok"
+  },
+  {
+   "id": "s10",
+   "verdict": "ok"
+  },
+  {
+   "id": "s11",
+   "verdict": "ok"
+  },
+  {
+   "id": "s12",
+   "verdict": "ok"
+  },
+  {
+   "id": "s13",
+   "verdict": "ok"
+  },
+  {
+   "id": "s14",
+   "verdict": "ok"
+  },
+  {
+   "id": "s15",
+   "verdict": "ok"
+  },
+  {
+   "id": "s16",
+   "verdict": "ok"
+  }
+ ],
+ "submittedAt": "2026-10-19T20:06:19.737Z"
+}
