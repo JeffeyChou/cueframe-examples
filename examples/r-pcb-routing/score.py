@@ -3,8 +3,8 @@
     uv run --project cueframe/python cueframe-py synth examples/r-pcb-routing/score.py --project examples/r-pcb-routing
 
 The bed's beat 0 is t = 0, the grid the timeline's `beats` and the splits in scenes/field.ts use.
-cueframe: the SFX times repeat the rules the scenes use (a word's time, the next beat), because the
-picture's event times are computed in TypeScript and never written out as cues.
+The hero's turns and dodge come from timing.ts as events (`cueframe cues` first); the other SFX
+times still repeat the rules the scenes use (a word's time, the next beat).
 """
 
 import math
@@ -85,6 +85,10 @@ def score(ctx):
     step = (fly_end - fly0 - 0.8) / 9
     for j in range(10):
         sfx.put(whoosh(0.5, True, 41 + j), fly0 + j * step + 0.1, 0.18, -0.6 + 0.12 * j)
+    # The hero's turns and dodge (timing.ts events, the times its path is pinned to).
+    for name in ('ride.turn', 'ride.around', 'ride.turn2'):
+        sfx.put(pop(300, 600, 0.06), ctx.event1(name), 0.25, 0.2)
+    sfx.put(whoosh(0.35, True, 77), ctx.event1('ride.dodge') - 0.08, 0.4, 0.3)
     drill = said('k2', '打孔')
     for j in range(6):
         sfx.put(zap(), drill + j * 0.06, 0.4, -0.5 + 0.2 * j)

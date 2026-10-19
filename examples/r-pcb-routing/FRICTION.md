@@ -173,3 +173,19 @@ splits, whooshes per layer, drill zaps, power-up), ducked, −16 LUFS.
   `measure` passed first time.
 - CSS 3D through ordinary DOM in `ctx.root` just worked in export, including translucency and
   preserve-3d sorting.
+
+## Follow-up (CueFrame phase 6a, authored paths)
+
+The hero's ride is authored with `recipes/paths.ts` instead of a seeded walk: waypoints on 45°
+(`turn`, `around`, `turn2`, `dodge` marks), a 4-lane bus by `lanes`, stones kept off it by
+`clearance` (the slice's margin), a boulder on the heading at the dodge (`assertClear`), and `travel`
+pins each mark to its word time from `timing.ts` (events, also read by `score.py` for the turn pops
+and the dodge whoosh). The other nine panels build `path`s from their seeded walks.
+
+- Turn on "拐", jog on "绕开", dodge on "躲": exact by construction (asserted in `heroWorld`), seen in
+  `cueframe motion` strips at the four words.
+- Controlled edit: pinning the dodge to the second "一起" (16.68 s instead of 17.02 s) needed one line
+  in `timing.ts`; no seed search, the checks still passed and the corner moved to the new word.
+- Code: lib.ts 350 → 347 lines; the hand-written offset, distance and length-lookup helpers (~50
+  lines) are gone, the hero's route (~30 lines) is new. Export 56.1 s before and after (1462
+  frames); determinism 5/5; audit 0 errors.
