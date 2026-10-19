@@ -8,7 +8,7 @@ export { camPath, compRect, parallax, type Cam } from '@cueframe/recipes/camera.
 export { pose, blink, envelope, look, hop, flinch, nod, squash as squashed, type Layer, type Style } from '@cueframe/recipes/acting.js'
 import type { MountContext } from '@cueframe/core'
 import { camSvg, type Cam } from '@cueframe/recipes/camera.js'
-import { fiber, fiberPath, roughen, type Outline } from '@cueframe/recipes/paper.js'
+import { cut, fiber, fiberPath, roughen, type Outline } from '@cueframe/recipes/paper.js'
 import { clamp01, inOutCubic, lerp, noise1 } from '@cueframe/recipes/motion.js'
 
 export const CUES: Record<string, number> = cueTable
@@ -61,12 +61,14 @@ export function paperShape(parent: Element, outline: Outline, fill: string, o: {
   const g = s(parent, 'g')
   const size = sizeOf(outline)
   const seed = hash(JSON.stringify(outline)) % 997
-  const cut = o.edge === 'cut'
-  const d = roughen(outline, cut
+  const scissor = o.edge === 'cut'
+  const d = roughen(outline, scissor
     ? { amp: Math.min(3, Math.max(0.8, size * 0.007)), wavelength: Math.min(60, Math.max(16, size * 0.12)), seed }
     : { amp: Math.min(1.6, Math.max(0.35, size * 0.004)), wavelength: Math.min(18, Math.max(6, size * 0.05)), seed })
-  s(g, 'path', { d, fill })
-  fiberPath(g, d, o.stock === 'fibre' ? { seed, kind: 'fibre', density: 1.2, ...ink(fill), opacity: dark(fill) ? 0.22 : 0.16 } : { seed, kind: 'speckle', density: 0.9, ...ink(fill) })
+  const texture = o.stock === 'fibre' ? { seed, kind: 'fibre' as const, density: 1.2, ...ink(fill), opacity: dark(fill) ? 0.22 : 0.16 } : { seed, kind: 'speckle' as const, density: 0.9, ...ink(fill) }
+  const svg = parent.closest('svg'), kit = svg && kits.get(svg)
+  if (kit) cut(kit, g, d, { fill, texture })
+  else { s(g, 'path', { d, fill }); fiberPath(g, d, texture) }
   return g
 }
 const ink = (fill: string) => (dark(fill) ? { tone: C.cream, opacity: 0.16 } : { tone: C.ink, opacity: 0.1 })
