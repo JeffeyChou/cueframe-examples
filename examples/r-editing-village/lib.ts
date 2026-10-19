@@ -52,17 +52,21 @@ const sizeOf = (o: Outline): number => typeof o === 'string' ? 100
   : 'rect' in o ? Math.max(o.rect.w, o.rect.h) : 'circle' in o ? 2 * o.circle.r : 'ellipse' in o ? 2 * Math.max(o.ellipse.rx, o.ellipse.ry)
   : Math.max(...o.polygon.map((p) => p.x)) - Math.min(...o.polygon.map((p) => p.x))
 /**
- * A flat shape printed on paper, as in the reference: an edge slightly off true (roughness in the
- * shape's own units, made once) and a speckle of ink or paper over its fill (a pattern in its own
- * space). Both move with the rig, so nothing boils.
+ * A flat shape printed on paper, as in the reference: an edge slightly off true and a texture over
+ * its fill, both geometry in the shape's own units made once, so they move with the rig and nothing
+ * boils. Edges: 'print' (a faint wobble, the characters) or 'cut' (a scissor-cut wander, cards and
+ * books). Stocks: speckle (paper flecks on dark fills, ink flecks on light ones) or 'fibre'.
  */
-export function paperShape(parent: Element, outline: Outline, fill: string, attrs: Attrs = {}): SVGGElement {
-  const g = s(parent, 'g', attrs)
+export function paperShape(parent: Element, outline: Outline, fill: string, o: { edge?: 'print' | 'cut'; stock?: 'speckle' | 'fibre' } = {}): SVGGElement {
+  const g = s(parent, 'g')
   const size = sizeOf(outline)
   const seed = hash(JSON.stringify(outline)) % 997
-  const d = roughen(outline, { amp: Math.min(1.6, Math.max(0.35, size * 0.004)), wavelength: Math.min(18, Math.max(6, size * 0.05)), seed })
+  const cut = o.edge === 'cut'
+  const d = roughen(outline, cut
+    ? { amp: Math.min(3, Math.max(0.8, size * 0.007)), wavelength: Math.min(60, Math.max(16, size * 0.12)), seed }
+    : { amp: Math.min(1.6, Math.max(0.35, size * 0.004)), wavelength: Math.min(18, Math.max(6, size * 0.05)), seed })
   s(g, 'path', { d, fill })
-  fiberPath(g, outline, { seed, kind: 'speckle', density: 0.9, ...ink(fill) })
+  fiberPath(g, d, o.stock === 'fibre' ? { seed, kind: 'fibre', density: 1.2, ...ink(fill), opacity: dark(fill) ? 0.22 : 0.16 } : { seed, kind: 'speckle', density: 0.9, ...ink(fill) })
   return g
 }
 const ink = (fill: string) => (dark(fill) ? { tone: C.cream, opacity: 0.16 } : { tone: C.ink, opacity: 0.1 })

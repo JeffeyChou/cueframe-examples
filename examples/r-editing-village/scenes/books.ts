@@ -23,7 +23,7 @@ export const books = scene({
     const stack = BOOKS.map(([name, fill], i) => {
       const w = 560 + rnd() * 160
       const g = s(world, 'g')
-      paperShape(g, { rect: { x: -w / 2, y: -BH, w, h: BH } }, fill)
+      paperShape(g, { rect: { x: -w / 2, y: -BH, w, h: BH } }, fill, { edge: 'cut', stock: 'fibre' })
       s(g, 'rect', { x: -w / 2, y: -BH, width: w, height: 7, fill: '#000', opacity: 0.12 })
       s(g, 'text', { x: 0, y: -BH / 2 + 15, 'text-anchor': 'middle', 'font-family': SERIF, 'font-weight': 700, 'font-size': 42, 'letter-spacing': 2, fill: C.cream }, name)
       return { g, x: 820 + (rnd() - 0.5) * 70, rot: (rnd() - 0.5) * 2.4, i }

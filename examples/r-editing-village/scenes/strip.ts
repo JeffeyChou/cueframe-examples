@@ -58,7 +58,7 @@ export function strip(parent: Element, o: { stutter?: boolean } = {}) {
   const film = s(g, 'g', { 'data-cf-audit': 'world' })
   ICONS.forEach(([fill, icon], i) => {
     const c = s(film, 'g', { transform: `translate(${i * GAP} 0)` })
-    paperShape(c, { rect: { x: -CARD / 2, y: -CARD / 2, w: CARD, h: CARD } }, fill)
+    paperShape(c, { rect: { x: -CARD / 2, y: -CARD / 2, w: CARD, h: CARD } }, fill, { edge: 'cut', stock: 'fibre' })
     s(c, 'text', { x: -CARD / 2 + 26, y: -CARD / 2 + 74, 'font-family': SERIF, 'font-weight': 700, 'font-size': 64, fill: fill === C.navy ? C.cream : C.ink }, String(i + 1))
     icon(s(c, 'g'))
   })
