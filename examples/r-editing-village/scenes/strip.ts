@@ -55,7 +55,7 @@ export function strip(parent: Element, o: { stutter?: boolean } = {}) {
   const g = s(parent, 'g')
   s(g, 'rect', { width: W, height: H, fill: C.paper })
   // The strip is a world the camera pans across: cards leave the frame on purpose.
-  const film = s(g, 'g', { 'data-cf-audit': 'allow-offstage' })
+  const film = s(g, 'g', { 'data-cf-audit': 'world' })
   ICONS.forEach(([fill, icon], i) => {
     const c = s(film, 'g', { transform: `translate(${i * GAP} 0)` })
     s(c, 'rect', { x: -CARD / 2, y: -CARD / 2, width: CARD, height: CARD, fill })
