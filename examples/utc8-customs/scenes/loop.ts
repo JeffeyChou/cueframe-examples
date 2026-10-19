@@ -77,15 +77,18 @@ export const loop = scene({
     const arrow = s(world, 'path', { d, fill: 'none', stroke: C.red, 'stroke-width': 12, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-dasharray': '30 22', opacity: 0.9 })
     const head = s(world, 'path', { d: 'M0 -22 L36 0 L0 22 Z', fill: C.red })
     // Loopers: Kevin (cowboy hat → kimono) leads; two others follow.
+    // Quick-footed: the whole loop in a few seconds, one after another.
     const loopers = [
-      { a: traveler(world, 'kevin', H), b: traveler(world, 'kevin', H, { kimono: true, hat: false }), start: K.pullOut + 1.0, dur: 9.5 },
-      { a: traveler(world, 'lim', H * 0.9), b: traveler(world, 'mike', H * 0.9), start: K.pullOut + 3.4, dur: 9 },
-      { a: traveler(world, 'tanaka', H), b: traveler(world, 'dev', H), start: K.pullOut + 5.4, dur: 9 },
+      { a: traveler(world, 'kevin', H), b: traveler(world, 'kevin', H, { kimono: true, hat: false }), start: K.pullOut + 0.6, dur: 3.6 },
+      { a: traveler(world, 'lim', H * 0.9), b: traveler(world, 'mike', H * 0.9), start: K.pullOut + 1.3, dur: 3.4 },
+      { a: traveler(world, 'tanaka', H), b: traveler(world, 'dev', H), start: K.pullOut + 2.0, dur: 3.5 },
+      { a: traveler(world, 'mike', H * 0.9), b: traveler(world, 'lim', H * 0.9), start: K.pullOut + 2.7, dur: 3.4 },
+      { a: traveler(world, 'dev', H), b: traveler(world, 'tanaka', H), start: K.pullOut + 3.4, dur: 3.5 },
     ]
     const cam = camPath([
       { t: SHOT.s13[0], x: 900, y: UP - 320, zoom: 1.0 },
-      { t: K.pullOut + 0.4 },
-      { t: K.pullOut + 2.4, x: 940, y: 600, zoom: 0.92, ease: inOutCubic },
+      { t: K.pullOut },
+      { t: K.pullOut + 1.0, x: 940, y: 600, zoom: 0.92, ease: inOutCubic },
       { t: SHOT.s13[1], x: 960, y: 610, zoom: 0.9 },
     ])
     return { world, arrow, head, loopers, cam, len: (arrow as SVGPathElement).getTotalLength() }
@@ -96,13 +99,13 @@ export const loop = scene({
     st.loopers.forEach((l) => {
       const u = seg(t, l.start, l.start + l.dur)
       const p = at(u)
-      const step = u > 0 && u < 1 ? Math.abs(Math.sin(t * 10)) * 8 : 0
+      const step = u > 0 && u < 1 ? Math.abs(Math.sin(t * 20)) * 10 : 0
       const swapped = u >= U_STALL
       const pose = { x: p.x, y: p.y - step, sx: p.dir, look: p.dir, o: u > 0 && u < 1 ? 1 : u >= 1 ? 1 : 0 }
       l.a.set({ ...pose, o: swapped ? 0 : pose.o })
       l.b.set({ ...pose, o: swapped ? pose.o : 0 })
     })
-    const k = seg(t, K.hats - 0.6, K.hats + 2.2, outCubic)
+    const k = seg(t, K.pullOut + 0.8, K.pullOut + 2.2, outCubic)
     st.arrow.setAttribute('stroke-dashoffset', '0')
     st.arrow.style.opacity = String(Math.min(0.9, k * 3))
     st.arrow.style.clipPath = ''

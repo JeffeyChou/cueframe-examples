@@ -2,8 +2,8 @@
 // over a terminal, lines typed on one by one, three clues ringed in red, then the stamp lands on
 // the screen glass.
 import { scene } from '@cueframe/core'
-import { C, JOST, MONO, camera, mixAt, outCubic, pieces, ring, s, seg, stageSvg, stampMark, text } from '../lib.js'
-import { K, SHOT } from '../timing.js'
+import { C, JOST, MONO, bubble, camera, mixAt, outCubic, pieces, ring, s, seg, stageSvg, stampMark, text } from '../lib.js'
+import { K, LINE, SHOT } from '../timing.js'
 
 const SIZE = 40
 /** Each editor line as pieces; a piece named in RINGS gets a ring. */
@@ -52,7 +52,10 @@ export const code = scene({
     s(hood, 'rect', { x: -20, y: 880, width: 420, height: 400, rx: 120, fill: '#5E5A55' })
     s(hood, 'rect', { x: 50, y: 950, width: 280, height: 300, rx: 90, fill: C.grey })
     const mark = stampMark(world, 1.1, 13, C.screen)
-    return { world, lines, rings, hood, mark, t0: SHOT.s08[0], type: K.typing, hit: K.stamp8 }
+    // After the stamp: Claude (off frame, right) asks; the developer answers from under the hood.
+    const cq = bubble(svg, '你们老板，也在西雅图？', { size: 44, dir: -1 })
+    const dev = bubble(svg, '在……西二旗。', { size: 48 })
+    return { world, lines, rings, hood, mark, cq, dev, t0: SHOT.s08[0], type: K.typing, hit: K.stamp8 }
   },
   render(f, st) {
     const t = f.t
@@ -61,6 +64,11 @@ export const code = scene({
     camera(st.world, { x: 960 + (1 - turn) * 700, y: 540, zoom: 1 + 0.04 * seg(t, st.t0 + 0.7, st.hit) })
     st.lines.forEach((g, i) => { g.style.opacity = String(seg(t, st.type + i * 0.55, st.type + i * 0.55 + 0.2)) })
     st.rings.forEach((r, i) => r.set(seg(t, K.rings8[i]!, K.rings8[i]! + 0.45, outCubic)))
+    for (const [b, id, at] of [[st.cq, 's08-claude', { x: 1640, y: 430 }], [st.dev, 's08-dev', { x: 300, y: 1000 }]] as const) {
+      const [a, z] = LINE(id)
+      const k = seg(t, a - 0.12, a + 0.12, outCubic) * (1 - seg(t, z + 0.6, z + 0.72))
+      b.set({ ...at, o: k > 0 ? 1 : 0, s: Math.max(0.001, k) })
+    }
     st.mark.set({ x: 1380, y: 560, rot: -10, s: mixAt(t, st.hit, st.hit + 0.12, 1.25, 1), o: t >= st.hit ? 1 : 0 })
   },
 })

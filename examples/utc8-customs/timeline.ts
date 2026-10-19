@@ -2,7 +2,7 @@ import { timeline } from '@cueframe/core'
 import cues from './build/cues.json'
 import words from './build/words.json'
 import fonts from './build/fonts/fonts.json'
-import { again, hall, kevin, lim, lunch, mike, tanaka } from './scenes/booth.js'
+import { again, hall, kevin, lim, mike, tanaka } from './scenes/booth.js'
 import { code } from './scenes/code.js'
 import { calendar, montage, traffic } from './scenes/evidence.js'
 import { opening, queue } from './scenes/hall.js'
@@ -20,7 +20,7 @@ export default timeline({
   cues,
   words,
   events: [SFX],
-  scenes: [opening, hall, queue, kevin, tanaka, lim, code, mike, calendar, montage, lunch, loop, again, traffic, sunrise, paper, subs],
+  scenes: [opening, hall, queue, kevin, tanaka, lim, code, mike, calendar, montage, loop, again, traffic, sunrise, paper, subs],
   fonts: [
     { family: 'Noto Sans SC', src: '/build/fonts/NotoSansSC.subset.woff2', weight: '500 900', glyphs },
     { family: 'Noto Serif SC', src: '/build/fonts/NotoSerifSC.subset.woff2', weight: '700 900', glyphs },

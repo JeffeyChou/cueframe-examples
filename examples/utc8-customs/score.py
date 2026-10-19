@@ -73,7 +73,7 @@ def score(ctx):
     sfx = ctx.track('sfx', role='sfx')
     e1, ev, cue = ctx.event1, ctx.event, ctx.cue
     start, black = e1('sfx.drop') - 0.45, e1('sfx.black')
-    montage = (cue('scene.s11.start'), cue('scene.s12.start'))
+    montage = (cue('scene.s11.start'), cue('scene.s13.start'))
     sparse = (cue('scene.s15.start'), black)
 
     # The bed, bar by bar from the sign drop to the black; the last bar before the black resolves.
@@ -118,7 +118,3 @@ def score(ctx):
     sfx.put(whoosh(0.9, up=False, seed=21), e1('sfx.empty'), 0.4)
     sfx.put(crowd(1.6, 9), e1('sfx.flood'), 0.9)
     sfx.put(whoosh(0.3, up=False, seed=23), e1('sfx.miss') - 0.15, 0.4)
-    sfx.put(ding(1568, 1.0), e1('sfx.noon'), 0.3, 0.3)
-    sfx.put(ding(1568, 1.0), e1('sfx.noon') + 0.35, 0.25, 0.3)
-    sfx.put(pop(400, 260, 0.08), e1('sfx.sign'), 0.5, 0.2)
-    sfx.put(whoosh(0.25, up=True, seed=31), e1('sfx.yank') - 0.05, 0.5, 0.2)

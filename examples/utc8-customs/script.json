@@ -2,7 +2,7 @@
  "engine": "command",
  "command": "../../../mlx-audio/.venv/bin/python scripts/say.py {jobs}",
  "voice": "moss",
- "engineVersion": "moss-local-1.7b-8bit say.py r1",
+ "engineVersion": "moss-local-1.7b-8bit say.py r2 (atempo)",
  "align": {
   "model": "medium",
   "language": "zh"
@@ -12,215 +12,385 @@
   {
    "id": "s01",
    "say": "我叫 Claude。最近多了份差事：守边境。",
-   "min": 7,
-   "lead": 1.4,
+   "min": 6,
+   "lead": 1.2,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
   },
   {
    "id": "s02",
    "say": "规矩只有一条：东八区，不入境。",
-   "min": 8,
-   "lead": 1.8,
+   "min": 6.5,
+   "lead": 1.6,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
   },
   {
    "id": "s03",
    "say": "可东八区的人，从不说自己来自东八区。",
-   "min": 11,
-   "lead": 2.2,
+   "min": 9,
+   "lead": 2.0,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
   },
   {
    "id": "s04",
    "say": "加州来的 Kevin。",
-   "min": 3,
+   "min": 2.4,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
   },
   {
    "id": "s04-kevin",
    "say": "Hello，在吗？",
-   "min": 3.4,
-   "lead": 0.2,
+   "min": 2.6,
+   "lead": 0.1,
    "tts": {
     "voice": "Junhao",
-    "lang": "auto"
+    "lang": "auto",
+    "rate": 1.1
    }
   },
   {
    "id": "s05",
    "say": "美国人不说“在吗”。也打不出全角逗号。",
-   "min": 9,
-   "lead": 0.6,
+   "min": 6.6,
+   "lead": 0.5,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
+   }
+  },
+  {
+   "id": "s05-kevin",
+   "say": "I am really from California!",
+   "min": 2.4,
+   "lead": 0.9,
+   "tts": {
+    "voice": "Junhao",
+    "lang": "en",
+    "rate": 1.1
+   },
+   "align": {
+    "language": "en"
+   }
+  },
+  {
+   "id": "s05-claude",
+   "say": "加州哪儿的？",
+   "min": 1.8,
+   "lead": 0.2,
+   "tts": {
+    "voice": "Lingyu",
+    "lang": "zh",
+    "rate": 1.1
+   }
+  },
+  {
+   "id": "s05-kevin2",
+   "say": "……五道口。",
+   "min": 3.2,
+   "lead": 0.5,
+   "tts": {
+    "voice": "Junhao",
+    "lang": "auto",
+    "rate": 1.1
    }
   },
   {
    "id": "s06-tanaka",
    "say": "すみません。",
-   "min": 3.4,
-   "lead": 0.9,
+   "min": 2.6,
+   "lead": 0.8,
    "tts": {
     "voice": "Weiguo",
-    "lang": "ja"
+    "lang": "ja",
+    "rate": 1.1
    },
    "align": false
   },
   {
    "id": "s06",
    "say": "东京的田中先生，想把中文翻译成日语。他的母语。",
-   "min": 8.6,
-   "lead": 0.5,
+   "min": 6.4,
+   "lead": 0.4,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
+  },
+  {
+   "id": "s06-claude",
+   "say": "那您用日语，再说一遍需求？",
+   "min": 2.6,
+   "lead": 0.3,
+   "tts": {
+    "voice": "Lingyu",
+    "lang": "zh",
+    "rate": 1.1
+   }
+  },
+  {
+   "id": "s06-tanaka2",
+   "say": "……すみません。",
+   "min": 4.0,
+   "lead": 1.2,
+   "tts": {
+    "voice": "Weiguo",
+    "lang": "ja",
+    "rate": 1.1
+   },
+   "align": false
   },
   {
    "id": "s07-lim",
    "say": "我是新加坡人 lah，帮我写个年终总结 lah。",
-   "min": 5,
+   "min": 4.4,
    "lead": 0.3,
    "tts": {
     "voice": "Zhiming",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.1
    }
   },
   {
    "id": "s07",
    "say": "lah 很地道。可新加坡人，不写思想汇报。",
-   "min": 8.5,
-   "lead": 0.8,
+   "min": 7.4,
+   "lead": 0.6,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
+   }
+  },
+  {
+   "id": "s07-lim2",
+   "say": "我们新加坡也要写的 lah！",
+   "min": 2.4,
+   "lead": 0.2,
+   "tts": {
+    "voice": "Zhiming",
+    "lang": "zh",
+    "rate": 1.1
+   }
+  },
+  {
+   "id": "s07-claude",
+   "say": "新加坡写的叫 performance review。",
+   "min": 2.8,
+   "lead": 0.2,
+   "tts": {
+    "voice": "Lingyu",
+    "lang": "zh",
+    "rate": 1.1
+   }
+  },
+  {
+   "id": "s07-lim3",
+   "say": "……那是什么 lah？",
+   "min": 3.6,
+   "lead": 0.3,
+   "tts": {
+    "voice": "Zhiming",
+    "lang": "zh",
+    "rate": 1.1
    }
   },
   {
    "id": "s08",
    "say": "代码不会撒谎。",
-   "min": 16,
-   "lead": 9.5,
+   "min": 11.5,
+   "lead": 7.6,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
+  },
+  {
+   "id": "s08-claude",
+   "say": "你们老板，也在西雅图？",
+   "min": 2.2,
+   "lead": 0.3,
+   "tts": {
+    "voice": "Lingyu",
+    "lang": "zh",
+    "rate": 1.1
+   }
+  },
+  {
+   "id": "s08-dev",
+   "say": "在……西二旗。",
+   "min": 3.6,
+   "lead": 0.6,
+   "tts": {
+    "voice": "Xiaoyu",
+    "lang": "zh",
+    "rate": 1.1
+   },
+   "speak": "在，西二旗。"
   },
   {
    "id": "s09",
    "say": "纽约的 Mike，半夜十二点，准时午休。",
-   "min": 8.5,
-   "lead": 2.5,
+   "min": 7,
+   "lead": 2.2,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    },
    "speak": "纽约的迈克，半夜十二点，准时午休。"
   },
   {
    "id": "s09-mike",
    "say": "I'm just… 作息健康。",
-   "min": 4.5,
-   "lead": 0.3,
+   "min": 3.2,
+   "lead": 0.2,
    "tts": {
     "voice": "Nathan",
-    "lang": "auto"
+    "lang": "auto",
+    "rate": 1.1
+   },
+   "align": false
+  },
+  {
+   "id": "s09-claude",
+   "say": "纽约现在几点？",
+   "min": 1.9,
+   "lead": 0.3,
+   "tts": {
+    "voice": "Lingyu",
+    "lang": "zh",
+    "rate": 1.1
+   }
+  },
+  {
+   "id": "s09-mike2",
+   "say": "……北京时间，九点。",
+   "min": 3.6,
+   "lead": 0.5,
+   "tts": {
+    "voice": "Nathan",
+    "lang": "auto",
+    "rate": 1.1
    },
    "align": false
   },
   {
    "id": "s10",
    "say": "美国，没有调休。",
-   "min": 11,
-   "lead": 6.5,
+   "min": 9,
+   "lead": 5.6,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
   },
   {
    "id": "s11",
    "say": "后来就快了。",
-   "min": 12,
-   "lead": 0.4,
-   "tts": {
-    "voice": "Lingyu",
-    "lang": "zh"
-   }
-  },
-  {
-   "id": "s12",
-   "say": "中午十二点。我也该……",
    "min": 10,
-   "lead": 0.6,
+   "lead": 0.3,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
   },
   {
    "id": "s13",
    "say": "被拒的人没有离开。只是换了顶帽子。",
-   "min": 16,
-   "lead": 4.0,
+   "min": 8,
+   "lead": 1.8,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
   },
   {
    "id": "s14-kevin",
    "say": "すみません，在吗？",
-   "min": 7,
-   "lead": 2.0,
+   "min": 3.4,
+   "lead": 1.6,
    "tts": {
     "voice": "Junhao",
-    "lang": "auto"
+    "lang": "auto",
+    "rate": 1.1
    },
    "align": false,
    "speak": "斯米马赛，在吗？"
   },
   {
-   "id": "s15",
-   "say": "我的美国用户，太平洋时间下午六点上班。北京时间，早上九点。",
-   "min": 14,
-   "lead": 1.5,
+   "id": "s14-claude",
+   "say": "Kevin，帽子不错。",
+   "min": 2.2,
+   "lead": 1.0,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.1
+   }
+  },
+  {
+   "id": "s14-kevin2",
+   "say": "……我叫田中。",
+   "min": 4.2,
+   "lead": 0.4,
+   "tts": {
+    "voice": "Junhao",
+    "lang": "auto",
+    "rate": 1.1
+   }
+  },
+  {
+   "id": "s15",
+   "say": "我的美国用户，太平洋时间下午六点上班。北京时间，早上九点。",
+   "min": 11,
+   "lead": 1.2,
+   "tts": {
+    "voice": "Lingyu",
+    "lang": "zh",
+    "rate": 1.15
    }
   },
   {
    "id": "s16",
    "say": "东八区的太阳，又升起来了。",
-   "min": 9,
-   "lead": 1.5,
+   "min": 7.5,
+   "lead": 1.4,
    "tts": {
     "voice": "Lingyu",
-    "lang": "zh"
+    "lang": "zh",
+    "rate": 1.15
    }
   },
   {
    "id": "s16-hello",
    "say": "Hello，在吗？",
-   "min": 7.5,
-   "lead": 1.5,
+   "min": 6.5,
+   "lead": 1.2,
    "tts": {
     "voice": "Junhao",
-    "lang": "auto"
+    "lang": "auto",
+    "rate": 1.1
    },
    "align": {
     "model": "small"

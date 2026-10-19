@@ -1,15 +1,27 @@
 // The counter shots, side elevation: Claude in its booth on the right, the traveler at the counter on
-// the left. s02 the hall and the sign; s04–s05 Kevin; s06 Tanaka; s07 Lim; s09 Mike; s12 Claude's own
-// lunch break; s14 Kevin again, in a kimono. Every time comes from timing.ts (the narration).
+// the left. s02 the hall and the sign; s04–s05 Kevin; s06 Tanaka; s07 Lim; s09 Mike; s14 Kevin again,
+// in a kimono. After each stamp a short exchange, in speech bubbles (Claude speaks from its window).
+// Every time comes from timing.ts (the narration and the dialogue lines).
 import { scene, type MountContext } from '@cueframe/core'
 import {
   BODY, BOOTH, C, GROUND, JOST, MONO, SANS, STYLE, blink, booth, bubble, camera, card, envelope, inOutCubic, lens, mixAt, officer,
   outBack, outCubic, passport, pieces, pose, punct, ring, room, s, seg, stageSvg, stamp, stampMark, stanchion, text, traveler, wallClock,
   type Disguise,
 } from '../lib.js'
-import { K, SHOT } from '../timing.js'
+import { K, LINE, SHOT } from '../timing.js'
 
 const AT_COUNTER = 760
+
+type Bubble = ReturnType<typeof bubble>
+/** A bubble shown while its line is spoken (and `hold` s after), popping in. */
+function speak(b: Bubble, t: number, line: string, at: { x: number; y: number }, hold = 0.6) {
+  const [a, z] = LINE(line)
+  const k = seg(t, a - 0.12, a + 0.12, outBack) * (1 - seg(t, z + hold, z + hold + 0.12))
+  b.set({ x: at.x, y: at.y, o: k > 0 ? 1 : 0, s: Math.max(0.001, k) })
+}
+/** Claude's bubble: from its window, toward the traveler. */
+const claudeBubble = (parent: Element, str: string) => bubble(parent, str, { size: 44, dir: -1 })
+const FROM_CLAUDE = { x: 1330, y: 500 }
 
 /** Claude behind the counter and its stamp arm: the stamp rests on the counter and presses onto
  * `target` at the nearest hit. */
@@ -125,21 +137,28 @@ export const kevin = scene({
     const l1 = msg.boxes[0]!, l2 = msg.boxes[1]!
     const rings = [ring(msg.g, l1[2]!, 5, { pad: 12 }), ring(msg.g, punct(l1[1]!), 7, { pad: 10 }), ring(msg.g, punct(l2[1]!), 11, { pad: 12 }), ring(msg.g, punct(l2[3]!), 23, { pad: 12 })]
     const glass = lens(st.top, 96)
-    return { ...st, say, msg, rings, glass, l1, l2 }
+    const k2 = bubble(st.top, 'I am really from California!', { size: 44 }), k3 = bubble(st.top, '……五道口。', { size: 50 })
+    const cq = claudeBubble(st.top, '加州哪儿的？')
+    return { ...st, say, msg, rings, glass, l1, l2, k2, k3, cq }
   },
   render(f, st) {
     const t = f.t
     camera(st.world, { x: 960, y: 540, zoom: 1 + 0.02 * seg(t, K.ringZaima - 1, K.stamp5) })
-    const w = walk(t, K.kevinIn, K.stamp5 + 1.2)
+    const w = walk(t, K.kevinIn, K.kevinOut)
     const jolt = seg(t, K.stamp5, K.stamp5 + 0.25, outBack)
     st.who.set(pose({ ...BODY, hat: 0, x: w.x, y: w.y, look: w.face, sx: w.face },
       blink(t, 2), { mode: 'add', w: envelope(t, K.stamp5, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05 } }, { mode: 'add', w: jolt, v: { hat: 1 } },
-      { mode: 'add', w: envelope(t, K.hello, { in: 0.12, hold: 0.5, out: 0.3 }, STYLE), v: { rot: 6, sy: 0.04 } }))
+      { mode: 'add', w: envelope(t, K.hello, { in: 0.12, hold: 0.5, out: 0.3 }, STYLE), v: { rot: 6, sy: 0.04 } },
+      { mode: 'add', w: envelope(t, LINE('s05-kevin')[0], { in: 0.1, hold: 1.2, out: 0.3 }, STYLE), v: { sy: 0.08, rot: 4 } },
+      { mode: 'add', w: envelope(t, LINE('s05-kevin2')[0], { in: 0.3, hold: 1.0, out: 0.3 }), v: { sy: -0.06, rot: -6 } }))
     passportOn(st, t, K.slap, K.stamp5)
+    speak(st.k2, t, 's05-kevin', { x: w.x + 40, y: GROUND - 430 })
+    speak(st.cq, t, 's05-claude', FROM_CLAUDE)
+    speak(st.k3, t, 's05-kevin2', { x: w.x + 40, y: GROUND - 430 })
     // "Hello，在吗？" as a bubble, then as the first line of the message card.
     const b = seg(t, K.hello - 0.1, K.hello + 0.15, outBack) * (1 - seg(t, SHOT.s05[0] - 0.2, SHOT.s05[0]))
     st.say.set({ x: w.x + 40, y: GROUND - 430, o: b > 0 ? 1 : 0, s: Math.max(0.001, b) })
-    st.msg.set({ y: -30 * (1 - seg(t, SHOT.s05[0] - 0.2, SHOT.s05[0] + 0.3, outCubic)), o: seg(t, SHOT.s05[0] - 0.2, SHOT.s05[0] + 0.2) })
+    st.msg.set({ y: -30 * (1 - seg(t, SHOT.s05[0] - 0.2, SHOT.s05[0] + 0.3, outCubic)), o: seg(t, SHOT.s05[0] - 0.2, SHOT.s05[0] + 0.2) * (1 - seg(t, K.stamp5 + 0.4, K.stamp5 + 0.7)) })
     st.rings[0]!.set(seg(t, K.ringZaima, K.ringZaima + 0.4, outCubic))
     st.rings[1]!.set(seg(t, K.ringComma - 0.2, K.ringComma + 0.15, outCubic))
     st.rings[2]!.set(seg(t, K.ringComma + 0.25, K.ringComma + 0.6, outCubic))
@@ -162,7 +181,8 @@ export const tanaka = scene({
     const say = bubble(st.top, 'すみません。', { size: 50 })
     const msg = message(st.top, 'MESSAGE · TANAKA (TOKYO, JP)', [['帮我把这段话', '翻译成日语']], { font: SANS, w: 820, x: 240 })
     const r = ring(msg.g, msg.boxes[0]![1]!, 31, { pad: 12 })
-    return { ...st, say, msg, r }
+    const cq = claudeBubble(st.top, '那您用日语，再说一遍需求？'), t2 = bubble(st.top, '……すみません。', { size: 50 })
+    return { ...st, say, msg, r, cq, t2 }
   },
   render(f, st) {
     const t = f.t
@@ -170,14 +190,17 @@ export const tanaka = scene({
     const w = walk(t, SHOT.s06[0] - 0.4, K.stamp6 + 1.0)
     const bows = K.bows.reduce((m, b) => Math.max(m, envelope(t, b, { in: 0.16, hold: 0.08, out: 0.2 })), 0)
     st.who.set(pose({ ...BODY, bow: 0, x: w.x, y: w.y, look: w.face, sx: w.face }, blink(t, 4), { mode: 'add', w: bows, v: { bow: 1 } },
-      { mode: 'add', w: envelope(t, K.stamp6, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05 } }))
+      { mode: 'add', w: envelope(t, K.stamp6, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05 } },
+      { mode: 'add', w: envelope(t, LINE('s06-tanaka2')[0] - 0.3, { in: 0.3, hold: 0.8, out: 0.3 }), v: { bow: 0.6 } }))
     passportOn(st, t, K.bows[2]! + 0.5, K.stamp6)
     const b = seg(t, K.bows[1]!, K.bows[1]! + 0.2, outBack) * (1 - seg(t, K.request - 0.2, K.request))
     st.say.set({ x: w.x + 40, y: GROUND - 440, o: b > 0 ? 1 : 0, s: Math.max(0.001, b) })
-    st.msg.set({ y: -30 * (1 - seg(t, K.request, K.request + 0.4, outCubic)), o: seg(t, K.request, K.request + 0.3) })
+    st.msg.set({ y: -30 * (1 - seg(t, K.request, K.request + 0.4, outCubic)), o: seg(t, K.request, K.request + 0.3) * (1 - seg(t, LINE('s06-claude')[0] - 0.3, LINE('s06-claude')[0])) })
     st.r.set(seg(t, K.ringJa, K.ringJa + 0.5, outCubic))
-    // "他的母语": Claude holds still a beat (eyes flat), then stamps.
-    st.c.set(t, [K.stamp6], { look: -1, ...(t > K.ringJa + 1.2 && t < K.stamp6 - 0.3 ? { eyes: 'line' as const } : {}) })
+    speak(st.cq, t, 's06-claude', FROM_CLAUDE)
+    speak(st.t2, t, 's06-tanaka2', { x: w.x + 40, y: GROUND - 440 })
+    // "……すみません": Claude holds still a beat (eyes flat), then stamps.
+    st.c.set(t, [K.stamp6], { look: -1, ...(t > LINE('s06-tanaka2')[0] && t < K.stamp6 - 0.2 ? { eyes: 'line' as const } : {}) })
   },
 })
 
@@ -198,7 +221,9 @@ export const lim = scene({
     const box = last.label.getBBox()
     const r = ring(last.g, { x: box.x, y: box.y, w: box.width, h: box.height }, 41, { pad: 16 })
     const say = bubble(st.top, '我是新加坡人 lah，帮我写个年终总结 lah。', { size: 44 })
-    return { ...st, cards, r, say, eq }
+    const l2 = bubble(st.top, '我们新加坡也要写的 lah！', { size: 46 }), l3 = bubble(st.top, '……那是什么 lah？', { size: 50 })
+    const cq = claudeBubble(st.top, '新加坡写的叫 performance review。')
+    return { ...st, cards, r, say, eq, l2, l3, cq }
   },
   render(f, st) {
     const t = f.t
@@ -213,13 +238,17 @@ export const lim = scene({
     st.cards.forEach((cd, i) => {
       const k = seg(t, K.fan + i * 0.45, K.fan + i * 0.45 + 0.5, outBack)
       const front = i === 3 ? seg(t, K.ringReport - 0.5, K.ringReport, outCubic) : 0
-      cd.set({ x: mixAt(k, 0, 1, 1300, 230 + i * 250) + front * 60, y: mixAt(k, 0, 1, 560, 290 - (i % 2) * 36) + front * 30, rot: (i - 1.5) * 5 * k * (1 - front), s: Math.max(0.001, (0.4 + 0.6 * k) * (1 + 0.15 * front)), o: k > 0 ? 1 : 0 })
+      const gone = seg(t, K.stamp7 + 0.4, K.stamp7 + 0.8)
+      cd.set({ x: mixAt(k, 0, 1, 1300, 230 + i * 250) + front * 60, y: mixAt(k, 0, 1, 560, 290 - (i % 2) * 36) + front * 30 - gone * 80, rot: (i - 1.5) * 5 * k * (1 - front), s: Math.max(0.001, (0.4 + 0.6 * k) * (1 + 0.15 * front)), o: k > 0 ? 1 - gone : 0 })
     })
     st.r.set(seg(t, K.ringReport, K.ringReport + 0.45, outCubic))
     // The glance: Claude looks up at the two clocks (same time), an "=" shows; it lets it go.
     const g = envelope(t, K.glance, { in: 0.25, hold: 0.7, out: 0.25 })
     st.eq.style.opacity = String(g)
     st.c.set(t, [K.stamp7], { look: g > 0.1 ? 0 : -1, lookY: -1.2 * g })
+    speak(st.l2, t, 's07-lim2', { x: w.x - 20, y: GROUND - 400 })
+    speak(st.cq, t, 's07-claude', FROM_CLAUDE)
+    speak(st.l3, t, 's07-lim3', { x: w.x - 20, y: GROUND - 400 })
   },
 })
 
@@ -245,7 +274,8 @@ export const mike = scene({
     const lunch = text(bar, (pos(24) + pos(25.5)) / 2, Y + 11, '午休', { size: 30, font: SANS, weight: 900, fill: C.red, anchor: 'middle' })
     const r = ring(bar, { x: pos(24), y: Y - 30, w: pos(25.5) - pos(24), h: 60 }, 51, { pad: 14 })
     const say = bubble(st.top, "I'm just… 作息健康。", { size: 48 })
-    return { ...st, bar, fills, on, pos, lunch, r, say }
+    const cq = claudeBubble(st.top, '纽约现在几点？'), m2 = bubble(st.top, '……北京时间，九点。', { size: 48 })
+    return { ...st, bar, fills, on, pos, lunch, r, say, cq, m2 }
   },
   render(f, st) {
     const t = f.t
@@ -255,7 +285,7 @@ export const mike = scene({
       { mode: 'add', w: envelope(t, K.mike, { in: 0.2, hold: 1.6, out: 0.3 }), v: { rot: -5, look: -0.6 } },
       { mode: 'add', w: envelope(t, K.stamp9, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05, hat: 0.7 } }))
     passportOn(st, t, SHOT.s09[0] + 1.0, K.stamp9)
-    st.bar.style.opacity = String(seg(t, K.barOn - 0.3, K.barOn))
+    st.bar.style.opacity = String(seg(t, K.barOn - 0.3, K.barOn) * (1 - seg(t, LINE('s09-claude')[0] - 0.3, LINE('s09-claude')[0])))
     // The day lights up from 21:00 as the narration reaches midnight, then the rest after the gap.
     const sweep = 18 + mixAt(t, K.barOn, K.ringLunch + 1.2, 0, 1) * 20
     st.fills.forEach((r, i) => {
@@ -264,61 +294,10 @@ export const mike = scene({
     })
     st.lunch.style.opacity = String(seg(t, K.ringLunch, K.ringLunch + 0.3))
     st.r.set(seg(t, K.ringLunch, K.ringLunch + 0.45, outCubic))
-    const b = seg(t, K.mike - 0.1, K.mike + 0.15, outBack) * (1 - seg(t, K.stamp9 - 0.4, K.stamp9 - 0.2))
-    st.say.set({ x: w.x + 30, y: GROUND - 350, o: b > 0 ? 1 : 0, s: Math.max(0.001, b) })
+    speak(st.say, t, 's09-mike', { x: w.x + 30, y: GROUND - 350 })
+    speak(st.cq, t, 's09-claude', FROM_CLAUDE)
+    speak(st.m2, t, 's09-mike2', { x: w.x + 30, y: GROUND - 350 })
     st.c.set(t, [K.stamp9], { look: -1 })
-  },
-})
-
-export const lunch = scene({
-  id: 'lunch',
-  at: SHOT.s12[0],
-  end: SHOT.s12[1],
-  mount(ctx) {
-    const svg = stageSvg(ctx, C.paper)
-    const world = s(svg, 'g')
-    room(world)
-    stanchion(world, 120, 360)
-    stanchion(world, 360)
-    wallClock(world, 420, 250, 100, 'BEIJING', 12, 0, true)
-    const b = booth(world)
-    // The booth clock, 11:59 → 12:00.
-    const bc = s(b.front, 'g')
-    s(bc, 'circle', { cx: 1600, cy: 360, r: 34, fill: C.cream, stroke: C.ink, 'stroke-width': 5 })
-    const hand = s(bc, 'line', { x1: 1600, y1: 360, x2: 1600, y2: 334, stroke: C.red, 'stroke-width': 4, 'stroke-linecap': 'round' })
-    s(bc, 'line', { x1: 1600, y1: 360, x2: 1600, y2: 340, stroke: C.ink, 'stroke-width': 6, 'stroke-linecap': 'round' })
-    const c = claudeAt(b.mid, b.front)
-    const sign = s(b.front, 'g')
-    const Y = BOOTH.counter + 24
-    s(sign, 'line', { x1: 1300, x2: 1300, y1: Y - 10, y2: Y + 20, stroke: C.ink, 'stroke-width': 3 })
-    s(sign, 'line', { x1: 1520, x2: 1520, y1: Y - 10, y2: Y + 20, stroke: C.ink, 'stroke-width': 3 })
-    s(sign, 'rect', { x: 1260, y: Y + 20, width: 300, height: 120, fill: C.mustard, stroke: C.ink, 'stroke-width': 4 })
-    text(sign, 1410, Y + 74, '午休中', { size: 46, font: SANS, weight: 900, anchor: 'middle', spacing: 4 })
-    text(sign, 1410, Y + 122, '12:00 – 13:30', { size: 32, font: JOST, weight: 700, anchor: 'middle' })
-    return { world, hand, c, sign }
-  },
-  render(f, st) {
-    const t = f.t
-    // A snap push onto Claude's face as it realises, held until it sits up straight.
-    const push = seg(t, K.realise + 0.5, K.realise + 0.75, outCubic) * (1 - seg(t, K.yank + 0.8, K.yank + 1.4, inOutCubic))
-    camera(st.world, { x: 960 + push * 450, y: 540 - push * 20, zoom: 1 + push * 0.6 })
-    const m = t < K.noon ? 59 : 60
-    const a = (m / 60) * Math.PI * 2
-    st.hand.setAttribute('x2', (1600 + Math.sin(a) * 26).toFixed(1))
-    st.hand.setAttribute('y2', (360 - Math.cos(a) * 26).toFixed(1))
-    // Stretch, hang the sign, look at it, look at the taped Beijing clock, snatch it back, sit up.
-    const stretch = envelope(t, K.noon + 0.6, { in: 0.5, hold: 0.6, out: 0.4 }, STYLE)
-    const hung = seg(t, K.sign - 0.3, K.sign, outBack) * (1 - seg(t, K.yank, K.yank + 0.18, inOutCubic))
-    st.sign.setAttribute('transform', `translate(0 ${(-90 * (1 - hung)).toFixed(1)})`)
-    st.sign.style.opacity = hung > 0.01 ? '1' : '0'
-    const atSign = envelope(t, K.sign + 0.4, { in: 0.2, hold: 0.8, out: 0.2 })
-    const atClock = envelope(t, K.realise, { in: 0.25, hold: 0.9, out: 0.15 })
-    const straight = seg(t, K.yank + 0.2, K.yank + 0.4, outBack)
-    st.c.set(t, [], {
-      look: -1.4 * atClock + 0.2 * atSign, lookY: 1.0 * atSign - 0.6 * atClock,
-      eyes: t > K.realise + 0.3 && t < K.yank + 0.6 ? 'wide' : t > K.noon + 0.6 && t < K.sign + 0.2 ? 'line' : 'open',
-      extra: { sy: 1 + 0.12 * stretch + 0.05 * straight, sx: 1 - 0.06 * stretch, cap: 8 * stretch },
-    })
   },
 })
 
@@ -329,20 +308,22 @@ export const again = scene({
   mount(ctx) {
     const st = counter(ctx, 'kevin', 'JAPAN', '#7A1F2B', { kimono: true, hat: false })
     const say = bubble(st.top, 'すみません，在吗？', { size: 50 })
-    return { ...st, say }
+    const cq = claudeBubble(st.top, 'Kevin，帽子不错。'), k2 = bubble(st.top, '……我叫田中。', { size: 50 })
+    return { ...st, say, cq, k2 }
   },
   render(f, st) {
     const t = f.t
-    // The same framing as s04, then a slow push onto Claude's stare.
-    const stare = seg(t, K.bowBack + 2.2, K.stamp14 - 0.4, inOutCubic)
-    camera(st.world, { x: 960 + stare * 250, y: 540 - stare * 40, zoom: 1 + 0.25 * stare })
+    // The same framing as s04, a slight push as Claude speaks.
+    const stare = seg(t, LINE('s14-claude')[0] - 0.5, K.stamp14, inOutCubic)
+    camera(st.world, { x: 960 + stare * 60, y: 540, zoom: 1 + 0.06 * stare })
     const w = walk(t, K.kevinBack)
     const bow = envelope(t, K.bowBack, { in: 0.3, hold: 0.6, out: 0.3 }, STYLE)
     st.who.set(pose({ ...BODY, bow: 0, x: w.x, y: w.y, look: 1 }, { mode: 'add', w: bow, v: { bow: 1 } },
       { mode: 'add', w: envelope(t, K.stamp14, { in: 0.06, out: 0.4 }, STYLE), v: { sy: -0.05 } }))
     passportOn(st, t, K.kevinBack + 1.3, K.stamp14)
-    const b = seg(t, K.bowBack + 0.2, K.bowBack + 0.45, outBack) * (1 - seg(t, K.stamp14 - 0.5, K.stamp14 - 0.3))
-    st.say.set({ x: w.x + 40, y: GROUND - 440, o: b > 0 ? 1 : 0, s: Math.max(0.001, b) })
-    st.c.set(t, [K.stamp14], { look: -1, eyes: t > K.bowBack + 1.6 && t < K.stamp14 - 0.2 ? 'line' : 'open' })
+    speak(st.say, t, 's14-kevin', { x: w.x + 40, y: GROUND - 440 }, 0.3)
+    speak(st.cq, t, 's14-claude', FROM_CLAUDE)
+    speak(st.k2, t, 's14-kevin2', { x: w.x + 40, y: GROUND - 440 })
+    st.c.set(t, [K.stamp14], { look: -1, eyes: t > LINE('s14-kevin')[1] && t < LINE('s14-claude')[0] ? 'line' : 'open' })
   },
 })

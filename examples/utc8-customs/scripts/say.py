@@ -5,12 +5,14 @@ Run in the mlx-audio environment (cueframe-py tts calls it through script.json "
 
 jobs.json: [{"text", "out", "take", "seed", "tts"?}, ...]. Synthesizes each missing wav as 24 kHz mono PCM16.
 `tts`: {"voice": a MOSS official voice (voices/official/ref/<Name>.wav) or a voices/<name>/ folder,
-"lang": zh | en | ja (text normalisation; ja is left as written)}. `seed` makes a take repeatable.
+"lang": zh | en | ja (text normalisation; ja is left as written), "rate": speed-up (ffmpeg atempo, pitch
+kept; MOSS has no speed control)}. `seed` makes a take repeatable.
 SAY_DRAFT=1 uses the Nano model (fast) instead of MOSS-TTS-Local 1.7B 8-bit.
 """
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -76,7 +78,15 @@ def main():
             audio = resample_poly(audio, SR // g, sr // g)
         out = Path(j["out"])
         out.parent.mkdir(parents=True, exist_ok=True)
-        sf.write(out, np.clip(audio, -1, 1).astype(np.float32), SR, subtype="PCM_16")
+        rate = float(d.get("rate", 1.0))
+        if rate == 1.0:
+            sf.write(out, np.clip(audio, -1, 1).astype(np.float32), SR, subtype="PCM_16")
+        else:
+            raw = out.with_suffix(".raw.wav")
+            sf.write(raw, np.clip(audio, -1, 1).astype(np.float32), SR, subtype="PCM_16")
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(raw), "-filter:a", f"atempo={rate}", "-ar", str(SR), "-ac", "1",
+                            "-c:a", "pcm_s16le", str(out)], check=True)
+            raw.unlink()
         print(out.name, flush=True)
 
 
