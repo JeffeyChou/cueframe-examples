@@ -2,9 +2,10 @@
 // camera pulls out through the screen to the stage where Claude is about to speak (s5), and the
 // narrator rushes on (s6), motion-blurred only while it rushes. The strip is an instance of the
 // `cards` composition placed on the screen through the camera; the ring finds card 3 by its anchor.
-import { clock, cue, scene, type Frame, type MountContext, type Rect } from '@cueframe/core'
+import { clock, cue, scene, type Frame, type MountContext } from '@cueframe/core'
 import {
-  C, H, W, ball, blink, bump, camAt, camera, claude, crowd, outBack, outCubic, said, s, seg, since, squash, stageSvg, start, type Cam,
+  BODY, C, H, STAGE, VILLAGE, W, ball, blink, bump, camPath, camera, claude, compRect, crowd, envelope, flinch, hop, look, outBack, outCubic,
+  pose, said, s, seg, squashed, stageSvg, start,
 } from '../lib.js'
 import { cards, LENGTH } from './strip.js'
 import { T as E } from '../timing.js'
@@ -22,21 +23,17 @@ function times(ctx: MountContext) {
 }
 
 /** The camera: the screen fills the frame, then pull out to the stage; a small push as the narrator lands. */
-function cameraAt(t: number, T: ReturnType<typeof times>): Cam {
-  const full = { x: SCREEN.x + SCREEN.w / 2, y: SCREEN.y + SCREEN.h / 2, zoom: 1 / K }
-  return camAt(t, [
-    { t: T.s3, ...full },
-    { t: T.out, ...full },
-    { t: T.out + 2.4, x: 720, y: 450, zoom: 1.45 },
-    { t: T.rush, x: 720, y: 450, zoom: 1.45 },
-    { t: T.land + 0.9, x: 720, y: 500, zoom: 1.7, ease: outCubic },
-  ])
-}
-/** Where the screen is on stage under the camera (the strip instance's rect). */
-const screenOn = (c: Cam): Rect => ({ x: (SCREEN.x - c.x) * c.zoom + W / 2, y: (SCREEN.y - c.y) * c.zoom + H / 2, w: SCREEN.w * c.zoom, h: SCREEN.h * c.zoom })
+const cameraOf = (T: ReturnType<typeof times>) => camPath([
+  { t: T.s3, x: SCREEN.x + SCREEN.w / 2, y: SCREEN.y + SCREEN.h / 2, zoom: 1 / K },
+  { t: T.out },
+  { t: T.out + 2.4, x: 720, y: 450, zoom: 1.45 },
+  { t: T.rush },
+  { t: T.land + 0.9, y: 500, zoom: 1.7, ease: outCubic },
+])
 
 function build(ctx: MountContext) {
   const T = times(ctx)
+  const cam = cameraOf(T)
   // Back: villagers on the horizon, the posts. Then the strip, playing on the screen. Front: its frame,
   // Claude behind the lectern, the narrator, the ring, the foreground crowd.
   const svg = stageSvg(ctx.root, C.paper)
@@ -46,7 +43,7 @@ function build(ctx: MountContext) {
   for (const x of [SCREEN.x + 40, SCREEN.x + SCREEN.w - 40]) s(world, 'rect', { x: x - 5, y: SCREEN.y + SCREEN.h, width: 10, height: 200, fill: C.ink })
   const film = ctx.comp(cards, {
     id: 'screen', params: { stutter: true }, time: clock.loop({ start: T0, length: LENGTH }),
-    rect: (f) => screenOn(cameraAt(f.t, T)), fit: 'stretch',
+    rect: (f) => compRect(cam(f.t), STAGE, SCREEN), fit: 'stretch',
   })
   const front = stageSvg(ctx.root)
   const fworld = s(front, 'g')
@@ -59,22 +56,23 @@ function build(ctx: MountContext) {
   const clipRect = s(clip, 'rect', {})
   const ringG = s(front, 'g', { 'clip-path': `url(#${clip.id})` })
   const ring = [0, 1].map((i) => s(ringG, 'ellipse', { cx: 0, cy: 0, rx: 300 + i * 22, ry: 270 + i * 18, fill: 'none', stroke: C.red, 'stroke-width': 14 - i * 5, 'stroke-linecap': 'round', pathLength: 1, 'stroke-dasharray': '1 1' }))
-  // Foreground crowd: a parallax layer of its own (it scales with zoom^0.3, not with the world).
+  // Foreground crowd: a layer of its own, anchored to the frame's bottom edge.
   const fgLayer = s(front, 'g')
   const fg = crowd(fgLayer, 11, { x0: -60, x1: 1500, y: H + 30, h: [150, 220], seed: 9, colors: [C.ink, C.ink, C.navy, C.ink], spread: 30 })
-  return { times: T, world, fworld, film, ring, ringG, clipRect, cl, me, back, fgLayer, front: fg }
+  const FACE = { ...BODY, brow: 0, up: 0 }
+  return { times: T, cam, world, fworld, film, ring, ringG, clipRect, cl, me, back, fgLayer, front: fg, FACE }
 }
 type S = ReturnType<typeof build>
 
 function draw(f: Frame, st: S) {
   const T = st.times
   const t = f.t
-  const cam = cameraAt(t, T)
+  const cam = st.cam(t)
   camera(st.world, cam)
   camera(st.fworld, cam)
   // Ring: drawn on as the voice says "镜头", a second stroke and a pulse on "不太顺"; it sits where the
   // strip instance says card 3 is, at the strip's scale on stage.
-  const scr = screenOn(cam)
+  const scr = compRect(cam, STAGE, SCREEN)
   for (const [k, v] of Object.entries({ x: scr.x, y: scr.y, width: scr.w, height: scr.h })) st.clipRect.setAttribute(k, v.toFixed(2))
   const c3 = st.film.map(f, 'card3')
   const pulse = 1 + 0.05 * bump(t, T.bad, 0.35)
@@ -86,29 +84,34 @@ function draw(f: Frame, st: S) {
     r.setAttribute('transform', `translate(${c3.x.toFixed(2)} ${c3.y.toFixed(2)}) scale(${(pulse * scr.w / W).toFixed(5)})`)
   })
   // Foreground crowd: hidden below the frame while zoomed in, rises and looks up on "看了过去".
-  const z = cam.zoom
   const rise = 1 - seg(t, T.look - 0.3, T.look + 0.5, outBack)
-  const fs = z ** 0.3
+  // Anchored to the frame's bottom edge and scaled by zoom^0.3: not a parallax layer (parallax() scales
+  // about the stage centre and follows the camera, which pushes the crowd out of the frame).
+  const fs = cam.zoom ** 0.3
   st.fgLayer.setAttribute('transform', `translate(${W / 2} ${H + 260 * rise}) scale(${fs.toFixed(4)}) translate(${-W / 2} ${-H})`)
   const lookUp = seg(t, T.look, T.look + 0.3)
-  st.front.forEach((v, i) => {
-    const hop = bump(t, T.look + 0.04 * i, 0.3) * 18
-    const shrug = bump(t, T.shrug + 0.05 * (i % 4), 0.4) * 10
-    v.v.set({ x: v.x, y: v.y - hop - shrug, look: lookUp ? 0 : v.face * 0.6, up: lookUp, brow: shrug ? -0.6 : 0, blink: blink(t, v.seed) })
-  })
-  st.back.forEach((v) => {
-    const toward = t > T.rush ? -1 : (720 - v.x) / 800
-    v.v.set({ x: v.x, y: v.y, look: Math.max(-1, Math.min(1, toward)), up: 0.4, blink: blink(t, v.seed) })
-  })
-  // Claude: settles, leans in to speak, then flinches at the rush.
-  const lean = seg(t, T.speak - 0.35, T.speak, outCubic) * (1 - seg(t, T.rush, T.rush + 0.15))
-  const flinch = bump(t, T.land, 0.4)
-  st.cl.set({ x: 720 + flinch * 6, y: 594 - lean * 10 + flinch * 6, ...squash(-0.05 * lean + 0.08 * flinch), eyes: flinch > 0.2 ? 'wide' : 'line', look: t > T.rush ? -0.8 : 0, blink: blink(t, 3) })
+  st.front.forEach((v, i) => st.front[i]!.v.set(pose({ ...st.FACE, x: v.x, y: v.y, look: v.face * 0.6 },
+    { mode: 'blend', w: lookUp, v: { look: 0, up: 1 } },
+    hop(t, T.look + 0.04 * i, { height: 18, dur: 0.3, stretch: 0 }),
+    { mode: 'add', w: bump(t, T.shrug + 0.05 * (i % 4), 0.4), v: { y: -10, brow: -0.6 } },
+    blink(t, v.seed))))
+  st.back.forEach((v) => v.v.set(pose({ ...st.FACE, x: v.x, y: v.y, look: Math.max(-1, Math.min(1, (720 - v.x) / 800)), up: 0.4 },
+    look(t, T.rush, { x: -1, y: 0, in: 0.12 }),
+    blink(t, v.seed))))
+  // Claude: leans in to speak (the rush is the lean's release), flinches at the landing, looks after the narrator.
+  const fl = flinch(t, T.land, { dir: -1 })
+  st.cl.set(pose({ ...BODY, x: 720, y: 594, eyes: 'line' as 'line' | 'wide' },
+    { mode: 'add', w: envelope(t, T.speak - 0.35, { in: 0.35, hold: T.rush - T.speak, out: 0.15 }), v: { y: -10, sx: -0.05, sy: 0.05 } },
+    fl,
+    { mode: 'replace', w: (fl.w as number) > 0.2 ? 1 : 0, v: { eyes: 'wide' } },
+    look(t, T.rush, { x: -0.8, y: 0, in: 0.12 }),
+    blink(t, 3)))
   // Narrator: zips in from the left, stretched by speed, lands in front of the lectern with a squash.
   const run = seg(t, T.rush - 0.3, T.land, outCubic)
-  const speed = since(t, T.rush - 0.3) >= 0 && run < 1 ? (1 - run) : 0
-  const land = bump(t, T.land, 0.3)
-  st.me.set({ x: -120 + run * 840, y: GROUND, ...squash(-0.35 * speed + 0.25 * land), rot: 8 * speed, eyes: 'line', look: 0.6, o: run > 0 ? 1 : 0 })
+  const speed = t >= T.rush - 0.3 && run < 1 ? 1 - run : 0
+  st.me.set(pose({ ...BODY, x: -120 + run * 840, y: GROUND, look: 0.6, o: run > 0 ? 1 : 0, eyes: 'line' as const },
+    { mode: 'add', w: speed, v: { sx: -0.35, sy: 0.35, rot: 8 } },
+    squashed(t, T.land, { q: 0.25, dur: 0.3 }, VILLAGE)))
 }
 
 export const stage = scene({

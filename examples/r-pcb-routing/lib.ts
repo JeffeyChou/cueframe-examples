@@ -1,6 +1,7 @@
 // Shared look, worlds and timing of the slice. Visual times come from the narration (cues, words)
 // and the bed's beat grid; worlds and layer art are seeded, built once in mount.
 import { seeded } from '@cueframe/core'
+import { follow } from '@cueframe/recipes/camera.js'
 import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
 export { seg, outCubic, inOutCubic, outBack, clamp01, lerp } from '@cueframe/recipes/motion.js'
@@ -198,11 +199,8 @@ export function headAt(w: World, s: number, k = -1): Pt {
 export const lengthAt = (w: World, t: number) => Math.max(0, (t - w.t0) * w.speed)
 
 /** The camera: the head smoothed over the last 1.3 s (a pure function of t), so turns swing the rider on screen. */
-export function cameraAt(w: World, t: number): Pt {
-  let x = 0, y = 0
-  for (let k = 0; k < 10; k++) { const p = headAt(w, lengthAt(w, t - k * 0.13)); x += p.x; y += p.y }
-  return { x: x / 10 + 160, y: y / 10 }
-}
+export const cameraAt = (w: World, t: number): Pt =>
+  follow((u) => headAt(w, lengthAt(w, u)), t, { window: 1.17, taps: 10, lead: { x: 160, y: 0 } })
 
 /**
  * Draw world `w` at time t into rect r of g: the camera follows the head, `zoom` scales the world
