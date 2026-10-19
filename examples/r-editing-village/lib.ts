@@ -3,7 +3,10 @@
 // narration (cues, words).
 import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
-export { seg, win, lerp, clamp01, outCubic, inCubic, inOutCubic, outBack, spring, noise1, shake } from '@cueframe/recipes/motion.js'
+export { seg, win, lerp, clamp01, outCubic, inCubic, inOutCubic, outBack, spring, noise1, shake, bump } from '@cueframe/recipes/motion.js'
+export { camPath, compRect, parallax, type Cam } from '@cueframe/recipes/camera.js'
+export { pose, blink, envelope, look, hop, flinch, squash as squashed, type Layer, type Style } from '@cueframe/recipes/acting.js'
+import { camSvg, type Cam } from '@cueframe/recipes/camera.js'
 import { clamp01, inOutCubic, lerp, noise1 } from '@cueframe/recipes/motion.js'
 
 export const CUES: Record<string, number> = cueTable
@@ -45,22 +48,11 @@ export function place(g: SVGGElement, p: Pose) {
   g.setAttribute('transform', `translate(${p.x.toFixed(2)} ${p.y.toFixed(2)}) rotate(${(p.rot ?? 0).toFixed(3)}) scale(${(k * (p.sx ?? 1)).toFixed(4)} ${(k * (p.sy ?? 1)).toFixed(4)})`)
   g.style.opacity = String(p.o ?? 1)
 }
-/** Squash and stretch that keeps the volume: q > 0 squashes. */
-export const squash = (q: number) => ({ sx: 1 + q, sy: 1 / (1 + q) })
 
-/** Seconds since `at`, or -1 before it. */
-export const since = (t: number, at: number) => (t < at ? -1 : t - at)
-/** A damped bump 0 → 1 → 0 over `dur` (hops, nods, flinches). */
-export const bump = (t: number, at: number, dur: number) => {
-  const x = (t - at) / dur
-  return x <= 0 || x >= 1 ? 0 : Math.sin(Math.PI * x)
-}
-/** Eyes close briefly at the given times (blinks look alive; seeded per character). */
-export function blink(t: number, seed: number, every = 3.2) {
-  const k = Math.floor((t + seed * 1.37) / every)
-  const at = k * every - seed * 1.37 + every * (0.3 + 0.4 * ((Math.sin(k * 12.9898 + seed) * 43758.5453) % 1 + 1) % 1)
-  return bump(t, at, 0.16)
-}
+/** The channels every rig's set() reads (acting layers write these; rigs add their own). */
+export const BODY = { x: 0, y: 0, rot: 0, sx: 1, sy: 1, o: 1, look: 0, lookY: 0, blink: 0 }
+/** The slice's acting style: a short anticipation and an outBack overshoot. */
+export const VILLAGE = { anticipate: 0.12, antic: 0.15, overshoot: 1.7 }
 
 // ---------- characters ----------
 let uid = 0
@@ -258,22 +250,6 @@ export function mulberry(seed: number) {
 }
 
 // ---------- camera ----------
-export interface Cam { x: number; y: number; zoom: number; rot?: number }
-/** Points the stage at world point (x, y) with the given zoom. */
-export function camera(g: SVGGElement, c: Cam) {
-  g.setAttribute('transform', `translate(${W / 2} ${H / 2}) rotate(${(c.rot ?? 0).toFixed(3)}) scale(${c.zoom.toFixed(5)}) translate(${(-c.x).toFixed(3)} ${(-c.y).toFixed(3)})`)
-}
-/** Camera keys in time order; eased between neighbours. */
-export function camAt(t: number, keys: (Cam & { t: number; ease?: (x: number) => number })[]): Cam {
-  if (t <= keys[0]!.t) return keys[0]!
-  for (let i = 1; i < keys.length; i++) {
-    const b = keys[i]!
-    if (t < b.t) {
-      const a = keys[i - 1]!
-      const k = (b.ease ?? inOutCubic)((t - a.t) / (b.t - a.t))
-      // Zoom interpolates in log space so a push feels even.
-      return { x: lerp(a.x, b.x, k), y: lerp(a.y, b.y, k), zoom: Math.exp(lerp(Math.log(a.zoom), Math.log(b.zoom), k)), rot: lerp(a.rot ?? 0, b.rot ?? 0, k) }
-    }
-  }
-  return keys[keys.length - 1]!
-}
+export const STAGE = { w: W, h: H }
+/** Points a stage-size SVG group at world point (x, y) with the given zoom (recipes/camera.ts). */
+export const camera = (g: SVGGElement, c: Cam) => g.setAttribute('transform', camSvg(c, STAGE))

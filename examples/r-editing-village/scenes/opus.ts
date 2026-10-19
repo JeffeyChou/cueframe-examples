@@ -3,7 +3,7 @@
 // flies into the box as a wobbling yellow paper blob.
 import { cue, scene } from '@cueframe/core'
 import { T as E } from '../timing.js'
-import { C, SANS, ball, blink, blobPath, bump, camera, crowd, cube, defs, elder, inOutCubic, outBack, outCubic, said, s, seg, shake, squash, stageSvg, start } from '../lib.js'
+import { BODY, C, SANS, VILLAGE, ball, blink, blobPath, bump, camera, crowd, cube, defs, elder, envelope, hop, inOutCubic, look, outBack, outCubic, pose, said, s, seg, shake, squashed, stageSvg, start } from '../lib.js'
 
 export const turn = scene({
   id: 'turn',
@@ -24,13 +24,16 @@ export const turn = scene({
   render(f, st) {
     const t = f.t
     camera(st.world, { x: 760, y: 560 - 30 * seg(t, st.t0, st.end), zoom: 1 + 0.12 * seg(t, st.t0, st.end, inOutCubic) })
-    const d = seg(t, st.dark - 0.1, st.dark + 0.6, inOutCubic)
-    const rise = seg(t, st.shame - 0.2, st.shame + 0.5, outBack)
-    st.me.set({ x: 640, y: 655 - 18 * rise, ...squash(-0.04 * rise + 0.06 * bump(t, st.dark - 0.1, 0.5)), dark: d, eyes: t > st.shame ? 'line' : 'open', look: t > st.power ? 0.7 : 0, blink: blink(t, 4) })
+    st.me.set(pose({ ...BODY, x: 640, y: 655, dark: seg(t, st.dark - 0.1, st.dark + 0.6, inOutCubic), eyes: 'open' as 'open' | 'line' },
+      { mode: 'add', w: envelope(t, st.shame - 0.08, { in: 0.58, hold: Infinity, out: 0 }, VILLAGE), v: { y: -18, sx: -0.04, sy: 0.04 } },
+      squashed(t, st.dark - 0.1, { q: 0.06, dur: 0.5 }),
+      { mode: 'replace', w: t > st.shame ? 1 : 0, v: { eyes: 'line' } },
+      look(t, st.power, { x: 0.7, y: 0, in: 0.12 }),
+      blink(t, 4)))
     const glow = bump(t, st.power, 0.8)
     st.box.set({ x: 910, y: 640, slit: glow > 0.3 ? C.mustard : C.cream, glow: 0.8 * glow, depth: 0.25 })
-    st.ae.set({ x: 92, y: 1068, eyes: 'happy', blink: blink(t, 6) })
-    st.sil.forEach((v) => v.v.set({ x: v.x, y: v.y, look: 1, up: 0.6, blink: blink(t, v.seed) }))
+    st.ae.set(pose({ ...BODY, x: 92, y: 1068, eyes: 'happy' as const }, blink(t, 6)))
+    st.sil.forEach((v) => v.v.set(pose({ ...BODY, x: v.x, y: v.y, look: 1, up: 0.6 }, blink(t, v.seed))))
   },
 })
 
@@ -58,9 +61,11 @@ export const prompt = scene({
     const t = f.t
     camera(st.world, { x: 720, y: 560, zoom: 1 + 0.05 * seg(t, st.t0, st.fly + 1.5, inOutCubic) })
     // The narrator straightens up like Claude (smug eyes), hops toward the box on "说".
-    const hop = bump(t, st.say - 0.1, 0.4)
     const step = seg(t, st.say - 0.1, st.say + 0.3, outCubic)
-    st.me.set({ x: 250 + 90 * step, y: 830 - 60 * hop, ...squash(-0.15 * hop), eyes: t > st.copy ? 'line' : 'open', look: 0.6, blink: blink(t, 3) })
+    st.me.set(pose({ ...BODY, x: 250 + 90 * step, y: 830, look: 0.6, eyes: 'open' as 'open' | 'line' },
+      hop(t, st.say - 0.1, { height: 60, dur: 0.4, stretch: 0.15 }),
+      { mode: 'replace', w: t > st.copy ? 1 : 0, v: { eyes: 'line' } },
+      blink(t, 3)))
     // The instruction: pops up beside the narrator, wobbles, then arcs into the slit and lights it.
     const grow = seg(t, st.pop - 0.1, st.pop + 0.35, outBack)
     const fly = seg(t, st.fly, st.fly + 0.7, inOutCubic)
