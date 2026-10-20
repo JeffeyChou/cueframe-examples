@@ -7,7 +7,7 @@
 import { scene, type Frame, type FrameFit, type FrameSource } from '@cueframe/core'
 import { chroma, drawWindow, hitIn, pulse, shotAt, type Paint, type Rect } from '@cueframe/recipes/beatcut.js'
 import {
-  BlockGrid, boxes, chain, clusters, crosshair, dots, lattice, latticeEdges, labels, pixelZone, scanline, slate, style, trail, vectors,
+  advect, BlockGrid, boxes, chain, clusters, crosshair, dots, lattice, latticeEdges, labels, pixelZone, scanline, slate, style, trail, vectors,
   type Cluster, type Flow, type GridNode, type Label,
 } from '@cueframe/recipes/schematic.js'
 import { BREATH, CLIPS, DUR, PLANS, SHOTS, type Plan } from '../edit.js'
@@ -107,7 +107,7 @@ export default scene({
     if (t >= 20.57 && t < 20.82) {
       g.save()
       g.globalCompositeOperation = 'screen'
-      g.globalAlpha = 0.85 * Math.pow(1 - (t - 20.57) / 0.25, 2)
+      g.globalAlpha = 0.45 * Math.pow(1 - (t - 20.57) / 0.25, 2)
       g.fillStyle = '#dfe9ff'
       g.fillRect(0, 0, W, H)
       g.restore()
@@ -135,7 +135,13 @@ export default scene({
       const readout: Rect = { x: 0, y: H - sk.margin - 190, w: sk.margin + 300, h: 190 + sk.margin }
       // the low band lowers the bar and stretches the lines: the lattice breathes with the 808
       const threshold = 0.24 - 0.1 * low
-      const nodes: GridNode[] = grid.nodes(k, { smooth: 3, threshold, max: Math.round(16 + 44 * d), spacing: 2, fit, within, age: 12, from: k0 })
+      const at = (id: string, j: number) => {
+        if (j < k0) return null
+        const q = s.track(id, j, fit)
+        return q.visible ? q : null
+      }
+      // nodes ride the picture's motion since they were born (grid cells stay their identity)
+      const nodes: GridNode[] = advect(grid.nodes(k, { smooth: 3, threshold, max: Math.round(16 + 44 * d), spacing: 2, fit, within, age: 30, from: k0 }), s.tracks(), k, at)
         .filter((n) => !(n.x < readout.x + readout.w && n.y > readout.y))
       const dist = (240 + 170 * low) * zoom
 
@@ -170,11 +176,7 @@ export default scene({
       items.push(...lattice(g, nodes, sk, { dist, max: 5, grow: 8, alpha: 0.6 + 0.35 * d, accent: 0.08, lengths: 2 }))
       const flows: Flow[] = tracked(st, p).map((id) => ({
         id,
-        pts: trail(k, 12, (j) => {
-          if (j < k0) return null
-          const q = s.track(id, j, fit)
-          return q.visible ? q : null
-        }),
+        pts: trail(k, 12, (j) => at(id, j)),
       }))
       vectors(g, flows, sk, { len: 12, gain: 4, accent: 0.15, alpha: 0.45 + 0.55 * high })
 
