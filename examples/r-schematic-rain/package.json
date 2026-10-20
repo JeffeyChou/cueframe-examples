@@ -1,0 +1,9 @@
+{
+  "name": "@cueframe/example-r-schematic-rain",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": ["build/hits.json"],
+    "needs": "footage and music from Mixkit: bash examples/r-schematic-rain/make.sh"
+  }
+}

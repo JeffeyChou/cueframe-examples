@@ -1,0 +1,10 @@
+[
+  {"id": "puddle", "src": "data/clips/puddle.mp4", "in": 3, "dur": 4},
+  {"id": "drops", "src": "data/clips/drops.mp4", "in": 2, "dur": 4},
+  {"id": "roof", "src": "data/clips/roof.mp4", "in": 1, "dur": 4},
+  {"id": "lightning", "src": "data/clips/lightning.mp4", "in": 0.5, "dur": 4},
+  {"id": "gulls-sunset", "src": "data/clips/gulls-sunset.mp4", "in": 4, "dur": 4},
+  {"id": "gull-glide", "src": "data/clips/gull-glide.mp4", "in": 2, "dur": 4},
+  {"id": "window", "src": "data/clips/window.mp4", "in": 3, "dur": 4},
+  {"id": "lily", "src": "data/clips/lily.mp4", "in": 5, "dur": 4}
+]
