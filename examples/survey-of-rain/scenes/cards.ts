@@ -27,11 +27,14 @@ export default scene({
   dur: DUR,
   mount(ctx) {
     const title = card(ctx.root, '雨的测绘', 'A SURVEY OF RAIN', '33 SPECIMENS · 59.2 S · 104.9 BPM')
+    const scrim = ctx.root.appendChild(document.createElement('div'))
+    Object.assign(scrim.style, { position: 'absolute', inset: '0', background: '#020814' })
     const end = card(ctx.root, '测绘完毕', 'END OF SURVEY', 'FOOTAGE & MUSIC MIXKIT · OVERLAY AFTER COMFYUI-SCHEMATIC')
-    return { title, end }
+    return { title, end, scrim }
   },
   render(f, s) {
     s.title.style.opacity = fade(f.t, 0.9, 6.1).toFixed(3)
     s.end.style.opacity = fade(f.t, DUR - 4.6, DUR + 1).toFixed(3)
+    s.scrim.style.opacity = (0.72 * fade(f.t, DUR - 4.9, DUR + 1, 0.9)).toFixed(3)
   },
 })

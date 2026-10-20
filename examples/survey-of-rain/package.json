@@ -3,7 +3,11 @@
   "private": true,
   "type": "module",
   "cueframe": {
-    "generated": ["build/hits.json", "build/fonts/fonts.json"],
+    "generated": [
+      "build/hits.json",
+      "build/fonts/fonts.json",
+      "build/env.json"
+    ],
     "needs": "Mixkit footage and music: bash examples/survey-of-rain/make.sh"
   }
 }

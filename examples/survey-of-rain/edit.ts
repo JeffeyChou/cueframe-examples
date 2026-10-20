@@ -13,8 +13,9 @@ export interface Section {
   title: string
   at: number
   end: number
-  /** A cut every `every` beats; `cuts` forces cuts (seconds from the section start). */
-  every: number
+  /** Beats per shot, cycled (holds and bursts); `cuts` forces cuts (seconds from the section start). */
+  pattern: number[]
+  min?: number
   cuts?: number[]
   clips: string[]
   kinds: WindowKind[]
@@ -22,34 +23,34 @@ export interface Section {
   grade: Duotone
 }
 
-const ORANGE: Duotone = { dark: '#140400', light: '#ff6a2a', contrast: 1.25 }
+const ORANGE: Duotone = { dark: '#16020a', light: '#ff2a3a', contrast: 1.25 }
 export const SECTIONS: Section[] = [
-  { id: 'calib', title: '01 CALIBRATION', at: 0, end: 6.86, every: 64, clips: ['clouds-dark'], kinds: ['tint'], density: [0.05, 0.3], grade: DUO.cobalt },
+  { id: 'calib', title: '01 CALIBRATION', at: 0, end: 6.86, pattern: [64], clips: ['clouds-dark'], kinds: ['tint'], density: [0.05, 0.3], grade: DUO.cobalt },
   {
-    id: 'sky', title: '02 SKY', at: 6.86, end: 13.71, every: 4,
+    id: 'sky', title: '02 SKY', at: 6.86, end: 13.71, pattern: [4, 2, 2, 4],
     clips: ['clouds-moving', 'lightning-cut', 'waves-storm'], kinds: ['pip', 'sliver', 'outline'], density: [0.3, 0.45], grade: DUO.cobalt,
   },
   {
     // the snare roll: cuts every 4, then 2, then 1 beat; a still cobalt breath before the drop
-    id: 'build', title: '03 PRESSURE', at: 13.71, end: 20.57, every: 64,
+    id: 'build', title: '03 PRESSURE', at: 13.71, end: 20.57, pattern: [64],
     cuts: [...[4, 6, 8, 9, 10].map((b) => b * BEAT), 6.86 - 0.62],
     clips: ['rain-dark', 'screen-rain', 'roof', 'window', 'lamp-rain', 'clouds-dark', 'lightning-city'],
     kinds: ['tint', 'sliver', 'pip', 'sliver', 'tint', 'grow', 'tint'], density: [0.45, 0.8], grade: DUO.cobalt,
   },
   {
-    id: 'drop', title: '04 RAINFALL', at: 20.57, end: 34.28, every: 2,
+    id: 'drop', title: '04 RAINFALL', at: 20.57, end: 34.28, pattern: [2, 2, 1, 1, 2, 4, 1, 0.5, 0.5, 2, 4], min: 0.25,
     clips: ['lightning-city', 'times-square', 'traffic-night', 'cars-rain', 'lamp-rain', 'window', 'screen-rain', 'roof', 'rain-dark', 'city-rain', 'lightning-clouds', 'traffic-night'],
-    kinds: ['circle', 'pip', 'sliver', 'tint', 'grow', 'pip', 'sliver', 'circle', 'tint', 'pip', 'sliver', 'grow'], density: [1, 1], grade: DUO.cobalt,
+    kinds: ['pip', 'pip', 'sliver', 'tint', 'grow', 'pip', 'sliver', 'pip', 'tint', 'pip', 'sliver', 'grow'], density: [1, 1], grade: DUO.cobalt,
   },
   {
-    id: 'surface', title: '05 SURFACE', at: 34.28, end: 48.0, every: 2,
+    id: 'surface', title: '05 SURFACE', at: 34.28, end: 48.0, pattern: [4, 2, 1, 1, 2, 1, 1, 4, 0.5, 0.5, 1, 2], min: 0.25,
     clips: ['puddle', 'drops-puddle', 'puddle-slow', 'drop-macro', 'leaves', 'lily', 'flowers-rain', 'reflection-house', 'reflection-men', 'umbrella-jump', 'umbrella-girl', 'umbrella-park'],
-    kinds: ['circle', 'split', 'pip', 'tint', 'circle', 'split', 'sliver', 'pip', 'split', 'circle', 'tint', 'grow'], density: [0.9, 0.8], grade: DUO.steel,
+    kinds: ['pip', 'split', 'pip', 'tint', 'pip', 'split', 'sliver', 'pip', 'split', 'pip', 'tint', 'grow'], density: [0.9, 0.8], grade: DUO.steel,
   },
   {
-    id: 'clear', title: '06 CLEARING', at: 48.0, end: DUR, every: 4,
-    clips: ['gulls-silhouette', 'flock', 'gull-glide', 'gulls-sunset', 'moon'],
-    kinds: ['outline', 'pip', 'tint', 'letterbox', 'outline'], density: [0.45, 0.1], grade: DUO.cobalt,
+    id: 'clear', title: '06 CLEARING', at: 48.0, end: DUR, pattern: [4],
+    clips: ['gulls-silhouette', 'flock', 'gulls-sunset', 'moon'],
+    kinds: ['outline', 'pip', 'letterbox', 'outline'], density: [0.45, 0.1], grade: DUO.cobalt,
   },
 ]
 
@@ -61,7 +62,7 @@ function sectionShots(s: Section): Shot[] {
     dur: s.end - s.at,
     beats: BEATS.filter((b) => b >= s.at && b < s.end).map(shift),
     hits: HITS.filter((h) => h.t >= s.at && h.t < s.end).map((h) => ({ ...h, t: shift(h.t) })),
-    every: s.every, at: s.cuts, min: 0.5, tail: 0.5,
+    pattern: s.pattern, at: s.cuts, min: s.min ?? 0.5, tail: 0.5,
   })
   return shots.map((x) => ({ ...x, at: x.at + s.at, end: x.end + s.at, hits: x.hits.map((h) => ({ ...h, t: h.t + s.at })) }))
 }
@@ -78,7 +79,7 @@ for (const s of SECTIONS) {
     PLANS.push({
       shot: { ...shot, i: PLANS.length }, section: s, n, clip, insert: next, kind,
       density: s.density[0] + (s.density[1] - s.density[0]) * p,
-      grade: s.id === 'clear' && clip === 'gulls-sunset' ? ORANGE : s.grade,
+      grade: s.grade,
       alt: ORANGE, overlay: PLANS.length % 2 ? 'rays' : 'chain',
     })
   })
