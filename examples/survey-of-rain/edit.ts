@@ -1,22 +1,15 @@
 // The cut: six sections of the song (Mixkit "Slow Rain", 6.86–66.06 s), each with its own cut rate,
 // window grammar, clips and overlay density. Shots come from the beat grid and the drum hits.
-import { cutList, tiers, type Duotone, type Shot, type WindowKind, DUO } from '@cueframe/recipes/beatcut.js'
+import { cutSections, tiers, DUO, type Duotone, type Section as CutRule, type SectionShot, type WindowKind } from '@cueframe/recipes/beatcut.js'
 import hitsFile from './build/hits.json'
 
 export const DUR = hitsFile.dur
 export const HITS = tiers(hitsFile.hits)
-const BEATS = hitsFile.beats
 const BEAT = 60 / hitsFile.tempo
 
-export interface Section {
-  id: string
+/** A cut rule (`pattern`: beats per shot, cycled; `cuts`: forced, seconds from the start) and the section's look. */
+export interface Section extends CutRule {
   title: string
-  at: number
-  end: number
-  /** Beats per shot, cycled (holds and bursts); `cuts` forces cuts (seconds from the section start). */
-  pattern: number[]
-  min?: number
-  cuts?: number[]
   clips: string[]
   kinds: WindowKind[]
   density: [number, number]
@@ -54,40 +47,21 @@ export const SECTIONS: Section[] = [
   },
 ]
 
-export interface Plan { shot: Shot; section: Section; n: number; clip: string; insert: string; kind: WindowKind; density: number; grade: Duotone; alt: Duotone; overlay: 'chain' | 'rays' }
+export interface Plan { shot: SectionShot; section: Section; clip: string; insert: string; kind: WindowKind; density: number; grade: Duotone; alt: Duotone }
 
-function sectionShots(s: Section): Shot[] {
-  const shift = (t: number) => +(t - s.at).toFixed(3)
-  const shots = cutList({
-    dur: s.end - s.at,
-    beats: BEATS.filter((b) => b >= s.at && b < s.end).map(shift),
-    hits: HITS.filter((h) => h.t >= s.at && h.t < s.end).map((h) => ({ ...h, t: shift(h.t) })),
-    pattern: s.pattern, at: s.cuts, min: s.min ?? 0.5, tail: 0.5,
-  })
-  return shots.map((x) => ({ ...x, at: x.at + s.at, end: x.end + s.at, hits: x.hits.map((h) => ({ ...h, t: h.t + s.at })) }))
-}
-
-export const PLANS: Plan[] = []
-for (const s of SECTIONS) {
-  const shots = sectionShots(s)
-  shots.forEach((shot, n) => {
-    const clip = s.clips[n % s.clips.length]!
-    const kind = s.kinds[n % s.kinds.length]!
-    // a growing window opens onto the next shot's clip; other windows show a clip of the section
-    const next = s.clips[(n + 1) % s.clips.length]!
-    const p = shots.length > 1 ? n / (shots.length - 1) : 0
-    PLANS.push({
-      shot: { ...shot, i: PLANS.length }, section: s, n, clip, insert: next, kind,
-      density: s.density[0] + (s.density[1] - s.density[0]) * p,
-      grade: s.grade,
-      alt: ORANGE, overlay: PLANS.length % 2 ? 'rays' : 'chain',
-    })
-  })
-}
+export const SHOTS = cutSections(SECTIONS, { beats: hitsFile.beats, hits: HITS, dur: DUR, min: 0.5, tail: 0.5 })
+export const PLANS: Plan[] = SHOTS.map((shot) => {
+  const s = SECTIONS.find((x) => x.id === shot.section)!
+  const p = shot.of > 1 ? shot.n / (shot.of - 1) : 0
+  // a growing window opens onto the next shot's clip; other windows show a clip of the section
+  return {
+    shot, section: s, clip: s.clips[shot.n % s.clips.length]!, insert: s.clips[(shot.n + 1) % s.clips.length]!, kind: s.kinds[shot.n % s.kinds.length]!,
+    density: s.density[0] + (s.density[1] - s.density[0]) * p, grade: s.grade, alt: ORANGE,
+  }
+})
 // the grow window of the build's last shot opens onto the drop's first clip
 for (let i = 0; i + 1 < PLANS.length; i++) if (PLANS[i]!.kind === 'grow') PLANS[i]!.insert = PLANS[i + 1]!.clip
 
-export const SHOTS = PLANS.map((p) => p.shot)
 export const CLIPS = [...new Set(PLANS.flatMap((p) => [p.clip, p.insert]))]
 
 /** The breath before the drop: no footage, a cobalt field and the slate. */

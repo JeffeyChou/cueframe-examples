@@ -7,7 +7,7 @@ colour-block windows jump on the drums; an orange accent comes in with the song'
 
 Made after studying a short rain montage (colour blocks on drum hits) and the ComfyUI-Schematic
 overlay; the spike and its friction log are in `../r-schematic-rain`. Built on
-`recipes/beatcut.ts`, `recipes/schematic.ts`, `ctx.frames`, `f.hit` and `cueframe-py
+`recipes/beatcut.ts` (`cutSections`), `recipes/schematic.ts` (`analysis`), `ctx.frames`, `f.hit` and `cueframe-py
 hits/excerpt/footage` (cueframe `docs/guide/rhythm.md`).
 
 | Section | Song (excerpt s) | Cut | Windows |
