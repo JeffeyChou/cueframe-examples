@@ -1,0 +1,13 @@
+{
+  "name": "@cueframe/example-survey-of-rain",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": [
+      "build/hits.json",
+      "build/fonts/fonts.json",
+      "build/env.json"
+    ],
+    "needs": "Mixkit footage and music: bash examples/survey-of-rain/make.sh"
+  }
+}

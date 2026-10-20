@@ -1,0 +1,200 @@
+[
+ {
+  "id": "clouds-dark",
+  "src": "data/clips/clouds-dark.mp4",
+  "in": 2,
+  "dur": 8
+ },
+ {
+  "id": "clouds-moving",
+  "src": "data/clips/clouds-moving.mp4",
+  "in": 4,
+  "dur": 6
+ },
+ {
+  "id": "lightning-clouds",
+  "src": "data/clips/lightning-clouds.mp4",
+  "in": 0,
+  "dur": 5
+ },
+ {
+  "id": "lightning-cut",
+  "src": "data/clips/lightning-cut.mp4",
+  "in": 0.5,
+  "dur": 6
+ },
+ {
+  "id": "lightning-city",
+  "src": "data/clips/lightning-city.mp4",
+  "in": 0.3,
+  "dur": 6
+ },
+ {
+  "id": "waves-storm",
+  "src": "data/clips/waves-storm.mp4",
+  "in": 8,
+  "dur": 6
+ },
+ {
+  "id": "city-rain",
+  "src": "data/clips/city-rain.mp4",
+  "in": 6,
+  "dur": 6
+ },
+ {
+  "id": "traffic-night",
+  "src": "data/clips/traffic-night.mp4",
+  "in": 3,
+  "dur": 6
+ },
+ {
+  "id": "times-square",
+  "src": "data/clips/times-square.mp4",
+  "in": 4,
+  "dur": 6
+ },
+ {
+  "id": "cars-rain",
+  "src": "data/clips/cars-rain.mp4",
+  "in": 6,
+  "dur": 6
+ },
+ {
+  "id": "lamp-rain",
+  "src": "data/clips/lamp-rain.mp4",
+  "in": 5,
+  "dur": 6
+ },
+ {
+  "id": "rain-dark",
+  "src": "data/clips/rain-dark.mp4",
+  "in": 2,
+  "dur": 6
+ },
+ {
+  "id": "roof",
+  "src": "data/clips/roof.mp4",
+  "in": 1,
+  "dur": 6
+ },
+ {
+  "id": "window",
+  "src": "data/clips/window.mp4",
+  "in": 3,
+  "dur": 6
+ },
+ {
+  "id": "screen-rain",
+  "src": "data/clips/screen-rain.mp4",
+  "in": 3,
+  "dur": 6
+ },
+ {
+  "id": "puddle",
+  "src": "data/clips/puddle.mp4",
+  "in": 3,
+  "dur": 6
+ },
+ {
+  "id": "puddle-slow",
+  "src": "data/clips/puddle-slow.mp4",
+  "in": 5,
+  "dur": 6
+ },
+ {
+  "id": "drops-puddle",
+  "src": "data/clips/drops-puddle.mp4",
+  "in": 4,
+  "dur": 6
+ },
+ {
+  "id": "drop-macro",
+  "src": "data/clips/drop-macro.mp4",
+  "in": 2,
+  "dur": 6
+ },
+ {
+  "id": "leaves",
+  "src": "data/clips/leaves.mp4",
+  "in": 4,
+  "dur": 6
+ },
+ {
+  "id": "lily",
+  "src": "data/clips/lily.mp4",
+  "in": 5,
+  "dur": 6
+ },
+ {
+  "id": "flowers-rain",
+  "src": "data/clips/flowers-rain.mp4",
+  "in": 6,
+  "dur": 6
+ },
+ {
+  "id": "reflection-men",
+  "src": "data/clips/reflection-men.mp4",
+  "in": 1,
+  "dur": 6
+ },
+ {
+  "id": "reflection-house",
+  "src": "data/clips/reflection-house.mp4",
+  "in": 3,
+  "dur": 6
+ },
+ {
+  "id": "umbrella-jump",
+  "src": "data/clips/umbrella-jump.mp4",
+  "in": 6,
+  "dur": 6
+ },
+ {
+  "id": "umbrella-girl",
+  "src": "data/clips/umbrella-girl.mp4",
+  "in": 0,
+  "dur": 5.8
+ },
+ {
+  "id": "umbrella-park",
+  "src": "data/clips/umbrella-park.mp4",
+  "in": 1,
+  "dur": 6
+ },
+ {
+  "id": "gulls-sunset",
+  "src": "data/clips/gulls-sunset.mp4",
+  "in": 4,
+  "dur": 6
+ },
+ {
+  "id": "gull-glide",
+  "src": "data/clips/gull-glide.mp4",
+  "in": 2,
+  "dur": 6
+ },
+ {
+  "id": "flock",
+  "src": "data/clips/flock.mp4",
+  "in": 3,
+  "dur": 6
+ },
+ {
+  "id": "gulls-silhouette",
+  "src": "data/clips/gulls-silhouette.mp4",
+  "in": 2,
+  "dur": 8
+ },
+ {
+  "id": "moon",
+  "src": "data/clips/moon.mp4",
+  "in": 2,
+  "dur": 10
+ },
+ {
+  "id": "night-lake",
+  "src": "data/clips/night-lake.mp4",
+  "in": 3,
+  "dur": 10
+ }
+]
