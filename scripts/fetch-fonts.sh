@@ -28,6 +28,7 @@ examples/r-pcb-routing/data/fonts/NotoSansSC.ttf $SANS
 examples/r-pcb-routing/data/fonts/IBMPlexMono-Medium.ttf $PLEX-Medium.ttf d1246280a315c377a651879047723bab6e3b411e
 examples/utc8-customs/data/fonts/NotoSansSC.ttf $SANS
 examples/utc8-customs/data/fonts/NotoSerifSC.ttf $SERIF
+examples/survey-of-rain/data/fonts/NotoSerifSC.ttf $SERIF
 examples/utc8-customs/data/fonts/Jost.ttf $JOST
 examples/utc8-customs/data/fonts/IBMPlexMono-Medium.ttf $PLEX-Medium.ttf d1246280a315c377a651879047723bab6e3b411e
 LIST
