@@ -1,12 +1,12 @@
 // The ten tiles fly into an exploded 3D stack (bottom layer first, a counter per layer), settle into
 // alignment, get drilled through, then press into one board while the riders hop on top.
-// CSS 3D through recipes/space.ts: every layer, rider and via is a direct child of the space, placed
+// CSS 3D through lib/space.ts: every layer, rider and via is a direct child of the space, placed
 // by one matrix; the stack's view is shared, riders are billboards, the bubble points at a projected
 // corner. cueframe: the tiles are drawn on the field scene's canvas, so the hand-off at the cut is
 // matched by recomputing the same rects (no continuity key for canvas content or 3D poses).
 import { cue, scene } from '@cueframe/core'
 import type { MountContext } from '@cueframe/core'
-import { billboard, lerpPose, mul, orbit, pivot, project, put, RX, RZ, S, spaceEl, T } from '@cueframe/recipes/space.js'
+import { billboard, lerpPose, mul, orbit, pivot, project, put, RX, RZ, S, spaceEl, T } from '../lib/space.js'
 import {
   ART_H, ART_W, C, LAYERS, MONO, SANS, SPRITE_H, SPRITE_W, TILE_H, clamp01, el, inOutCubic, layerArt, lerp, outBack, outCubic,
   said, seg, sprite, start, tiles, viaPoints,

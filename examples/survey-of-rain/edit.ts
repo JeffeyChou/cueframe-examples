@@ -1,6 +1,6 @@
 // The cut: six sections of the song (Mixkit "Slow Rain", 6.86–66.06 s), each with its own cut rate,
 // window grammar, clips and overlay density. Shots come from the beat grid and the drum hits.
-import { cutSections, tiers, DUO, type Duotone, type Section as CutRule, type SectionShot, type WindowKind } from '@cueframe/recipes/beatcut.js'
+import { cutSections, tiers, DUO, type Duotone, type Section as CutRule, type SectionShot, type WindowKind } from '../../kits/beatcut.js'
 import hitsFile from './build/hits.json'
 
 export const DUR = hitsFile.dur

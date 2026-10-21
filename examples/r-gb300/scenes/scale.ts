@@ -1,6 +1,6 @@
 // Shot 3: how much compute, on a log axis next to the rack.
 import { scene } from '@cueframe/core'
-import { logBars, lowerThird } from '@cueframe/recipes/annotate.js'
+import { logBars, lowerThird } from '../lib/annotate.js'
 import plate from '../build/plates/scale/manifest.json'
 import { fadeIn, shot, span } from '../lib.js'
 

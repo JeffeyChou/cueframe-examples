@@ -2,7 +2,7 @@
 // once, names the footage frames it needs for a frame, and draws the frame into the compositor
 // through the look pass. `c` carries the music for the shot.
 import type { Frame } from '@cueframe/core'
-import { hitIn, pulse, type Hit } from '@cueframe/recipes/beatcut.js'
+import { hitIn, pulse, type Hit } from '../../../kits/beatcut.js'
 import type { Plan } from '../edit.js'
 import { BEAT } from '../edit.js'
 import type { Kit } from './kit.js'

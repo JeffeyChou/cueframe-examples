@@ -13,6 +13,6 @@
   "include": [
     "*.ts",
     "scenes",
-    "../../cueframe/recipes/*.ts"
+    "lib"
   ]
 }

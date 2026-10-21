@@ -1,9 +1,9 @@
-// Over every shot: the printed page (fine grain, slow mottling, a soft vignette; recipes/paper.ts
+// Over every shot: the printed page (fine grain, slow mottling, a soft vignette; kits/paper.ts
 // `sheet`, static and multiplied over the scene below) and the subtitles in a dark box, as in
 // the reference.
 import { cue, scene } from '@cueframe/core'
 import { subtitles } from '@cueframe/recipes/subtitles.js'
-import { sheet } from '@cueframe/recipes/paper.js'
+import { sheet } from '../../../kits/paper.js'
 import { C, H, SANS } from '../lib.js'
 
 export const paper = scene({

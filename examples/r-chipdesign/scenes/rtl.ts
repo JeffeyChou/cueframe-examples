@@ -1,7 +1,7 @@
 // r1–r4: the code panel arrives from `hdl`; "RTL" shrinks into register → logic → register in one
 // clock cycle, which becomes the counter of the code, and two tokens link to what they become.
 import { cue, scene } from '@cueframe/core'
-import { inside } from '@cueframe/recipes/hud.js'
+import { inside } from '../lib/hud.js'
 import { blocking, C, center, COUNTER, el, inOutCubic, MONO, outCubic, PANEL_R, said, SANS, seg, start, ui, VERILOG, type Rect } from '../lib.js'
 
 type Pt = [number, number]

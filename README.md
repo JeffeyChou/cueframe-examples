@@ -8,7 +8,8 @@ against, so adding an example never changes CueFrame and upgrading it is one rev
 
 Each preview below is a few seconds of the finished film (silent; the films have narration or
 music). Click one to open the project. The "uses" line names the CueFrame guides
-(`cueframe/docs/guide/`) and recipes the piece leans on.
+(`cueframe/docs/guide/`) and recipes the piece leans on, and the helpers it shares with other
+pieces ([`kits/`](kits)) or keeps in its own `lib/`.
 
 ## Explainers
 
@@ -16,18 +17,18 @@ music). Click one to open the project. The "uses" line names the CueFrame guides
 <tr>
 <td width="50%" valign="top"><a href="examples/manim-kepler"><img src="examples/manim-kepler/preview.webp" width="100%" alt="manim-kepler"></a><br>
 <b><a href="examples/manim-kepler">manim-kepler</a></b>: Newton's geometric proof of Kepler's second law, 3Blue1Brown style, Chinese narration and subtitles, 3 min.<br>
-<sub>uses: timing-and-audio, <code>recipes/manim</code>, texmorph formula morphs</sub></td>
+<sub>uses: timing-and-audio, <code>lib/manim</code>, texmorph formula morphs</sub></td>
 <td width="50%" valign="top"><a href="examples/r-chipdesign"><img src="examples/r-chipdesign/preview.webp" width="100%" alt="r-chipdesign"></a><br>
 <b><a href="examples/r-chipdesign">r-chipdesign</a></b>: how a chip is designed, from transistors to RTL; elements stay on screen and turn into the next idea instead of cutting.<br>
-<sub>uses: continuity, explainer, hud, long-form, plates</sub></td>
+<sub>uses: continuity, long-form, plates, <code>lib/explainer</code>, <code>hud</code></sub></td>
 </tr>
 <tr>
 <td width="50%" valign="top"><a href="examples/doodle-paged-attention"><img src="examples/doodle-paged-attention/preview.webp" width="100%" alt="doodle-paged-attention"></a><br>
 <b><a href="examples/doodle-paged-attention">doodle-paged-attention</a></b>: PagedAttention on a hand-drawn slate board: five shots that stop on holds, then a zoom-out over the whole board.<br>
-<sub>uses: presenting (holds), <code>recipes/doodle</code></sub></td>
+<sub>uses: presenting (holds), <code>lib/doodle</code></sub></td>
 <td width="50%" valign="top"><a href="examples/r-gb300"><img src="examples/r-gb300/preview.webp" width="100%" alt="r-gb300"></a><br>
 <b><a href="examples/r-gb300">r-gb300</a></b>: a GB300 NVL72 rack rendered in Blender, with labels that track the parts as the camera moves, source badges and a log-axis chart.<br>
-<sub>uses: plates (<code>cueframe-py blender</code>), <code>recipes/annotate</code></sub></td>
+<sub>uses: plates (<code>cueframe-py blender</code>), <code>lib/annotate</code></sub></td>
 </tr>
 </table>
 
@@ -37,15 +38,15 @@ music). Click one to open the project. The "uses" line names the CueFrame guides
 <tr>
 <td width="50%" valign="top"><a href="examples/utc8-customs"><img src="examples/utc8-customs/preview.webp" width="100%" alt="utc8-customs"></a><br>
 <b><a href="examples/utc8-customs">utc8-customs</a></b> 东八区海关: a flat Bauhaus satire on printed paper. Claude is a border officer who catches UTC+8 travellers by their small tells. 3 min.<br>
-<sub>uses: production (storyboard, review board), <code>recipes/materials</code>, <code>acting</code>, <code>camera</code></sub></td>
+<sub>uses: production (storyboard, review board), <code>kits/materials</code>, <code>acting</code>, <code>recipes/camera</code></sub></td>
 <td width="50%" valign="top"><a href="examples/r-editing-village"><img src="examples/r-editing-village/preview.webp" width="100%" alt="r-editing-village"></a><br>
 <b><a href="examples/r-editing-village">r-editing-village</a></b>: a paper-textured fable about AI and video editing: an animation inside the animation, a camera that pulls out through a screen, a tower of software.<br>
-<sub>uses: compositions, <code>recipes/paper</code>, <code>acting</code>, <code>camera</code>, blur windows</sub></td>
+<sub>uses: compositions, <code>kits/paper</code>, <code>acting</code>, <code>recipes/camera</code>, blur windows</sub></td>
 </tr>
 <tr>
 <td width="50%" valign="top"><a href="examples/r-pcb-routing"><img src="examples/r-pcb-routing/preview.webp" width="100%" alt="r-pcb-routing"></a><br>
 <b><a href="examples/r-pcb-routing">r-pcb-routing</a></b>: a pixel rider routes a ten-layer board. The frame splits on the beat into ten worlds, which become an exploded 3D stack.<br>
-<sub>uses: timing-and-audio (music-first narration), <code>recipes/paths</code>, <code>space</code></sub></td>
+<sub>uses: timing-and-audio (music-first narration), <code>lib/paths</code>, <code>space</code></sub></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>
@@ -56,15 +57,15 @@ music). Click one to open the project. The "uses" line names the CueFrame guides
 <tr>
 <td width="50%" valign="top"><a href="examples/locomotion"><img src="examples/locomotion/preview.webp" width="100%" alt="locomotion"></a><br>
 <b><a href="examples/locomotion">locomotion</a></b>: car design borrows from animals. Muybridge's gallop becomes a point-cloud Ferrari; red traces drawn on each animal land on the car across the cut.<br>
-<sub>uses: rhythm (<code>recipes/beatcut</code>, footage frames), three.js, ASCII / print looks</sub></td>
+<sub>uses: rhythm (<code>kits/beatcut</code>, footage frames), three.js, ASCII / print looks</sub></td>
 <td width="50%" valign="top"><a href="examples/survey-of-rain"><img src="examples/survey-of-rain/preview.webp" width="100%" alt="survey-of-rain"></a><br>
 <b><a href="examples/survey-of-rain">survey-of-rain</a></b> 雨的测绘: rain, storm and bird footage cut to a song under a live schematic overlay of tracked points, chains and telemetry.<br>
-<sub>uses: rhythm, <code>recipes/schematic</code>, <code>beatcut</code></sub></td>
+<sub>uses: rhythm, <code>lib/schematic</code>, <code>kits/beatcut</code></sub></td>
 </tr>
 <tr>
 <td width="50%" valign="top"><a href="examples/r-ascii"><img src="examples/r-ascii/preview.webp" width="100%" alt="r-ascii"></a><br>
 <b><a href="examples/r-ascii">r-ascii</a></b>: a full-length ASCII music video for <i>world.execute(me);</i> inside one terminal UI, with lyric-timed captions and a spectrum. 3.5 min.<br>
-<sub>uses: <code>recipes/ascii-grid</code>, <code>crt</code>, timing-and-audio</sub></td>
+<sub>uses: timing-and-audio, its own cell engine and CRT post (<code>engine/</code>, <code>crt.ts</code>)</sub></td>
 <td width="50%" valign="top"><a href="examples/r-pdoom"><img src="examples/r-pdoom/preview.webp" width="100%" alt="r-pdoom"></a><br>
 <b><a href="examples/r-pdoom">r-pdoom</a></b>: the prompt-and-hook opening of <i>I'm Upping My P(doom)</i>: a typed prompt, then kinetic type on the beat.<br>
 <sub>uses: authoring, kinetic type on beats</sub></td>
@@ -91,7 +92,7 @@ music). Click one to open the project. The "uses" line names the CueFrame guides
 <tr>
 <td width="50%" valign="top"><a href="examples/r-promo"><img src="examples/r-promo/preview.webp" height="320" alt="r-promo"></a><br>
 <b><a href="examples/r-promo">r-promo</a></b>: a 46 s portrait product promo with TTS narration, comic bursts, synced sound effects and captions.<br>
-<sub>uses: timing-and-audio, <code>recipes/karaoke</code>, <code>promo-audio</code></sub></td>
+<sub>uses: timing-and-audio, <code>lib/karaoke</code>, <code>score.py</code></sub></td>
 <td width="50%" valign="top"></td>
 </tr>
 </table>

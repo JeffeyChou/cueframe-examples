@@ -1,6 +1,6 @@
 // Shot 2: a compute tray slides out; what is inside, then how it is cooled.
 import { scene } from '@cueframe/core'
-import { callout, lowerThird } from '@cueframe/recipes/annotate.js'
+import { callout, lowerThird } from '../lib/annotate.js'
 import tray from '../build/plates/tray/manifest.json'
 import { fadeIn, shot, span } from '../lib.js'
 

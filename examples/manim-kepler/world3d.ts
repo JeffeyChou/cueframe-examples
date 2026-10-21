@@ -7,7 +7,7 @@ import { Line2 } from 'three/examples/jsm/lines/Line2.js'
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js'
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js'
 import type { MountContext } from '@cueframe/core'
-import { M } from '@cueframe/recipes/manim.js'
+import { M } from './lib/manim.js'
 import { kepler, type V2 } from './orbit.js'
 
 export const A = 1             // semi-major axis (orbit units)

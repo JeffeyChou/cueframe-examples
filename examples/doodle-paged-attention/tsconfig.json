@@ -7,5 +7,5 @@
       "@cueframe/core": ["../../cueframe/packages/core/src/index.ts"]
     }
   },
-  "include": ["*.ts", "scenes", "../../cueframe/recipes/doodle.ts"]
+  "include": ["*.ts", "scenes", "lib"]
 }

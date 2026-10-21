@@ -12,17 +12,17 @@ the narration (`said()` on Whisper word times), so re-recording a line retimes t
 
 Elements carry over between narration lines and scenes through `ctx.layouts` and `ctx.key`
 (`cueframe/docs/guide/continuity.md`): each beat is a layout written as a table of spots
-(`@cueframe/recipes/blocking`), and CueFrame moves the keys between them. The code panel is handed
+(`lib/blocking.ts`), and CueFrame moves the keys between them. The code panel is handed
 from scene to scene (hdl → rtl → contrast). The first version, with every move written by hand,
 is commit 7d0c15a; the comparison is in `cueframe/docs/feedback/chip-design-study.md`.
 
 The chrome (chapter tags and cards with a road map, headlines with eyebrows and coloured keywords,
-progress, subtitles) comes from `script.json` through `@cueframe/recipes/explainer`
-(`cueframe/docs/guide/explainer.md`): `chapters`, and `title`/`eyebrow` per line. The cards before
+progress, subtitles) comes from `script.json` through `lib/explainer.ts`
+([`lib/README.md`](lib/README.md)): `chapters`, and `title`/`eyebrow` per line. The cards before
 chapters 03 and 04 sit in the 3.5 s pads of lines c7 and r4.
 
 Panels, the code panel, registers, counters and the clock are HUD instruments from
-`@cueframe/recipes/hud` (`cueframe/docs/guide/hud.md`), with colours by role from the theme the
+`lib/hud.ts` ([`lib/README.md`](lib/README.md)), with colours by role from the theme the
 chrome uses. The code panel is a panel holding `code` dials at their natural size; the links in r4
 point at tokens with `ui.at` and `lay.map`, so they follow the panel as it moves.
 

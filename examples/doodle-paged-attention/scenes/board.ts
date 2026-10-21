@@ -1,5 +1,5 @@
 import { scene } from '@cueframe/core'
-import { board, timings, type BoardOpts, type CamMove } from '@cueframe/recipes/doodle.js'
+import { board, timings, type BoardOpts, type CamMove } from '../lib/doodle.js'
 import { seg } from '@cueframe/recipes/motion.js'
 import { drawers, pageTable, pain, paging, sharing, type Live } from './shots.js'
 
