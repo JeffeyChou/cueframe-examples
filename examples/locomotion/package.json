@@ -1,0 +1,14 @@
+{
+  "name": "@cueframe/example-locomotion",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": [
+      "build/hits.json",
+      "build/env.json",
+      "build/fonts/fonts.json",
+      "build/plates/car-macro/manifest.json"
+    ],
+    "needs": "Mixkit footage and music, Muybridge plate, three.js models: bash examples/locomotion/make.sh"
+  }
+}

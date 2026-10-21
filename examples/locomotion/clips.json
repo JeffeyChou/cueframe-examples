@@ -1,0 +1,161 @@
+[
+ {
+  "id": "car-macro",
+  "src": "data/clips/car-macro.mp4",
+  "in": 0,
+  "dur": 5,
+  "note": "red bodywork fills frame; taillight sweeps lower right"
+ },
+ {
+  "id": "car-pan",
+  "src": "data/clips/car-pan.mp4",
+  "in": 2.5,
+  "dur": 5,
+  "note": "headlight flare centre, then headlight and bonnet left"
+ },
+ {
+  "id": "car-rear",
+  "src": "data/clips/car-rear.mp4",
+  "in": 0,
+  "dur": 5,
+  "note": "red convertible fills left two thirds; taillight far left"
+ },
+ {
+  "id": "car-road",
+  "src": "data/clips/car-road.mp4",
+  "in": 0,
+  "dur": 4,
+  "note": "curving road dominates; red car recedes from left to centre"
+ },
+ {
+  "id": "dash-accel",
+  "src": "data/clips/dash-accel.mp4",
+  "in": 0.5,
+  "dur": 4,
+  "note": "tachometer centre, needle sweeps up; speedometer right"
+ },
+ {
+  "id": "tunnel-dark",
+  "src": "data/clips/tunnel-dark.mp4",
+  "in": 6,
+  "dur": 6,
+  "note": "dark tunnel, bright mouth centre grows, car ahead"
+ },
+ {
+  "id": "night-drive",
+  "src": "data/clips/night-drive.mp4",
+  "in": 3,
+  "dur": 5,
+  "note": "night highway streaks; truck left, headlights centre"
+ },
+ {
+  "id": "eagle-glide",
+  "src": "data/clips/eagle-glide.mp4",
+  "in": 12,
+  "dur": 5,
+  "note": "dark raptor silhouette centre-left against blue sky, 8% of frame"
+ },
+ {
+  "id": "shark",
+  "src": "data/clips/shark.mp4",
+  "in": 6,
+  "dur": 5,
+  "note": "nurse shark swims left to right across centre, fills width"
+ },
+ {
+  "id": "chameleon",
+  "src": "data/clips/chameleon.mp4",
+  "in": 4,
+  "dur": 5,
+  "note": "eye centre-right, turret eye rotates, fills 15% of frame"
+ },
+ {
+  "id": "cat-black",
+  "src": "data/clips/cat-black.mp4",
+  "in": 7.2,
+  "dur": 3.6,
+  "focus": [
+   0.62,
+   0.49
+  ],
+  "note": "portrait source; focus on the yellow eyes, face from brow to chin"
+ },
+ {
+  "id": "horse-white",
+  "src": "data/clips/horse-white.mp4",
+  "in": 2,
+  "dur": 5,
+  "note": "white horse head and neck right half, nods"
+ },
+ {
+  "id": "horse-eye",
+  "src": "data/clips/horse-eye.mp4",
+  "in": 5,
+  "dur": 5,
+  "note": "buckskin horse head left half, eye upper left, small"
+ },
+ {
+  "id": "horses-run",
+  "src": "data/clips/horses-run.mp4",
+  "in": 6,
+  "dur": 6,
+  "licence": "restricted",
+  "note": "herd small centre in backlit plain; foal crosses foreground"
+ },
+ {
+  "id": "rider-beach",
+  "src": "data/clips/rider-beach.mp4",
+  "in": 0,
+  "dur": 6,
+  "licence": "restricted",
+  "note": "rider silhouette right of centre trots along sunset shore"
+ },
+ {
+  "id": "dragonfly-grass",
+  "src": "data/clips/dragonfly-grass.mp4",
+  "in": 2,
+  "dur": 5,
+  "licence": "restricted",
+  "note": "dragonfly upper-left third on grass stem, wings shift"
+ },
+ {
+  "id": "dragonfly-pollen",
+  "src": "data/clips/dragonfly-pollen.mp4",
+  "in": 2,
+  "dur": 5,
+  "licence": "restricted",
+  "note": "dragonfly lifts off and relands centre, wings beating"
+ },
+ {
+  "id": "cheetah-hunt",
+  "src": "data/clips/cheetah-hunt.mp4",
+  "in": 8,
+  "dur": 5,
+  "licence": "restricted",
+  "note": "two cheetahs run left to right across lower third"
+ },
+ {
+  "id": "eagle-eye",
+  "src": "data/clips/eagle-eye.mp4",
+  "in": 11,
+  "dur": 5,
+  "licence": "restricted",
+  "note": "eagle profile, eye centre-left sharp, beak right"
+ },
+ {
+  "id": "owl-eye",
+  "src": "data/clips/owl-eye.mp4",
+  "in": 0,
+  "dur": 5,
+  "licence": "restricted",
+  "note": "owlet upper-left third, yellow eyes stare at camera"
+ },
+ {
+  "id": "lion-head",
+  "src": "data/clips/lion-head.mp4",
+  "in": 0.5,
+  "dur": 5,
+  "licence": "restricted",
+  "note": "lion face fills left half, turns to profile"
+ }
+]

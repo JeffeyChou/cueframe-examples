@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // For every project under examples/ (a folder with timeline.ts): `check types`, then a still at
 // t=1 s, with the CueFrame of the submodule. Run after bumping it: `pnpm check [--strict] [name…]`.
-// An example lists the files it imports from build/ in its package.json (`cueframe.generated`,
+// An example lists the build/ files it imports or loads in its package.json (`cueframe.generated`,
 // with what building them `needs`); while one of those is missing the project is SKIP (FAIL with
 // --strict). A missing import that is not listed always fails, and so does an unknown name.
 import { spawnSync } from 'node:child_process'
@@ -63,7 +63,8 @@ for (const p of projects.sort()) {
   const name = nameOf(p)
   if (!selected(name)) continue
   const decl = declared(p)
-  const missing = missingBuild(p, decl.dir)
+  // Declared files count too: a project also loads build/ files at run time (plates, fonts).
+  const missing = [...new Set([...missingBuild(p, decl.dir), ...[...decl.generated].filter((g) => !existsSync(join(decl.dir, g)))])].sort()
   const undeclared = missing.filter((m) => !decl.generated.has(m))
   if (undeclared.length) {
     failed++

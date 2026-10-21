@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "cueframe": {
-    "generated": ["build/hits.json"],
+    "generated": [
+      "build/hits.json",
+      "build/plates/puddle/manifest.json"
+    ],
     "needs": "footage and music from Mixkit: bash examples/r-schematic-rain/make.sh"
   }
 }

@@ -1,0 +1,64 @@
+{
+ "round": 2,
+ "roundId": "83f24547-cf79-4f13-a5a9-a2d6262614a5",
+ "verdict": "approve",
+ "shots": [
+  {
+   "id": "s0-plate",
+   "verdict": "ok"
+  },
+  {
+   "id": "s0-roll",
+   "verdict": "ok"
+  },
+  {
+   "id": "s1-travel",
+   "verdict": "ok"
+  },
+  {
+   "id": "s1-real",
+   "verdict": "ok"
+  },
+  {
+   "id": "s1-cloud",
+   "verdict": "ok"
+  },
+  {
+   "id": "s2-transit",
+   "verdict": "ok"
+  },
+  {
+   "id": "s3-reveal",
+   "verdict": "ok"
+  },
+  {
+   "id": "s4-felis",
+   "verdict": "ok"
+  },
+  {
+   "id": "s5-oculus",
+   "verdict": "ok"
+  },
+  {
+   "id": "s6-squalus",
+   "verdict": "ok"
+  },
+  {
+   "id": "s7-ala",
+   "verdict": "ok"
+  },
+  {
+   "id": "s8-chimera",
+   "verdict": "ok"
+  },
+  {
+   "id": "s9-gallop",
+   "verdict": "ok"
+  },
+  {
+   "id": "s10-card",
+   "verdict": "ok"
+  }
+ ],
+ "submittedAt": "2026-10-20T21:47:10.702Z"
+}

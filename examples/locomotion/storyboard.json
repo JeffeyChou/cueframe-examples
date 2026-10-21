@@ -1,0 +1,36 @@
+{
+  "title": "LOCOMOTION · 每一台机器，都记得一种动物",
+  "language": "zh",
+  "brief": {
+    "audience": "作品集观众；前端/动态设计同行",
+    "platform": "个人社交账号（不上 YouTube，不变现）",
+    "format": "landscape",
+    "length": "58.5 s（1920×1080，30 fps；歌曲中间剪掉 3 小节，没有硬凑 60 s）",
+    "tone": "黑暗视觉音乐：黑色虚空、极小的等宽字、点阵/ASCII/像素拉丝；剪辑卡在鼓点上",
+    "must": ["车的美学设计借自动物：每章一种动物 → 一个特征 → 车", "ASCII / 点阵 + three.js", "鼓点卡点的转场", "车要有颜色、不廉价：印刷风格化 shader", "蜻蜓是会飞的 three.js 模型"],
+    "ending": "红色描线全部落到一台车上 → 车的点云跑回一匹马 → 收尾滚奏 → 片尾卡"
+  },
+  "style": {
+    "palette": ["#000000", "#f2f2ee", "#cfd1d3", "#ff2a3a", "#8f0410"],
+    "type": "Michroma（宽体标题）+ JetBrains Mono（小字）+ Noto Sans SC（片尾中文）",
+    "materials": "three.js 法拉利 458：红色金属漆 + 棚拍反射，印刷风格化（墨线、分阶色调与细抖动、套色偏移的红版）；会飞的程序化蜻蜓；6 万点的马/车点云；Mixkit 素材黑白处理只保留红色",
+    "notes": "音乐：Mixkit「Need for speed」（Arulo），140 BPM half-time。切点吸附到半拍内最强的 kick/snare（这首歌很多 kick 落在反拍）。"
+  },
+  "video": "out/landscape.mp4",
+  "shots": [
+    { "id": "s0-plate", "length": 5.6, "visual": "0 · 1878：黑色虚空里的 Muybridge 底片，一开始就在动（半速），每个和弦换一种排版，竖排标题", "at": 1.5 },
+    { "id": "s0-roll", "length": 1.3, "visual": "16 分音符军鼓滚奏：每一下多一格", "at": 6.3 },
+    { "id": "s1-travel", "length": 3.4, "visual": "I · EQUUS：一个连续镜头，three.js 的马奔跑，镜头从侧面推到低角度 3/4，处理方式只在军鼓上换", "at": 8.0 },
+    { "id": "s1-real", "length": 6.9, "visual": "真实的马，各用一次：马群、海边骑手（1 HP = 745.7 W）、胶片条、马眼、白马（跃马标志的来历）", "at": 12.5 },
+    { "id": "s1-cloud", "length": 3.7, "visual": "马变成点云继续跑", "at": 18.5 },
+    { "id": "s2-transit", "length": 1.8, "visual": "鼓停：定格在四蹄离地，点从马流到车，变红", "at": 21.6 },
+    { "id": "s3-reveal", "length": 2.4, "visual": "暗棚里一道光扫过红色的车", "at": 24.2 },
+    { "id": "s4-felis", "length": 5.8, "visual": "II · FELIS：猎豹定格，红线描出脊背和后腿 → 切点上红线落到车顶线和后轮拱（haunch）", "at": 26.6 },
+    { "id": "s5-oculus", "length": 5.1, "visual": "III · OCULUS：鹰眼、猫头鹰、黑猫的眼睛 → 车灯，红圈一路跳过去", "at": 31.4 },
+    { "id": "s6-squalus", "length": 5.1, "visual": "IV · SQUALUS：鲨鱼定格描轮廓 → 车身轮廓（1961 Mako Shark 概念车）", "at": 37.6 },
+    { "id": "s7-ala", "length": 6.9, "visual": "V · ALA：会飞的 three.js 蜻蜓，翅上的流线 → 风洞里车顶的流线", "at": 42.8 },
+    { "id": "s8-chimera", "length": 5.1, "visual": "VI · CHIMERA：每两拍一个借来的特征落到同一台车上，下面是它来自的动物", "at": 52.4 },
+    { "id": "s9-gallop", "length": 2.1, "visual": "车的点云跑回一匹马", "at": 54.5 },
+    { "id": "s10-card", "length": 1.9, "visual": "收尾滚奏铺满格子，落在重拍上：LOCOMOTION 片尾卡", "at": 57.5 }
+  ]
+}
