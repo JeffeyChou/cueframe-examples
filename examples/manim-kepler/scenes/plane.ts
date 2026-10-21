@@ -1,6 +1,6 @@
 // The faint coordinate plane under the flat shots. Its grid is the 3D grid seen from above.
 import { cue, scene } from '@cueframe/core'
-import { plane } from '@cueframe/recipes/manim.js'
+import { plane } from '../lib/manim.js'
 import { CUES, fade } from '../lib.js'
 import { ORIGIN } from '../world3d.js'
 

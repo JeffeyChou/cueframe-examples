@@ -1,11 +1,11 @@
 // The whole cut in one frame canvas: footage from frame sources, one window grammar per shot
-// (recipes/beatcut.ts) and a live "vision analysis" on top (`analysis`, recipes/schematic.ts): nodes
+// (kits/beatcut.ts) and a live "vision analysis" on top (`analysis`, lib/schematic.ts): nodes
 // from each clip's block-score grid riding the tracks, a lattice, boxes with float data, flow trails.
 // The music drives it continuously (low band: the lattice breathes; high band: the flow) and on hits
 // (kick: chroma + a dashed wave; snare: blocks move, boxes re-lock with an RGB split).
 import { scene, type Frame, type FrameFit, type FrameSource } from '@cueframe/core'
-import { chroma, drawWindow, hitIn, pulse, shotAt, type Paint, type Rect } from '@cueframe/recipes/beatcut.js'
-import { analysis, BlockGrid, boxes, crosshair, labels, slate, style, type Label } from '@cueframe/recipes/schematic.js'
+import { chroma, drawWindow, hitIn, pulse, shotAt, type Paint, type Rect } from '../../../kits/beatcut.js'
+import { analysis, BlockGrid, boxes, crosshair, labels, slate, style, type Label } from '../lib/schematic.js'
 import { BREATH, CLIPS, DUR, PLANS, SHOTS, type Plan } from '../edit.js'
 
 const W = 1920, H = 1080, FPS = 30

@@ -1,6 +1,6 @@
 import type { Frame, MountContext } from '@cueframe/core'
 import { createMorph, mathjaxRenderer, renderFormula, type MathMorph } from '@texmorph/mathjax'
-import { M, smooth } from '@cueframe/recipes/manim.js'
+import { M, smooth } from './lib/manim.js'
 export { glyphsOf, said } from '@cueframe/recipes/subtitles.js'
 import cueTable from './build/cues.json'
 

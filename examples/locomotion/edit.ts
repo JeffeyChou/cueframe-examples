@@ -3,7 +3,7 @@
 // cut (spine → haunch and roofline, eye → headlight, body → profile, wing → airflow). Sections
 // follow the song (Mixkit "Need for speed", Arulo; excerpt from 6.43 s); cuts come from the beat grid
 // snapped to drum hits; in each chapter the pattern and the specs line up one to one.
-import { cutSections, tiers, type Section as CutRule, type SectionShot } from '@cueframe/recipes/beatcut.js'
+import { cutSections, tiers, type Section as CutRule, type SectionShot } from '../../kits/beatcut.js'
 import type { Mode } from './lib/look.js'
 import hitsFile from './build/hits.json'
 

@@ -1,7 +1,7 @@
 # doodle-paged-attention
 
 A dark-mode hand-drawn explainer (Excalidraw-like chalk on a slate board) on why LLM serving runs
-out of GPU memory and how PagedAttention fixes it. Built on `recipes/doodle.ts`.
+out of GPU memory and how PagedAttention fixes it. Built on `lib/doodle.ts`.
 
 Five shots on one infinite canvas, each ending in a hold, then a zoom-out over the whole board:
 

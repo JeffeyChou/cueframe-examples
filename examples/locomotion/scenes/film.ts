@@ -2,7 +2,7 @@
 // draws through the look pass, and the slate sits on top. Shots own their three.js objects (mounted
 // once here); the cut's glitch and the music come in `c.m`.
 import { scene, type Frame } from '@cueframe/core'
-import { shotAt } from '@cueframe/recipes/beatcut.js'
+import { shotAt } from '../../../kits/beatcut.js'
 import { DUR, PLANS, SHOTS, T, type Kind, type Plan } from '../edit.js'
 import { makeKit, type Kit } from '../lib/kit.js'
 import { music, type ShotCtx, type ShotDef } from '../lib/shot.js'

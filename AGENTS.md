@@ -7,7 +7,9 @@ read `cueframe/AGENTS.md` first, it is the contract for every project here.
 
 1. `pnpm exec cueframe new examples/<name>` (or `--template deck`), or create the folder by hand:
    `package.json`, `timeline.ts`, `scenes/`, `tsconfig.json` extending `../../tsconfig.base.json`.
-2. Import recipes as `@cueframe/recipes/<name>`; copy one into the project only to change it.
+2. Import CueFrame's recipes as `@cueframe/recipes/<name>`, helpers shared with other examples from
+   `kits/` (`kits/README.md`) by a relative path; a helper only your piece uses goes in its `lib/`.
+   Copy one into the project only to change it.
 3. Large binaries (fonts over ~1 MB, audio, video, rendered plates) are never committed: add them
    to `.gitignore` and to `scripts/fetch-fonts.sh` or the example's `make.sh`.
 4. A `README.md` with what the piece is and the commands that build it, from the repository root.

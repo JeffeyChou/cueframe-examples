@@ -5,12 +5,12 @@ import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
 export { seg, win, lerp, clamp01, outCubic, inCubic, inOutCubic, outBack, spring, noise1, shake, bump } from '@cueframe/recipes/motion.js'
 export { camPath, compRect, parallax, type Cam } from '@cueframe/recipes/camera.js'
-export { pose, blink, envelope, look, hop, flinch, nod, squash as squashed, type Layer, type Style } from '@cueframe/recipes/acting.js'
+export { pose, blink, envelope, look, hop, flinch, nod, squash as squashed, type Layer, type Style } from '../../kits/acting.js'
 import type { MountContext } from '@cueframe/core'
 import { camSvg, type Cam } from '@cueframe/recipes/camera.js'
-import { fiber } from '@cueframe/recipes/paper.js'
-import { paper } from '@cueframe/recipes/materials.js'
-import { dress, material, roughen, type Material, type Outline } from '@cueframe/recipes/texture.js'
+import { fiber } from '../../kits/paper.js'
+import { paper } from '../../kits/materials.js'
+import { dress, material, roughen, type Material, type Outline } from '../../kits/texture.js'
 import { clamp01, inOutCubic, lerp, noise1 } from '@cueframe/recipes/motion.js'
 
 export const CUES: Record<string, number> = cueTable
@@ -57,7 +57,7 @@ const sizeOf = (o: Outline): number => typeof o === 'string' ? 100
  * its fill, both geometry in the shape's own units made once, so they move with the rig and nothing
  * boils. Edges: 'print' (a faint wobble, the characters) or 'cut' (a scissor-cut wander, cards and
  * books). Stocks: speckle (paper flecks on dark fills, ink flecks on light ones) or 'fibre'. It is
- * the `paper` material preset of recipes/materials.ts; `material` prints the shape in another.
+ * the `paper` material preset of kits/materials.ts; `material` prints the shape in another.
  */
 export function paperShape(parent: Element, outline: Outline, fill: string, o: { edge?: 'print' | 'cut'; stock?: 'speckle' | 'fibre'; material?: Material } = {}): SVGGElement {
   const g = s(parent, 'g')

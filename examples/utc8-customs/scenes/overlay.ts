@@ -1,7 +1,7 @@
-// Over every shot: the printed page (recipes/paper.ts `sheet`, multiplied) and the narration's
+// Over every shot: the printed page (kits/paper.ts `sheet`, multiplied) and the narration's
 // subtitles in a dark box. Character lines (ids with a suffix, s04-kevin…) are in speech bubbles.
 import { cue, scene } from '@cueframe/core'
-import { sheet } from '@cueframe/recipes/paper.js'
+import { sheet } from '../../../kits/paper.js'
 import { subtitles } from '@cueframe/recipes/subtitles.js'
 import { C, H } from '../lib.js'
 import { K } from '../timing.js'

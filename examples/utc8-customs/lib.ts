@@ -4,12 +4,12 @@
 import cueTable from './build/cues.json'
 export { seg, win, lerp, clamp01, outCubic, inCubic, inOutCubic, outBack, spring, noise1, bump } from '@cueframe/recipes/motion.js'
 export { camPath, type Cam } from '@cueframe/recipes/camera.js'
-export { pose, blink, envelope, hop, nod, flinch, type Layer } from '@cueframe/recipes/acting.js'
+export { pose, blink, envelope, hop, nod, flinch, type Layer } from '../../kits/acting.js'
 import type { MountContext } from '@cueframe/core'
 import { camSvg, type Cam } from '@cueframe/recipes/camera.js'
-import { fiber } from '@cueframe/recipes/paper.js'
-import { paper } from '@cueframe/recipes/materials.js'
-import { dress, material, roughen, type Material, type Outline } from '@cueframe/recipes/texture.js'
+import { fiber } from '../../kits/paper.js'
+import { paper } from '../../kits/materials.js'
+import { dress, material, roughen, type Material, type Outline } from '../../kits/texture.js'
 import { clamp01, lerp } from '@cueframe/recipes/motion.js'
 
 export const CUES: Record<string, number> = cueTable

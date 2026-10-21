@@ -2,7 +2,7 @@
 // and the bed's beat grid; worlds and layer art are seeded, built once in mount.
 import { seeded } from '@cueframe/core'
 import { follow } from '@cueframe/recipes/camera.js'
-import { assertClear, clearance, lanes, path, travel, type Lane, type Path, type Travel, type Waypoint } from '@cueframe/recipes/paths.js'
+import { assertClear, clearance, lanes, path, travel, type Lane, type Path, type Travel, type Waypoint } from './lib/paths.js'
 import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
 export { seg, outCubic, inOutCubic, outBack, clamp01, lerp } from '@cueframe/recipes/motion.js'

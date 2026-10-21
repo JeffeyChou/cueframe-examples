@@ -1,6 +1,6 @@
 // Shared look and the overlay helpers of the three shots.
 import type { Frame, MountContext, Plate } from '@cueframe/core'
-import { A, chapterBar, overlay } from '@cueframe/recipes/annotate.js'
+import { A, chapterBar, overlay } from './lib/annotate.js'
 
 A.font = '"Noto Sans SC", sans-serif'
 A.mono = '"Plex Mono", ui-monospace, monospace'

@@ -1,6 +1,6 @@
 // Shot 1: the rack, the stack named group by group.
 import { scene } from '@cueframe/core'
-import { callout, lowerThird } from '@cueframe/recipes/annotate.js'
+import { callout, lowerThird } from '../lib/annotate.js'
 import rack from '../build/plates/rack/manifest.json'
 import { fadeIn, shot, span } from '../lib.js'
 

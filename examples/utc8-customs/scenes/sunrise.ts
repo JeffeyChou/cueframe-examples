@@ -2,7 +2,7 @@
 // the queue runs from under the window to the horizon. Claude, from behind, watches. The first
 // traveler of the day pops up at the sill: "Hello，在吗？" — black — the title, stamped.
 import { scene } from '@cueframe/core'
-import { mix } from '@cueframe/recipes/materials.js'
+import { mix } from '../../../kits/materials.js'
 import {
   C, JOST, SANS, SERIF, bubble, camera, inOutCubic, lerp, mulberry, officer, outBack, outCubic, paperShape, s, seg, stageSvg, stampMark, text,
   traveler, type Disguise,

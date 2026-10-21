@@ -1,7 +1,7 @@
 // Shot 6: the proof never used 1/r². Three central forces, three different orbits, equal-time
 // sectors in each; then the conclusion.
 import { cue, scene } from '@cueframe/core'
-import { M, poly, star, svgEl, trail, type P } from '@cueframe/recipes/manim.js'
+import { M, poly, star, svgEl, trail, type P } from '../lib/manim.js'
 import { chain, CJK, CUES, el, fade, label, said, seg } from '../lib.js'
 import { constant, inverseSquare, newton, spring, type Accel, type V2 } from '../orbit.js'
 

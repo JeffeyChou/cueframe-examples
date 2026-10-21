@@ -1,7 +1,7 @@
 # manim-kepler
 
 A 3Blue1Brown-style explainer (in Chinese, with narration, subtitles and a synthesized score) of
-Newton's geometric proof of Kepler's second law. 2D geometry on SVG (`recipes/manim.ts`),
+Newton's geometric proof of Kepler's second law. 2D geometry on SVG (`lib/manim.ts`),
 3D shots in three.js, formulas morphed term by term with texmorph (MathJax 4, New Computer Modern).
 
 | Hold | Shot | Technique |
@@ -32,7 +32,7 @@ examples/manim-kepler/make.sh      # narration → font → score → mix → sc
   are cached by text; set `KEPLER_VOICE` for another voice folder.
 - Subtitles: `recipes/subtitles.ts`, phrases from `build/words.json`, Noto Sans SC (OFL) subset to the spoken text;
   `scripts/fetch-fonts.sh` downloads the font from google/fonts (not committed).
-- Score: `score.py` (the source of `recipes/explainer-audio/`; 72 BPM, D major, additive piano and pads; sections start on the narration
+- Score: `score.py` (72 BPM, D major, additive piano and pads; sections start on the narration
   cues) → `mix.json` ducks it under the voice at −16 LUFS.
 - texmorph is linked from a sibling checkout (`../texmorph`), as in `m2-talk`.
 

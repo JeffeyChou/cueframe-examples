@@ -8,5 +8,5 @@
       "@cueframe/core": ["../../cueframe/packages/core/src/index.ts"]
     }
   },
-  "include": ["*.ts", "scenes", "../../cueframe/recipes/manim.ts"]
+  "include": ["*.ts", "scenes", "lib"]
 }

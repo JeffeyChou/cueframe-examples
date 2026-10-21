@@ -1,6 +1,6 @@
 // Background, and the chrome built from script.json by the explainer recipe.
 import { cue, scene } from '@cueframe/core'
-import { explainer } from '@cueframe/recipes/explainer.js'
+import { explainer } from '../lib/explainer.js'
 import script from '../script.json'
 import { C, CUES, el, ui } from '../lib.js'
 

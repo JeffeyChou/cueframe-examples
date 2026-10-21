@@ -1,8 +1,8 @@
 // Shared look, layout and timing of the slice. Every time comes from the narration (cues, words).
-import { hud } from '@cueframe/recipes/hud.js'
+import { hud } from './lib/hud.js'
 import cueTable from './build/cues.json'
 export { said } from '@cueframe/recipes/subtitles.js'
-export { blocking } from '@cueframe/recipes/blocking.js'
+export { blocking } from './lib/blocking.js'
 export { seg, outCubic, inOutCubic, caret } from '@cueframe/recipes/motion.js'
 
 export const CUES: Record<string, number> = cueTable

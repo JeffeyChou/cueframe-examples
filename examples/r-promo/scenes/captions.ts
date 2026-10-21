@@ -1,5 +1,5 @@
 import { cue, scene, type WordLine } from '@cueframe/core'
-import { captionSize } from '@cueframe/recipes/karaoke.js'
+import { captionSize } from '../lib/karaoke.js'
 import { C, FONT, el } from '../lib.js'
 
 // Karaoke on the script's `sub` text: each on-screen character is aligned to the spoken line text

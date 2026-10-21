@@ -2,7 +2,7 @@
 // arrow normal to the orbit plane that never changes while the planet goes round.
 import * as THREE from 'three'
 import { cue, scene } from '@cueframe/core'
-import { M } from '@cueframe/recipes/manim.js'
+import { M } from '../lib/manim.js'
 import { chain, CUES, fade, label, said, seg } from '../lib.js'
 import { kepler, keplerVel, type V2 } from '../orbit.js'
 import { A, E, PERIOD, toWorld, world } from '../world3d.js'
