@@ -1,0 +1,194 @@
+{
+ "n": 2,
+ "id": "83f24547-cf79-4f13-a5a9-a2d6262614a5",
+ "gate": "cut",
+ "createdAt": "2026-10-20T21:45:20.956Z",
+ "storyboard": {
+  "title": "LOCOMOTION · 每一台机器，都记得一种动物",
+  "language": "zh",
+  "brief": {
+   "audience": "作品集观众；前端/动态设计同行",
+   "platform": "个人社交账号（不上 YouTube，不变现）",
+   "format": "landscape",
+   "length": "58.5 s（1920×1080，30 fps；歌曲中间剪掉 3 小节，没有硬凑 60 s）",
+   "tone": "黑暗视觉音乐：黑色虚空、极小的等宽字、点阵/ASCII/像素拉丝；剪辑卡在鼓点上",
+   "must": [
+    "车的美学设计借自动物：每章一种动物 → 一个特征 → 车",
+    "ASCII / 点阵 + three.js",
+    "鼓点卡点的转场",
+    "车要有颜色、不廉价：印刷风格化 shader",
+    "蜻蜓是会飞的 three.js 模型"
+   ],
+   "ending": "红色描线全部落到一台车上 → 车的点云跑回一匹马 → 收尾滚奏 → 片尾卡"
+  },
+  "style": {
+   "palette": [
+    "#000000",
+    "#f2f2ee",
+    "#cfd1d3",
+    "#ff2a3a",
+    "#8f0410"
+   ],
+   "type": "Michroma（宽体标题）+ JetBrains Mono（小字）+ Noto Sans SC（片尾中文）",
+   "materials": "three.js 法拉利 458：红色金属漆 + 棚拍反射，印刷风格化（墨线、分阶色调与细抖动、套色偏移的红版）；会飞的程序化蜻蜓；6 万点的马/车点云；Mixkit 素材黑白处理只保留红色",
+   "notes": "音乐：Mixkit「Need for speed」（Arulo），140 BPM half-time。切点吸附到半拍内最强的 kick/snare（这首歌很多 kick 落在反拍）。"
+  },
+  "video": "out/landscape.mp4",
+  "shots": [
+   {
+    "id": "s0-plate",
+    "length": 5.6,
+    "visual": "0 · 1878：黑色虚空里的 Muybridge 底片，一开始就在动（半速），每个和弦换一种排版，竖排标题",
+    "at": 1.5
+   },
+   {
+    "id": "s0-roll",
+    "length": 1.3,
+    "visual": "16 分音符军鼓滚奏：每一下多一格",
+    "at": 6.3
+   },
+   {
+    "id": "s1-travel",
+    "length": 3.4,
+    "visual": "I · EQUUS：一个连续镜头，three.js 的马奔跑，镜头从侧面推到低角度 3/4，处理方式只在军鼓上换",
+    "at": 8
+   },
+   {
+    "id": "s1-real",
+    "length": 6.9,
+    "visual": "真实的马，各用一次：马群、海边骑手（1 HP = 745.7 W）、胶片条、马眼、白马（跃马标志的来历）",
+    "at": 12.5
+   },
+   {
+    "id": "s1-cloud",
+    "length": 3.7,
+    "visual": "马变成点云继续跑",
+    "at": 18.5
+   },
+   {
+    "id": "s2-transit",
+    "length": 1.8,
+    "visual": "鼓停：定格在四蹄离地，点从马流到车，变红",
+    "at": 21.6
+   },
+   {
+    "id": "s3-reveal",
+    "length": 2.4,
+    "visual": "暗棚里一道光扫过红色的车",
+    "at": 24.2
+   },
+   {
+    "id": "s4-felis",
+    "length": 5.8,
+    "visual": "II · FELIS：猎豹定格，红线描出脊背和后腿 → 切点上红线落到车顶线和后轮拱（haunch）",
+    "at": 26.6
+   },
+   {
+    "id": "s5-oculus",
+    "length": 5.1,
+    "visual": "III · OCULUS：鹰眼、猫头鹰、黑猫的眼睛 → 车灯，红圈一路跳过去",
+    "at": 31.4
+   },
+   {
+    "id": "s6-squalus",
+    "length": 5.1,
+    "visual": "IV · SQUALUS：鲨鱼定格描轮廓 → 车身轮廓（1961 Mako Shark 概念车）",
+    "at": 37.6
+   },
+   {
+    "id": "s7-ala",
+    "length": 6.9,
+    "visual": "V · ALA：会飞的 three.js 蜻蜓，翅上的流线 → 风洞里车顶的流线",
+    "at": 42.8
+   },
+   {
+    "id": "s8-chimera",
+    "length": 5.1,
+    "visual": "VI · CHIMERA：每两拍一个借来的特征落到同一台车上，下面是它来自的动物",
+    "at": 52.4
+   },
+   {
+    "id": "s9-gallop",
+    "length": 2.1,
+    "visual": "车的点云跑回一匹马",
+    "at": 54.5
+   },
+   {
+    "id": "s10-card",
+    "length": 1.9,
+    "visual": "收尾滚奏铺满格子，落在重拍上：LOCOMOTION 片尾卡",
+    "at": 57.5
+   }
+  ]
+ },
+ "assets": [
+  {
+   "path": "cut.mp4",
+   "sha256": "94d9c9f4b4fb28f27c58846e76b906384d297b5004d1a1ecb3db9ae8604597c6"
+  },
+  {
+   "path": "shots/s0-plate.png",
+   "sha256": "cc73ec2289fc9ec1357a3278643e3b6f957dcf1ecf5b4924a953c65419098888"
+  },
+  {
+   "path": "shots/s0-roll.png",
+   "sha256": "3e624a79354c37428ee056cfbecf130866e4f33fd258e937c8980402f9594711"
+  },
+  {
+   "path": "shots/s1-travel.png",
+   "sha256": "a5a3b79851334da25bd975a1116a909421a477df7663b66161a82b39a944145d"
+  },
+  {
+   "path": "shots/s1-real.png",
+   "sha256": "b48c60ca6a6dca31e5955479729d6401753bb4dc42bb3941b6cc078384145dc8"
+  },
+  {
+   "path": "shots/s1-cloud.png",
+   "sha256": "d3743f4a5b80375360f0b855574a2516f568fe5cc1520d4463841fccaecf688a"
+  },
+  {
+   "path": "shots/s2-transit.png",
+   "sha256": "af993cc6b7c77a6447193308c8bba06c1d62b4333318623b1d247f77a42d172a"
+  },
+  {
+   "path": "shots/s3-reveal.png",
+   "sha256": "e3d86fc1cb9c07470e2f7183696eaf03ed65a04a534ed68c153c6d02b1b037e1"
+  },
+  {
+   "path": "shots/s4-felis.png",
+   "sha256": "1d146994a91cacf9bc42e953cb30c7254e27ecc699a7b64b5af9bb637a8cfeea"
+  },
+  {
+   "path": "shots/s5-oculus.png",
+   "sha256": "39a399fdd593511dcb44040c32b83cc68fd9039bae93a7a9deafdeaca4e660ef"
+  },
+  {
+   "path": "shots/s6-squalus.png",
+   "sha256": "194c2cc3ff6b744ba8fcc33ddf4a34ebe877e7027f522fe8a978df2e45f8003c"
+  },
+  {
+   "path": "shots/s7-ala.png",
+   "sha256": "7bdc860e156d827085c9f48f980e608386bbba254cd78da5dcb7f519aebb17a1"
+  },
+  {
+   "path": "shots/s8-chimera.png",
+   "sha256": "92a0defde645b8947edb751a2c1031ee3a9d21268f832789af18b578e8869716"
+  },
+  {
+   "path": "shots/s9-gallop.png",
+   "sha256": "995cdebc428fa9247b85de40190a224f6dc932bce819aab76741e2c938590d20"
+  },
+  {
+   "path": "shots/s10-card.png",
+   "sha256": "da45a6033ebbbfc85d9575601fa476c2224bfacf601e59a9f22fbc3933592389"
+  }
+ ],
+ "previous": {
+  "n": 1,
+  "id": "13ed1411-d3ec-4b1c-9176-1aa4a80545ff",
+  "response": {
+   "text": "overall \"故事线混乱，希望明确表达：车的美学设计灵感来自动物界，用不同动物的素材一一对应\" — done: 重排为六章，每章一种动物 → 一个被借走的设计特征 → 车：\n  0 · 1878 Muybridge 开场（保留）→ I EQUUS 马：度量（1 HP = 745.7 W；跃马标志）→ 四蹄离地定格，点云从马流向车\n  II FELIS 猎豹：腰臀（haunch，后轮拱）· III OCULUS 鹰/猫头鹰/猫：脸（眼睛 → 车灯）· IV SQUALUS 鲨鱼：皮肤与轮廓（1961 Mako Shark 概念车；盾鳞减阻）· V ALA 蜻蜓：空气（翅上的气流 → 车顶的气流）· VI CHIMERA 快切回顾全部配对，车的点云跑回一匹马 → 片尾卡「每一台机器，都记得一种动物」\n  叙事手段：红色描线。先在动物身上描出特征（定格画面上一拍画完），切点上描线不消失，变形落到车的同一特征上（脊背 → 车顶线与后轮拱，眼 → 车灯，鲨鱼轮廓 → 车身轮廓，翅上的流线 → 车顶的流线）。每章开头一小节显示章节名和被借走的特征（红字，十六分音符逐字打出）。\n  删去了与主线无关的镜头（第一段里的红色车身闪切、ASCII 马与车同框、灰棚里的多角度车展示）。\n  画面上的事实都请 Gemini 核对过（马力、Muybridge 日期、XP-755 Mako Shark、458 参数、跃马来历、haunch、猎豹加速、蜻蜓振翅与翅痣、盾鳞减阻）。\n",
+   "sha256": "8eea24d654f6e09ff5cdc233da59cee3bb6c464b20866c6f77a6f7bf7247a853"
+  }
+ }
+}

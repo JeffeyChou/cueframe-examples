@@ -1,0 +1,177 @@
+{
+ "n": 1,
+ "id": "13ed1411-d3ec-4b1c-9176-1aa4a80545ff",
+ "gate": "look",
+ "createdAt": "2026-10-20T19:26:36.462Z",
+ "storyboard": {
+  "title": "LOCOMOTION · 动物与机器的运动研究",
+  "language": "zh",
+  "brief": {
+   "audience": "作品集观众；前端/动态设计同行",
+   "platform": "个人社交账号（不上 YouTube，不变现）",
+   "format": "landscape",
+   "length": "63.6 s（1920×1080，30 fps）",
+   "tone": "黑暗视觉音乐：黑色虚空、极小的等宽字、点阵/ASCII/像素拉丝；剪辑卡在鼓点上，16 分音符的滚奏做连切",
+   "must": [
+    "车与动物（马、蜻蜓、鸟、眼睛↔车灯）",
+    "ASCII / 点阵 + three.js",
+    "鼓点卡点的转场",
+    "参考：safehaven EP12 的剪辑节奏，AE-pixel-ASCII 的风格"
+   ],
+   "ending": "收尾的军鼓滚奏把画面铺满，落在下一小节的重拍上：LOCOMOTION 片尾卡"
+  },
+  "style": {
+   "palette": [
+    "#000000",
+    "#f2f2ee",
+    "#cfd1d3",
+    "#ff2a3a",
+    "#2b3bff"
+   ],
+   "type": "Michroma（宽体标题）+ JetBrains Mono（小字）",
+   "materials": "three.js：银色工作室里的法拉利 458、morph 动画的马与鸟、程序生成的蜻蜓线稿、6 万点的点云；Mixkit 素材经点阵 / ASCII / 1-bit 抖动 / 像素拉丝处理，只保留红色",
+   "notes": "音乐：Mixkit「Need for speed」（Arulo），140 BPM half-time，从 6.43 s 截 63.6 s。剪辑点来自本地 DSP 的鼓点（kick/snare 吸附），镜头切换在命中帧上；hi-hat 驱动角标、方块、格子的小变化。"
+  },
+  "shots": [
+   {
+    "id": "s0-plate",
+    "length": 5.6,
+    "visual": "0 · 1878：黑色虚空里一张极小的 Muybridge 底片《Sallie Gardner at a Gallop》，每个和弦换一种排版；第三小节放大成点阵的奔马，竖排标题 LOCOMOTION",
+    "sound": "前奏和弦，无鼓",
+    "at": 1
+   },
+   {
+    "id": "s0-gallop",
+    "length": 1.6,
+    "visual": "同一镜头第三小节：Muybridge 的 11 帧以一拍一步的速度在点阵里奔跑（140 BPM ≈ 真马奔跑 2.3 步/秒）",
+    "at": 4.5
+   },
+   {
+    "id": "s0-roll",
+    "length": 1.3,
+    "visual": "前奏的 16 分军鼓滚奏：每一下多一格，11 帧铺满网格（待做）",
+    "sound": "snare roll 5.57–6.54 s"
+   },
+   {
+    "id": "s1-horse",
+    "length": 14,
+    "visual": "I · EQUUS：three.js 的马，侧光，点阵 / ASCII / 矩阵三种处理交替；地面刻度随步伐滚动，落蹄在拍上标红；与真实马群、马眼、海边骑手、Muybridge 底片、一闪而过的红色车身互切",
+    "sound": "第一段 drop，切点按 4-2-2-1-1… 的句法吸附在 kick/snare 上",
+    "at": 7.5
+   },
+   {
+    "id": "s2-transit",
+    "length": 1.8,
+    "visual": "鼓停的一小节：奔马定格在“四蹄离地”的那一刻（Muybridge 1878 年证明的事），6 万个表面点流向法拉利的表面",
+    "sound": "鼓停，只剩 808",
+    "at": 21.5
+   },
+   {
+    "id": "s2-car-points",
+    "length": 0.4,
+    "visual": "点云已经变成车",
+    "at": 22.4
+   },
+   {
+    "id": "s3-reveal",
+    "length": 2.4,
+    "visual": "II · MACHINA：暗棚里一道光扫过车身，点阵随 hi-hat 一块块变成实拍质感",
+    "sound": "hi-hat 回来，没有 kick",
+    "at": 24
+   },
+   {
+    "id": "s3-studio",
+    "length": 11,
+    "visual": "灰色工作室里的银色法拉利（前、顶、侧、后 3/4、轮毂特写），kick 上跳出点阵/字符/反相方块，切点处像素向上拉成柱子（AE 参考）；与隧道、公路 POV、仪表盘、夜路素材互切；车侧镜头里有一匹 ASCII 马同速奔跑（待做）",
+    "at": 27
+   },
+   {
+    "id": "s4-dragonfly",
+    "length": 12,
+    "visual": "III · ALA：程序生成的蜻蜓线稿（复眼、翅脉、翅痣），翅膀按八分音符扇动，标注线带浮点坐标；与蜻蜓、鹰、帝王蝶素材互切；风洞里的车，流线绕过车身（待做）；三维鸟群 ASCII（待做）",
+    "at": 37
+   },
+   {
+    "id": "s4-dragonfly-side",
+    "length": 1,
+    "visual": "蜻蜓侧视",
+    "at": 39
+   },
+   {
+    "id": "s5-pair",
+    "length": 12,
+    "visual": "IV · CHIMERA：左动物右机器，眼睛和车灯对在同一高度：马群↔公路上的车、鹰眼↔车灯、鲨鱼↔车尾灯…；只有红色保留；hat 上半边变点阵",
+    "sound": "最密的一段，0.5–1 拍一切",
+    "at": 48.6
+   },
+   {
+    "id": "s5-pair-red",
+    "length": 0.9,
+    "visual": "鲨鱼（点阵）↔ 红色尾灯",
+    "at": 50
+   },
+   {
+    "id": "s5-eyes",
+    "length": 0.4,
+    "visual": "眼睛与灯的 4×3 网格，每个十六分音符换一格的处理，kick 的那一格红框",
+    "at": 48.3
+   },
+   {
+    "id": "s6-card",
+    "length": 3.2,
+    "visual": "收尾滚奏铺满网格，落在重拍上：LOCOMOTION 片尾卡与素材署名（待做）",
+    "sound": "最后一小节淡出"
+   }
+  ]
+ },
+ "assets": [
+  {
+   "path": "shots/s0-plate.png",
+   "sha256": "6eb246f7a3c2202471cdaf16d9b7608417c471bbe7a87c0ba8c32255ff4f0f52"
+  },
+  {
+   "path": "shots/s0-gallop.png",
+   "sha256": "c8905bf23b99a33842329187cf2387e03d42e22e2d2a85a24349cd39e58daba0"
+  },
+  {
+   "path": "shots/s1-horse.png",
+   "sha256": "46cd7414b95d84d72fcc5ed445958984a2ac53130705b6564542ec611a27eb42"
+  },
+  {
+   "path": "shots/s2-transit.png",
+   "sha256": "b6c1146d1bea173715dd538dde34140ae1069506af1ccc9d4beb014be2fed845"
+  },
+  {
+   "path": "shots/s2-car-points.png",
+   "sha256": "3dfc18494836b457b0e5653d53d155c0f0369b5e838be0dd23d614881e029c95"
+  },
+  {
+   "path": "shots/s3-reveal.png",
+   "sha256": "e5add175a7a1995dbc3db5c70972203dab1bfd921cb3e3cd8c710d1b2a8d95ad"
+  },
+  {
+   "path": "shots/s3-studio.png",
+   "sha256": "e1d4b326deba70643594dae36d270e61c855ee02af09e1dd4aff2a1a5b824834"
+  },
+  {
+   "path": "shots/s4-dragonfly.png",
+   "sha256": "931613e699630b39327be6b5fd291235052ea7540fb5a085be06d5f7b9e5db6f"
+  },
+  {
+   "path": "shots/s4-dragonfly-side.png",
+   "sha256": "262db24b8213d6f8c94d7cbe17575d666f99d813adc3c038d339e3657b7e6d4f"
+  },
+  {
+   "path": "shots/s5-pair.png",
+   "sha256": "34667a78831e2826af1551d7d6ab1427f6d09c7ec6a201702b4c8d3c79b8b152"
+  },
+  {
+   "path": "shots/s5-pair-red.png",
+   "sha256": "7b99519f01e784c71c73364546d2603ad65dcc4b17b7c50e0e196122d8a3c0c3"
+  },
+  {
+   "path": "shots/s5-eyes.png",
+   "sha256": "6731cb1775788c4254e90fb431759c36f22ae46dc37ad22be7252f3cff43aa97"
+  }
+ ]
+}

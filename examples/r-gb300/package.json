@@ -7,7 +7,8 @@
       "build/plates/rack/manifest.json",
       "build/plates/tray/manifest.json",
       "build/plates/scale/manifest.json",
-      "build/fonts/fonts.json"
+      "build/fonts/fonts.json",
+      "build/plates/rack/tracks.json"
     ],
     "needs": "Blender 5.x: bash examples/r-gb300/make.sh draft (a minute); make.sh for the Cycles finals"
   }

@@ -13,7 +13,9 @@ read `cueframe/AGENTS.md` first, it is the contract for every project here.
 4. A `README.md` with what the piece is and the commands that build it, from the repository root.
    Files it imports from `build/` go in its `package.json` as `"cueframe": { "generated": [...],
    "needs": "..." }`.
-5. `pnpm check <name>` passes, and you looked at the stills yourself.
+5. A `preview.webp` (3–7 s of the finished film; settings in README.md) and a cell in README.md's
+   gallery. Pick a stretch without footage under a restricted licence.
+6. `pnpm check <name>` passes, and you looked at the stills yourself.
 
 ## Changing CueFrame or texmorph
 

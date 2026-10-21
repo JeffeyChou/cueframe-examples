@@ -6,7 +6,8 @@
     "generated": [
       "build/hits.json",
       "build/fonts/fonts.json",
-      "build/env.json"
+      "build/env.json",
+      "build/plates/clouds-dark/manifest.json"
     ],
     "needs": "Mixkit footage and music: bash examples/survey-of-rain/make.sh"
   }
