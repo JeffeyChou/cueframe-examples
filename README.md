@@ -37,7 +37,7 @@ pieces ([`kits/`](kits)) or keeps in its own `lib/`.
 <table>
 <tr>
 <td width="50%" valign="top"><a href="examples/utc8-customs"><img src="examples/utc8-customs/preview.webp" width="100%" alt="utc8-customs"></a><br>
-<b><a href="examples/utc8-customs">utc8-customs</a></b> 东八区海关: a flat Bauhaus satire on printed paper. Claude is a border officer who catches UTC+8 travellers by their small tells. 3 min.<br>
+<b><a href="examples/utc8-customs">utc8-customs</a></b>: a flat Bauhaus satire on printed paper. Claude is a border officer who catches UTC+8 travellers by their small tells. 3 min.<br>
 <sub>uses: production (storyboard, review board), <code>kits/materials</code>, <code>acting</code>, <code>recipes/camera</code></sub></td>
 <td width="50%" valign="top"><a href="examples/r-editing-village"><img src="examples/r-editing-village/preview.webp" width="100%" alt="r-editing-village"></a><br>
 <b><a href="examples/r-editing-village">r-editing-village</a></b>: a paper-textured fable about AI and video editing: an animation inside the animation, a camera that pulls out through a screen, a tower of software.<br>
@@ -59,7 +59,7 @@ pieces ([`kits/`](kits)) or keeps in its own `lib/`.
 <b><a href="examples/locomotion">locomotion</a></b>: car design borrows from animals. Muybridge's gallop becomes a point-cloud Ferrari; red traces drawn on each animal land on the car across the cut.<br>
 <sub>uses: rhythm (<code>kits/beatcut</code>, footage frames), three.js, ASCII / print looks</sub></td>
 <td width="50%" valign="top"><a href="examples/survey-of-rain"><img src="examples/survey-of-rain/preview.webp" width="100%" alt="survey-of-rain"></a><br>
-<b><a href="examples/survey-of-rain">survey-of-rain</a></b> 雨的测绘: rain, storm and bird footage cut to a song under a live schematic overlay of tracked points, chains and telemetry.<br>
+<b><a href="examples/survey-of-rain">survey-of-rain</a></b>: rain, storm and bird footage cut to a song under a live schematic overlay of tracked points, chains and telemetry.<br>
 <sub>uses: rhythm, <code>lib/schematic</code>, <code>kits/beatcut</code></sub></td>
 </tr>
 <tr>
@@ -70,12 +70,6 @@ pieces ([`kits/`](kits)) or keeps in its own `lib/`.
 <b><a href="examples/r-pdoom">r-pdoom</a></b>: the prompt-and-hook opening of <i>I'm Upping My P(doom)</i>: a typed prompt, then kinetic type on the beat.<br>
 <sub>uses: authoring, kinetic type on beats</sub></td>
 </tr>
-<tr>
-<td width="50%" valign="top"><a href="examples/r-schematic-rain"><img src="examples/r-schematic-rain/preview.webp" width="100%" alt="r-schematic-rain"></a><br>
-<b><a href="examples/r-schematic-rain">r-schematic-rain</a></b>: the 12 s spike that led to survey-of-rain, with its friction log (<code>FRICTION.md</code>).<br>
-<sub>uses: rhythm, footage frames</sub></td>
-<td width="50%" valign="top"></td>
-</tr>
 </table>
 
 ## Motion design and promos
@@ -83,7 +77,7 @@ pieces ([`kits/`](kits)) or keeps in its own `lib/`.
 <table>
 <tr>
 <td width="50%" valign="top"><a href="examples/r-algebra"><img src="examples/r-algebra/preview.webp" width="100%" alt="r-algebra"></a><br>
-<b><a href="examples/r-algebra">r-algebra</a></b>: a title sequence for abstract algebra: nebula particles gather into a snowflake, flare, and resolve into 抽象代数.<br>
+<b><a href="examples/r-algebra">r-algebra</a></b>: a title sequence for abstract algebra: nebula particles gather into a snowflake, flare, and resolve into the Chinese title for abstract algebra.<br>
 <sub>uses: graphics (HDR, particles, bloom)</sub></td>
 <td width="50%" valign="top"><a href="examples/r-watchdogs"><img src="examples/r-watchdogs/preview.webp" width="100%" alt="r-watchdogs"></a><br>
 <b><a href="examples/r-watchdogs">r-watchdogs</a></b>: hacker-thriller motion graphics: 3D type, a wireframe city, a dossier and dot-matrix headlines.<br>
@@ -97,8 +91,8 @@ pieces ([`kits/`](kits)) or keeps in its own `lib/`.
 </tr>
 </table>
 
-The `r-` pieces are replicas: slices rebuilt from a reference video or repository to measure what
-CueFrame costs and where it gets in the way (CueFrame `docs/benchmark/` and each piece's README).
+The `r-` pieces are replicas: slices rebuilt from a reference video or repository, to see how close
+CueFrame gets to the original and at what cost (CueFrame `docs/benchmark/` and each piece's README).
 
 ## Setup
 
@@ -131,7 +125,7 @@ The others need more than a clone:
 | `manim-kepler`, `r-chipdesign`, `r-editing-village`, `r-pcb-routing` | a local IndexTTS voice (`../index-tts`, `../voices`) | `bash examples/<name>/make.sh` |
 | `utc8-customs` | local MOSS-TTS | `bash examples/utc8-customs/make.sh` |
 | `r-chipdesign`, `r-gb300` | Blender 5.2 for the 3D plates | `bash examples/<name>/make.sh` |
-| `locomotion`, `survey-of-rain`, `r-schematic-rain` | network: footage and music are fetched, never committed | `bash examples/<name>/make.sh` |
+| `locomotion`, `survey-of-rain` | network: footage and music are fetched, never committed | `bash examples/<name>/make.sh` |
 
 `texmorph/` is a submodule too: CueFrame finds it beside itself.
 

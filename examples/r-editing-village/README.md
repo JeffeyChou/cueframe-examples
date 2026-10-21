@@ -6,9 +6,6 @@ camera stutters on card 3, the camera pulls out through the screen to the stage,
 on, a tower of software drops behind it, it turns to its dark side beside Opus and sends the
 instruction into the black box. Narration wording is our own; voice is the local IndexTTS voice `me`.
 
-It was built with CueFrame as it is, to measure friction for character animation; see
-[FRICTION.md](FRICTION.md).
-
 ```sh
 bash examples/r-editing-village/make.sh      # needs ../index-tts and ../voices beside this repo
 ```

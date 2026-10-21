@@ -1,13 +1,12 @@
-# 雨的测绘 · A Survey of Rain
+# A Survey of Rain
 
-A 59 s rhythm cut ("卡点") of rain, storm and bird footage under a technical, schematic overlay:
+A 59 s rhythm cut of rain, storm and bird footage under a technical, schematic overlay:
 tracked detection circles with coordinates, connections, crosshair or brackets, tangent chains and
 ray pencils along the footage's motion, pixelated regions, telemetry and a corner slate. Cobalt
 colour-block windows jump on the drums; an orange accent comes in with the song's second layer.
 
 Made after studying a short rain montage (colour blocks on drum hits) and the ComfyUI-Schematic
-overlay; the spike and its friction log are in `../r-schematic-rain`. Built on
-`kits/beatcut.ts` (`cutSections`, [`kits/README.md`](../../kits/README.md)), `lib/schematic.ts` (`analysis`,
+overlay. Built on `kits/beatcut.ts` (`cutSections`, [`kits/README.md`](../../kits/README.md)), `lib/schematic.ts` (`analysis`,
 [`lib/README.md`](lib/README.md)), `ctx.frames`, `f.hit` and `cueframe-py hits/excerpt/footage` (cueframe
 `docs/guide/rhythm.md`).
 

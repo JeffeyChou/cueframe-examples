@@ -42,7 +42,6 @@ examples/survey-of-rain/data/fonts/NotoSerifSC.ttf $SERIF
 examples/utc8-customs/data/fonts/Jost.ttf $JOST
 examples/utc8-customs/data/fonts/IBMPlexMono-Medium.ttf $PLEX-Medium.ttf d1246280a315c377a651879047723bab6e3b411e
 examples/locomotion/data/fonts/JetBrainsMono.ttf $JBMONO
-examples/r-schematic-rain/data/fonts/JetBrainsMono.ttf $JBMONO
 examples/survey-of-rain/data/fonts/JetBrainsMono.ttf $JBMONO
 examples/locomotion/data/fonts/Michroma-Regular.ttf $MICHROMA
 examples/locomotion/data/fonts/NotoSansSC.ttf $SANS
