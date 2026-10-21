@@ -7,12 +7,22 @@ SANS="$G/notosanssc/NotoSansSC%5Bwght%5D.ttf 0a2195ed94416288d4c6ffc6cfcbed27b70
 PLEX="$G/ibmplexmono/IBMPlexMono"
 JOST="$G/jost/Jost%5Bwght%5D.ttf 90aca5f3bcd075b2894da532c88b168edcb4ce9d"
 SERIF="$G/notoserifsc/NotoSerifSC%5Bwght%5D.ttf 4eced3ca8111d4e9221bf8cb76b42965951ed789"
+JBMONO="$G/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf bef242b36d905170007caed53cd6a07775dbfb82"
+MICHROMA="$G/michroma/Michroma-Regular.ttf 0a7c420d18378e3fb797cfb3407ca743cc50cad9"
+# A machine-wide cache by sha1 (outside any repo, invisible to the browser): a font is downloaded once and
+# cloned (APFS copy-on-write, no extra disk) into every project that needs it.
+CACHE="${CUEFRAME_FONT_CACHE:-$HOME/Library/Caches/cueframe/fonts}"
+mkdir -p "$CACHE"
 while read -r dest url sha; do
   [ -f "$dest" ] && continue
-  echo "fetch $dest" >&2
-  curl -fsSL --create-dirs -o "$dest.part" "$url"
-  [ "$(shasum "$dest.part" | cut -d' ' -f1)" = "$sha" ] || { rm -f "$dest.part"; echo "fetch-fonts: sha1 mismatch for $dest" >&2; exit 1; }
-  mv "$dest.part" "$dest"
+  mkdir -p "$(dirname "$dest")"
+  if [ ! -f "$CACHE/$sha" ]; then
+    echo "fetch $dest" >&2
+    curl -fsSL -o "$CACHE/$sha.part" "$url"
+    [ "$(shasum "$CACHE/$sha.part" | cut -d' ' -f1)" = "$sha" ] || { rm -f "$CACHE/$sha.part"; echo "fetch-fonts: sha1 mismatch for $dest" >&2; exit 1; }
+    mv "$CACHE/$sha.part" "$CACHE/$sha"
+  fi
+  cp -c "$CACHE/$sha" "$dest" 2>/dev/null || cp "$CACHE/$sha" "$dest"
 done <<LIST
 examples/manim-kepler/data/fonts/NotoSansSC.ttf $SANS
 examples/r-ascii/data/fonts/NotoSansSC.ttf $SANS
@@ -31,4 +41,9 @@ examples/utc8-customs/data/fonts/NotoSerifSC.ttf $SERIF
 examples/survey-of-rain/data/fonts/NotoSerifSC.ttf $SERIF
 examples/utc8-customs/data/fonts/Jost.ttf $JOST
 examples/utc8-customs/data/fonts/IBMPlexMono-Medium.ttf $PLEX-Medium.ttf d1246280a315c377a651879047723bab6e3b411e
+examples/locomotion/data/fonts/JetBrainsMono.ttf $JBMONO
+examples/r-schematic-rain/data/fonts/JetBrainsMono.ttf $JBMONO
+examples/survey-of-rain/data/fonts/JetBrainsMono.ttf $JBMONO
+examples/locomotion/data/fonts/Michroma-Regular.ttf $MICHROMA
+examples/locomotion/data/fonts/NotoSansSC.ttf $SANS
 LIST

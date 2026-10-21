@@ -1,0 +1,5 @@
+# Fetched or derived media (scripts/fetch-media.sh, scripts/muybridge.py); frames.json stays.
+data/models/
+data/muybridge/*
+!data/muybridge/frames.json
+data/draco/

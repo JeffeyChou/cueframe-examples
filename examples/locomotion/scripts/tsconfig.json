@@ -1,0 +1,5 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": { "baseUrl": "..", "paths": { "@cueframe/recipes/*": ["../../cueframe/recipes/*"], "@cueframe/core": ["../../cueframe/packages/core/src/index.ts"] } },
+  "include": ["*.ts", "../*.ts"]
+}
