@@ -1,0 +1,8 @@
+{
+  "stems": [
+    { "name": "bed", "file": "build/stems/bed.wav", "role": "bed", "gain": 0.5 },
+    { "name": "sfx", "file": "build/stems/sfx.wav", "role": "sfx", "gain": 0.55 }
+  ],
+  "target": { "lufs": -14, "tp": -1.5 },
+  "fade_out": 0.4
+}

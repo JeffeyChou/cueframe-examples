@@ -47,7 +47,9 @@ pieces ([`kits/`](kits)) or keeps in its own `lib/`.
 <td width="50%" valign="top"><a href="examples/r-pcb-routing"><img src="examples/r-pcb-routing/preview.webp" width="100%" alt="r-pcb-routing"></a><br>
 <b><a href="examples/r-pcb-routing">r-pcb-routing</a></b>: a pixel rider routes a ten-layer board. The frame splits on the beat into ten worlds, which become an exploded 3D stack.<br>
 <sub>uses: timing-and-audio (music-first narration), <code>lib/paths</code>, <code>space</code></sub></td>
-<td width="50%" valign="top"></td>
+<td width="50%" valign="top"><a href="examples/persimmon"><img src="examples/persimmon/preview.webp" width="100%" alt="persimmon"></a><br>
+<b><a href="examples/persimmon">persimmon</a></b>: a hand-painted cartoon. Dou, a bean with a sprout, jumps for the last persimmon, misses, and the wind drops it on its head. Watercolour, boiling ink, timed reads. 14 s.<br>
+<sub>uses: brushFrame (settled backgrounds, keyed boil), production (storyboard reads), <code>kits/acting</code>, <code>lib/dou</code></sub></td>
 </tr>
 </table>
 
@@ -127,7 +129,7 @@ The others need more than a clone:
 | `r-chipdesign`, `r-gb300` | Blender 5.2 for the 3D plates | `bash examples/<name>/make.sh` |
 | `locomotion`, `survey-of-rain` | network: footage and music are fetched, never committed | `bash examples/<name>/make.sh` |
 
-`texmorph/` is a submodule too: CueFrame finds it beside itself.
+`texmorph/` and `brushFrame/` are submodules too: CueFrame finds them beside itself.
 
 To refresh a preview, cut 3–7 s of the finished film to a 560 px, 12 fps animated WebP of at most
 ~700 KB at `examples/<name>/preview.webp`:

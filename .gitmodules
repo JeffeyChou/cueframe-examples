@@ -4,3 +4,6 @@
 [submodule "texmorph"]
 	path = texmorph
 	url = https://github.com/JeffeyChou/Texmorph.git
+[submodule "brushFrame"]
+	path = brushFrame
+	url = https://github.com/JeffeyChou/brushFrame.git

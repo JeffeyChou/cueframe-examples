@@ -1,0 +1,30 @@
+{
+  "title": "The last persimmon",
+  "language": "en",
+  "brief": { "audience": "anyone", "platform": "cueframe-examples", "format": "landscape", "length": "13.6 s", "tone": "gentle slapstick", "ending": "iris closes on Dou hugging the persimmon" },
+  "style": { "palette": ["#3B3F7C", "#8C6FA6", "#E8A07A", "#A9824E", "#F2E6CC", "#E8642C", "#2B2233"], "type": "none (no text)", "materials": "watercolour washes, boiling ink outline", "notes": "dusk orchard; the persimmon is the only saturated warm colour" },
+  "shots": [
+    { "id": "s1", "length": 2.7, "visual": "wide: the bare tree at dusk, one persimmon; Dou trots in from the left and stops under it", "camera": "locked wide; iris in on the persimmon", "at": 2.0,
+      "reads": [
+        { "from": 0, "to": 0.7, "read": "the persimmon (the iris holds on it)" },
+        { "from": 0.7, "to": 1.2, "read": "an orchard at dusk opens around it" },
+        { "from": 1.2, "to": 2.7, "read": "a small creature trots in under the tree" } ] },
+    { "id": "s2", "length": 6.1, "visual": "medium: Dou turns, looks up, wants the fruit, jumps and misses by a hair, lands, sulks", "camera": "cut on the turn; locked medium", "at": 5.8,
+      "reads": [
+        { "from": 0.1, "to": 0.9, "read": "it looks up and sees the persimmon (!)" },
+        { "from": 0.9, "to": 1.9, "read": "it wants it: sparkling eyes, a bounce" },
+        { "from": 1.9, "to": 2.5, "read": "it crouches: a jump is coming" },
+        { "from": 2.5, "to": 3.45, "read": "the jump misses by a hair, held at the top" },
+        { "from": 3.45, "to": 4.2, "read": "it lands with a squash" },
+        { "from": 4.2, "to": 6.1, "read": "it sulks; the first leaves blow in" } ] },
+    { "id": "s3", "length": 4.8, "visual": "the same framing, pushing in: a gust, the persimmon drops on Dou's head, bounces into its arms; joy", "camera": "no cut: the medium framing carries on and pushes in slowly; iris out on the pair", "at": 12.3,
+      "reads": [
+        { "from": 0, "to": 0.9, "read": "a gust: leaves blow, the fruit wobbles (Dou does not see)" },
+        { "from": 0.9, "to": 1.5, "read": "the persimmon falls" },
+        { "from": 1.5, "to": 2.15, "read": "bonk: stars" },
+        { "from": 2.15, "to": 2.5, "read": "it bounces into Dou's arms" },
+        { "from": 2.5, "to": 3.2, "read": "Dou sees what hit it" },
+        { "from": 3.2, "to": 3.9, "read": "joy" },
+        { "from": 3.9, "to": 4.8, "read": "the iris closes on the two" } ] }
+  ]
+}
