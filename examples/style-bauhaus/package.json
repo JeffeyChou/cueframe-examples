@@ -1,0 +1,11 @@
+{
+  "name": "@cueframe/example-style-bauhaus",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": [
+      "build/fonts/fonts.json"
+    ],
+    "needs": "bash examples/style-bauhaus/make.sh"
+  }
+}

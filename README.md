@@ -11,6 +11,22 @@ music). Click one to open the project. The "uses" line names the CueFrame guides
 (`cueframe/docs/guide/`) and recipes the piece leans on, and the helpers it shares with other
 pieces ([`kits/`](kits)) or keeps in its own `lib/`.
 
+## Style kits
+
+Looks to start a film from: a style bible in [`kits/styles/`](kits/styles), the kit in `kits/`, and
+a short demo film.
+
+<table>
+<tr>
+<td width="50%" valign="top"><a href="examples/style-comic"><img src="examples/style-comic/preview.webp" width="100%" alt="style-comic"></a><br>
+<b><a href="examples/style-comic">style-comic</a></b>: newspaper comic. A four-panel strip (起承转合) on a newspaper page: Ben-Day dots off register, balloons, lettered sound effects, a camera that reads the page. 17 s.<br>
+<sub>uses: <code>kits/comic</code> (<code>styles/comic.md</code>), <code>recipes/camera</code>, blur windows</sub></td>
+<td width="50%" valign="top"><a href="examples/style-bauhaus"><img src="examples/style-bauhaus/preview.webp" width="100%" alt="style-bauhaus"></a><br>
+<b><a href="examples/style-bauhaus">style-bauhaus</a></b>: Bauhaus fable. Three squares, one circle, a stamp: 没有规矩，不成方圆 (said the square). Swiss grid, masked headlines, stepped motion, circle and column wipes. 19 s.<br>
+<sub>uses: <code>kits/bauhaus</code> (<code>styles/bauhaus.md</code>), <code>kits/materials</code>, <code>paper</code></sub></td>
+</tr>
+</table>
+
 ## Explainers
 
 <table>
