@@ -69,12 +69,10 @@ down-right, fills in yellow, cyan or white (never on the same colour as the grou
 - Impacts: one punch-in of the camera (+5 %, settling), squash and stretch on the struck thing, a
   white flash disc that opens the new background (yellow dots, magenta ramp, speed lines).
 
-**Flashes.** CueFrame's `measure` takes the camera's pan and zoom out before judging flashes, so
-the dot screen and the panel borders sliding past during a move are a `warn`, not a failure. What
-still fails is flicker that is not camera motion: a shake back and forth, a big dotted object
-jittering, a strobe. So: a one-way punch instead of a shake, oscillations ≤ 2.5 Hz and small (the
-ringing clock hops 18 units and rocks 3°; its hammer swings at 2 Hz). Check every film with
-`measure`.
+**Flashes.** No check catches them, so watch the film. A camera flight over the dot screen is fine.
+A shake back and forth, a big dotted object jittering or a strobe flashes: use a one-way punch
+instead of a shake, and keep oscillations ≤ 2.5 Hz and small (the ringing clock hops 18 units and
+rocks 3°; its hammer swings at 2 Hz).
 - Rhythm of a strip: page in (≈ 2 s) → 起 3 s → 承 3 s → 转 3 s → 合 3.5 s → page (≈ 2 s) → ink.
 - End on ink black (0.6 s), never a hard cut.
 
