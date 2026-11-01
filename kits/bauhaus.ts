@@ -1,14 +1,15 @@
 // Bauhaus fable (包豪斯寓言): the printed-paper fable of utc8-customs and editing-village (warm paper,
 // muted primaries, flat shape characters on thin ink legs, stamps and pencil rings) with the Swiss
 // poster grammar (a 12-column grid, primitives with an ink accent, headlines rising through a
-// mask, stepped mechanical motion, circle and column wipes). Style bible: kits/styles/bauhaus.md.
+// mask, stepped mechanical motion, circle, column and bar wipes that cover or reveal). Style bible:
+// kits/styles/bauhaus.md.
 
 import type { MountContext } from '@cueframe/core'
 import { clamp01, outCubic, outExpo } from '@cueframe/recipes/motion.js'
 import { fiber } from './paper.js'
 import { paper } from './materials.js'
 import { dress, inkFor, material, type Material, type Outline } from './texture.js'
-import { clipUrl, el, f2, mulberry, place, text, type Box, type Pose, type TextOpts } from './svg.js'
+import { clipUrl, el, ellipseD, f2, mulberry, place, rectD, text, type Box, type Pose, type TextOpts } from './svg.js'
 
 export const BH = {
   paper: '#EDE3CC', cream: '#F6F0E2', ink: '#1E1E1E', red: '#C7432F', navy: '#2C3172', mustard: '#E3A72F',
@@ -63,31 +64,62 @@ export function rule(parent: Element, x: number, y: number, w: number, h: number
 }
 
 // ── Type ─────────────────────────────────────────────────────────────────────────────────────
+/** A line as one <text> per glyph, in a group clipped to a band at the baseline. */
+function glyphLine(ctx: Pick<MountContext, 'id'>, parent: Element, x: number, y: number, str: string, o: TextOpts) {
+  const g = el(parent, 'g')
+  g.setAttribute('clip-path', clipUrl(ctx, parent, `M-4000 ${f2(y - o.size * 1.02)}H6000V${f2(y + o.size * 0.3)}H-4000Z`).url)
+  const probe = text(g, 0, 0, '', { ...o, anchor: 'start' })
+  const glyphs = [...str].map((c) => { probe.textContent = c; return { c, w: probe.getComputedTextLength() } })
+  probe.remove()
+  const w = glyphs.reduce((a, b) => a + b.w, 0)
+  let cx = o.anchor === 'middle' ? x - w / 2 : o.anchor === 'end' ? x - w : x
+  const parts = glyphs.map(({ c, w: gw }) => { const p = { el: text(g, cx, y, c, { ...o, anchor: 'start' }), mid: cx + gw / 2 }; cx += gw; return p })
+  return { g, w, parts }
+}
+
 /**
  * A headline whose glyphs rise one by one through a mask at the baseline (expo out, staggered).
- * Returns its width; `set(k)` 0..1 over the whole line, `set(k, -1)` lets the glyphs sink back out.
+ * Returns its width; `set(k)` 0..1 over the whole line, `set(k, -1)` lets the glyphs leave upward.
  */
 export function rise(ctx: Pick<MountContext, 'id'>, parent: Element, x: number, y: number, str: string, o: TextOpts & { stagger?: number }) {
-  const g = el(parent, 'g')
-  const band = clipUrl(ctx, parent, `M-4000 ${f2(y - o.size * 1.02)}H6000V${f2(y + o.size * 0.3)}H-4000Z`)
-  g.setAttribute('clip-path', band.url)
-  const glyphs = [...str]
-  const probe = text(g, 0, 0, '', { ...o, anchor: 'start' })
-  const widths = glyphs.map((c) => { probe.textContent = c; return probe.getComputedTextLength() })
-  probe.remove()
-  const total = widths.reduce((a, b) => a + b, 0)
-  let cx = o.anchor === 'middle' ? x - total / 2 : o.anchor === 'end' ? x - total : x
-  const parts = glyphs.map((c, i) => { const t = text(g, cx, y, c, { ...o, anchor: 'start' }); cx += widths[i]!; return t })
+  const { g, w, parts } = glyphLine(ctx, parent, x, y, str, o)
   const st = o.stagger ?? 0.06, n = parts.length
   return {
-    w: total,
+    g, w,
     set(k: number, dir: 1 | -1 = 1) {
-      parts.forEach((p, i) => {
+      parts.forEach(({ el: p }, i) => {
         const u = clamp01(k * (1 + (n - 1) * st) - i * st)
         const off = dir > 0 ? (1 - outExpo(u)) * o.size * 1.15 : -inExpo(u) * o.size * 1.15
         p.setAttribute('transform', `translate(0 ${f2(off)})`)
         // Parked below the mask (or gone above it) a glyph is hidden, so checks do not see it.
         p.style.visibility = (dir > 0 ? u > 0 : u < 1) ? 'visible' : 'hidden'
+      })
+    },
+  }
+}
+
+/**
+ * `rise` on a clock, for lyrics and narration: glyph i comes up through the mask at `times[i]`
+ * (most of the way up on its time) and from `out` the glyphs leave upward through it in turn.
+ * Glyphs from `accent.from` on take `accent.fill` and land with a pop (`pop` × size, default 0.28).
+ * `set(t, out = Infinity)` takes the time.
+ */
+export function riseAt(ctx: Pick<MountContext, 'id'>, parent: Element, x: number, y: number, str: string, times: readonly number[], o: TextOpts & { accent?: { from: number; fill: string }; pop?: number }) {
+  const { g, w, parts } = glyphLine(ctx, parent, x, y, str, o)
+  if (times.length !== parts.length) throw new Error(`riseAt: ${parts.length} glyphs in "${str}", ${times.length} times`)
+  const accent = parts.map((_, i) => o.accent !== undefined && i >= o.accent.from)
+  parts.forEach((p, i) => { if (accent[i]) p.el.setAttribute('fill', o.accent!.fill) })
+  const cy = y - o.size * 0.36, pop = o.pop ?? 0.28
+  return {
+    g, w,
+    set(t: number, out = Infinity) {
+      parts.forEach(({ el: p, mid }, i) => {
+        const u = clamp01((t - times[i]! + 0.07) / 0.28)
+        const v = clamp01((t - out - i * 0.035) / 0.28)
+        const off = v > 0 ? -inExpo(v) * o.size * 1.15 : (1 - outExpo(u)) * o.size * 1.15
+        const s = accent[i] && u > 0 ? 1 + pop * (1 - clamp01((t - times[i]!) / 0.22)) : 1
+        p.setAttribute('transform', `translate(${f2(mid)} ${f2(cy + off)}) scale(${s.toFixed(3)}) translate(${f2(-mid)} ${f2(-cy)})`)
+        p.style.visibility = u > 0 && v < 1 ? 'visible' : 'hidden'
       })
     },
   }
@@ -226,9 +258,10 @@ export function stamp(parent: Element, label: string, o: { size?: number; color?
   const size = o.size ?? 84, color = o.color ?? BH.red
   const t = text(g, 0, size * 0.36, label, { size, font: o.font ?? TYPE.serif, weight: 900, fill: color, anchor: 'middle', spacing: size * 0.08 })
   const w = t.getComputedTextLength() + size * 0.9, h = size * 1.45
-  el(g, 'rect', { x: -w / 2, y: -h / 2, width: w, height: h, rx: size * 0.12, fill: 'none', stroke: color, 'stroke-width': size * 0.11 })
-  el(g, 'rect', { x: -w / 2 + size * 0.17, y: -h / 2 + size * 0.17, width: w - size * 0.34, height: h - size * 0.34, rx: size * 0.06, fill: 'none', stroke: color, 'stroke-width': size * 0.035 })
-  el(g, 'path', { d: fiber(rect(-w / 2 - 6, -h / 2 - 6, w + 12, h + 12), { seed: o.seed ?? 3, kind: 'speckle', density: 2.4 }), fill: o.ground ?? BH.cream, opacity: 0.85, 'data-cf-audit': 'texture' })
+  // The frame and the worn flecks cross the label (and whatever the stamp lands on): that is the print, not a finding.
+  el(g, 'rect', { x: -w / 2, y: -h / 2, width: w, height: h, rx: size * 0.12, fill: 'none', stroke: color, 'stroke-width': size * 0.11, 'data-cf-audit': 'allow-overlap' })
+  el(g, 'rect', { x: -w / 2 + size * 0.17, y: -h / 2 + size * 0.17, width: w - size * 0.34, height: h - size * 0.34, rx: size * 0.06, fill: 'none', stroke: color, 'stroke-width': size * 0.035, 'data-cf-audit': 'allow-overlap' })
+  el(g, 'path', { d: fiber(rect(-w / 2 - 6, -h / 2 - 6, w + 12, h + 12), { seed: o.seed ?? 3, kind: 'speckle', density: 2.4 }), fill: o.ground ?? BH.cream, opacity: 0.85, 'data-cf-audit': 'texture allow-overlap' })
   g.style.mixBlendMode = 'multiply'
   return { g, w, h, set(p: Pose) { place(g, p) } }
 }
@@ -275,35 +308,132 @@ export function bubble(parent: Element, str: string, o: { size?: number; font?: 
 }
 
 // ── Transitions ──────────────────────────────────────────────────────────────────────────────
+// Each wipe has two forms on one geometry. A cover (`circleWipe`, `columnWipe`) paints the shape in a
+// colour over what is there. A reveal (`circleReveal`, `columnReveal`, `barReveal`) is a group `g` to
+// build the incoming set in, clipped to the shape, so the next set shows through it; its edge or lips
+// are drawn above `g`. A reveal is hidden at k <= 0 and whole (unclipped) at k >= 1. Wipes mark
+// themselves data-cf-audit="wipe", a reveal only while it moves: a cover in passage is not occluding
+// the text it passes over.
+type Stage = { w: number; h: number }
+
+/** Turns one token of an element's data-cf-audit on or off. */
+function auditToken(e: SVGElement, token: string, on: boolean) {
+  const s = new Set((e.dataset.cfAudit ?? '').split(/\s+/).filter(Boolean))
+  if (on === s.has(token)) return
+  if (on) s.add(token)
+  else s.delete(token)
+  if (s.size) e.dataset.cfAudit = [...s].join(' ')
+  else delete e.dataset.cfAudit
+}
+
+/**
+ * The circle wipe's radius at k: r0 at (cx, cy), drawing in a little first (anticipation, the
+ * first 15 %), then growing expo in; it covers the stage by k = 1.
+ */
+export function circleRadius(k: number, cx: number, cy: number, r0: number, stage: Stage): number {
+  if (k <= 0) return 0
+  const far = Math.max(Math.hypot(stage.w, stage.h), Math.hypot(cx, cy), Math.hypot(stage.w - cx, cy), Math.hypot(cx, stage.h - cy), Math.hypot(stage.w - cx, stage.h - cy))
+  const ant = k < 0.15 ? 1 - Math.sin((k / 0.15) * Math.PI) * 0.06 : 1
+  return r0 * ant + inExpo(clamp01((k - 0.15) / 0.85)) * far
+}
+
+const LIP = 16
+/** n columns at k, rising in turn from the left (`down`: hanging from the top, the right one first), each led by a lip; all land by k = 1. */
+function columnBoxes(k: number, stage: Stage, n: number, down = false): { body: Box; lip: Box }[] {
+  const cw = stage.w / n, st = n > 1 ? Math.min(0.12, 0.4 / (n - 1)) : 0
+  return Array.from({ length: n }, (_, i) => {
+    const p = inOutExpo(clamp01(k * 1.4 - (down ? n - 1 - i : i) * st))
+    const h = stage.h * p, lh = p > 0 && p < 1 ? LIP * (1 - p) : 0, x = i * cw, w = cw + 1
+    return down ? { body: { x, y: 0, w, h }, lip: { x, y: h, w, h: lh } } : { body: { x, y: stage.h - h, w, h }, lip: { x, y: stage.h - h - lh, w, h: lh } }
+  })
+}
+const setBox = (r: SVGRectElement, b: Box) => {
+  r.setAttribute('x', f2(b.x)); r.setAttribute('y', f2(b.y)); r.setAttribute('width', f2(b.w)); r.setAttribute('height', f2(b.h))
+}
+
 /**
  * The circle wipe: a disc that first draws in a little (anticipation), then swallows the frame
  * (expo in). `set(k, cx, cy, r0)`: at k = 0 the disc has radius r0 at (cx, cy); at 1 it covers the stage.
  */
-export function circleWipe(parent: Element, stage: { w: number; h: number }, fill: string) {
-  const c = el(parent, 'circle', { r: 0, fill })
-  const far = Math.hypot(stage.w, stage.h)
+export function circleWipe(parent: Element, stage: Stage, fill: string) {
+  const c = el(parent, 'circle', { r: 0, fill, 'data-cf-audit': 'wipe' })
   return {
     set(k: number, cx: number, cy: number, r0: number) {
-      const ant = k < 0.15 ? 1 - Math.sin((k / 0.15) * Math.PI) * 0.06 : 1
-      const r = k <= 0 ? 0 : r0 * ant + inExpo(clamp01((k - 0.15) / 0.85)) * far
-      c.setAttribute('cx', f2(cx)); c.setAttribute('cy', f2(cy)); c.setAttribute('r', f2(r))
+      c.setAttribute('cx', f2(cx)); c.setAttribute('cy', f2(cy)); c.setAttribute('r', f2(circleRadius(k, cx, cy, r0, stage)))
     },
   }
 }
 
-/** The column wipe: `n` paper columns rise in turn, each led by a coloured lip; `set(k)` 0..1. */
-export function columnWipe(parent: Element, stage: { w: number; h: number }, lips: readonly string[], fill: string = BH.paper) {
-  const g = el(parent, 'g')
-  const n = lips.length, cw = stage.w / n
-  const cols = lips.map((lip) => ({ body: el(g, 'rect', { width: cw + 1, height: 0, fill }), lip: el(g, 'rect', { width: cw + 1, height: 0, fill: lip }) }))
+/** The column wipe: one paper column per lip colour rises in turn, led by its lip (`down`: blinds from the top); `set(k)` 0..1. */
+export function columnWipe(parent: Element, stage: Stage, lips: readonly string[], fill: string = BH.paper, o: { down?: boolean } = {}) {
+  const g = el(parent, 'g', { 'data-cf-audit': 'wipe' })
+  const cols = lips.map((lip) => ({ body: el(g, 'rect', { fill }), lip: el(g, 'rect', { fill: lip }) }))
   return {
     set(k: number) {
-      cols.forEach((c, i) => {
-        const p = inOutExpo(clamp01(k * 1.4 - i * 0.12))
-        const y = stage.h * (1 - p), lipH = 16 * (1 - p)
-        c.body.setAttribute('x', f2(i * cw)); c.body.setAttribute('y', f2(y)); c.body.setAttribute('height', f2(stage.h - y))
-        c.lip.setAttribute('x', f2(i * cw)); c.lip.setAttribute('y', f2(y - lipH)); c.lip.setAttribute('height', f2(p > 0 ? lipH : 0))
-      })
+      columnBoxes(k, stage, cols.length, o.down).forEach((b, i) => { setBox(cols[i]!.body, b.body); setBox(cols[i]!.lip, b.lip) })
+    },
+  }
+}
+
+/** A group clipped to a shape set per frame, and a group above it for the wipe's edge. */
+function reveal(ctx: Pick<MountContext, 'id'>, parent: Element) {
+  const g = el(parent, 'g')
+  const clip = clipUrl(ctx, parent, '')
+  const above = el(parent, 'g', { 'data-cf-audit': 'wipe' })
+  return {
+    g, above,
+    set(k: number, d: string) {
+      const moving = k > 0 && k < 1
+      g.style.display = k > 0 ? '' : 'none'
+      above.style.display = moving ? '' : 'none'
+      if (k >= 1) g.removeAttribute('clip-path')
+      else { g.setAttribute('clip-path', clip.url); clip.path.setAttribute('d', d) }
+      auditToken(g, 'wipe', moving)
+    },
+  }
+}
+
+/** The circle wipe as a reveal: the incoming set (in `g`) shows inside the circle; `edge` rings it in a colour. `set(k, cx, cy, r0)`. */
+export function circleReveal(ctx: Pick<MountContext, 'id'>, parent: Element, stage: Stage, o: { edge?: string } = {}) {
+  const r = reveal(ctx, parent)
+  const ring = o.edge ? el(r.above, 'circle', { fill: 'none', stroke: o.edge, 'stroke-width': 10 }) : null
+  return {
+    g: r.g,
+    set(k: number, cx: number, cy: number, r0: number) {
+      const rad = circleRadius(k, cx, cy, r0, stage)
+      r.set(k, ellipseD(cx, cy, rad, rad))
+      if (ring) { ring.setAttribute('cx', f2(cx)); ring.setAttribute('cy', f2(cy)); ring.setAttribute('r', f2(rad)) }
+    },
+  }
+}
+
+/** The column wipe as a reveal: the incoming set (in `g`) shows in the columns, led by the lips (`down`: blinds from the top); `set(k)`. */
+export function columnReveal(ctx: Pick<MountContext, 'id'>, parent: Element, stage: Stage, lips: readonly string[], o: { down?: boolean } = {}) {
+  const r = reveal(ctx, parent)
+  const lr = lips.map((fill) => el(r.above, 'rect', { fill }))
+  return {
+    g: r.g,
+    set(k: number) {
+      const cols = columnBoxes(k, stage, lips.length, o.down)
+      r.set(k, cols.map((c) => rectD(c.body)).join(''))
+      cols.forEach((c, i) => setBox(lr[i]!, c.lip))
+    },
+  }
+}
+
+/**
+ * The bar reveal: the incoming set (in `g`) covers `k` of the stage's width from the right (`from:
+ * 'left'` the other way), led by an `edge` rule. Step it across: `set(stepped(t, times, 0.12) / times.length)`.
+ */
+export function barReveal(ctx: Pick<MountContext, 'id'>, parent: Element, stage: Stage, o: { edge?: string; from?: 'left' | 'right' } = {}) {
+  const r = reveal(ctx, parent)
+  const edge = o.edge ? el(r.above, 'rect', { y: 0, width: 10, height: stage.h, fill: o.edge }) : null
+  return {
+    g: r.g,
+    set(k: number) {
+      const w = stage.w * clamp01(k), x = o.from === 'left' ? 0 : stage.w - w
+      r.set(k, rectD({ x, y: 0, w, h: stage.h }))
+      edge?.setAttribute('x', f2((o.from === 'left' ? w : x) - 5))
     },
   }
 }

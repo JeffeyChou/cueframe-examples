@@ -13,7 +13,7 @@ path (`../../kits/texture.js`); a helper only one piece uses lives in that piece
 | `paper.ts` | printed and cut paper on `texture.ts`: `roughen`, `fiber`, `cut`, opt-in `boil`, `shadowOffset`, `sheet` (grain and vignette over the stage) | r-editing-village, utc8-customs |
 | `beatcut.ts` | cut lists from beats and drum hits, and a Canvas2D window grammar (below) | locomotion, survey-of-rain |
 | `comic.ts` | the newspaper-comic look (style bible `styles/comic.md`): Ben-Day plates off register, panels, balloons, captions, sound effects, bursts, speed lines | style-comic |
-| `bauhaus.ts` | the Bauhaus-fable look (style bible `styles/bauhaus.md`): grid, masked headlines, stepped mechanics, primitives, shape characters, stamps, circle and column wipes | style-bauhaus |
+| `bauhaus.ts` | the Bauhaus-fable look (style bible `styles/bauhaus.md`): grid, masked headlines (also timed per glyph, for lyrics), stepped mechanics, primitives, shape characters, stamps, circle, column and bar wipes that cover or reveal the next set | style-bauhaus |
 | `svg.ts` | plain SVG helpers the style kits share: `el`, `stageSvg`, `place`, `text`, `clipUrl`, `bbox` | comic.ts, bauhaus.ts |
 
 ## Styles

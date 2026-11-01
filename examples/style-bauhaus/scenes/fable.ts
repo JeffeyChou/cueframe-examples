@@ -1,11 +1,12 @@
 // The poster and the inspection: the grid draws on, 方圆 rises, three squares hop in step onto the
 // baseline, the circle rolls in late. A red marker steps along the labels and each square is stamped
 // 合格; the circle is ringed and stamped 不合格, squeezes itself square and is stamped 合格 over it.
-// The squares nod; the circle hops, pops round again, rolls off and swells to fill the frame.
+// The squares nod; the circle hops, pops round again and rolls off; the moral swells out of it
+// (scenes/moral.ts reveals itself through a circle from SWELL).
 import { scene } from '@cueframe/core'
 import { clamp01, inOutCubic, lerp, outBack, seg } from '@cueframe/recipes/motion.js'
 import {
-  BH, TYPE, circleWipe, columns, figure, grid, ring, rise, rule, settle, stamp, stampPose, stepped,
+  BH, TYPE, columns, figure, grid, ring, rise, rule, settle, stamp, stampPose, stepped,
 } from '../../../kits/bauhaus.js'
 import { el, stageSvg, text } from '../../../kits/svg.js'
 import { K } from '../timing.js'
@@ -13,6 +14,8 @@ import { K } from '../timing.js'
 const GROUND = 800
 const XS = [300, 610, 920], XC = 1290
 const SIZE = 220, R = SIZE / 2, STEP = 190, LEG = 48
+/** Where the circle stops rolling (legs in): the moral's circle reveal grows from its body. */
+export const SWELL = { x: 1640, y: GROUND - R, r: R }
 
 export const fable = scene({
   id: 'fable',
@@ -44,8 +47,7 @@ export const fable = scene({
     const squares = XS.map((_, i) => figure(ctx, svg, 'square', SIZE, BH.navy, { leg: LEG, seed: 30 + i }))
     const circle = figure(ctx, svg, 'circle', SIZE, BH.red, { leg: LEG, seed: 41 })
     const strain = el(svg, 'path', { d: Array.from({ length: 8 }, (_, i) => { const a = (i / 8) * Math.PI * 2 + 0.3; return `M${(Math.cos(a) * 145).toFixed(1)} ${(Math.sin(a) * 145).toFixed(1)}L${(Math.cos(a) * 182).toFixed(1)} ${(Math.sin(a) * 182).toFixed(1)}` }).join(''), stroke: BH.ink, 'stroke-width': 6, 'stroke-linecap': 'round' })
-    const wipe = circleWipe(svg, stage, BH.red)
-    return { stage, lines, head, latin, note, noteMark, base, labels, marker, passes, circleRing, reject, pass4, squares, circle, strain, wipe }
+    return { stage, lines, head, latin, note, noteMark, base, labels, marker, passes, circleRing, reject, pass4, squares, circle, strain }
   },
   render(f, st) {
     const t = f.t
@@ -89,10 +91,10 @@ export const fable = scene({
     st.pass4.set(stampPose(t, K.pass, { x: XC + 96, y: 892, rot: -13 }))
 
     // The circle: rolls in (two turns, so it stops upright), legs pop out; flinches at 不合格,
-    // squeezes itself square in three pushes, hops, pops round mid-air, rolls off and swells.
+    // squeezes itself square in three pushes, hops, pops round mid-air and rolls off.
     const rollK = settle(seg(t, K.roll[0], K.roll[1]))
     const awayK = seg(t, K.rollAway[0], K.rollAway[1], inOutCubic)
-    const x = t < K.rollAway[0] ? lerp(XC + 4 * Math.PI * R, XC, rollK) : lerp(XC, 1640, settle(awayK))
+    const x = t < K.rollAway[0] ? lerp(XC + 4 * Math.PI * R, XC, rollK) : lerp(XC, SWELL.x, settle(awayK))
     const spin = ((x - XC) / R) * (180 / Math.PI)
     const push = stepped(t, [K.squeeze[0], K.squeeze[0] + 0.5, K.squeeze[0] + 1.0], 0.38, (u) => outBack(u, 2)) / 3
     const hopK = seg(t, K.hop, K.hop + 0.36)
@@ -109,6 +111,5 @@ export const fable = scene({
     })
     st.strain.style.display = squeezing && Math.floor((t - K.squeeze[0]) / 0.15) % 2 === 0 ? '' : 'none'
     st.strain.setAttribute('transform', `translate(${x.toFixed(1)} ${GROUND - LEG - R})`)
-    st.wipe.set(seg(t, K.wipe[0], K.wipe[1]), x, GROUND - LEG * legs - R, R)
   },
 })

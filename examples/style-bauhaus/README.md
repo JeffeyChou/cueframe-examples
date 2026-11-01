@@ -15,8 +15,8 @@ pnpm exec cueframe dev examples/style-bauhaus
 | File | What |
 |---|---|
 | `timing.ts` | every beat on the bed's eighth-note grid, and the score's events |
-| `scenes/fable.ts` | the poster and the inspection, the circle wipe |
-| `scenes/moral.ts` | the moral on red, the column wipe |
+| `scenes/fable.ts` | the poster and the inspection |
+| `scenes/moral.ts` | the moral on red, revealed through the swelling circle (`circleReveal`); the column wipe |
 | `scenes/end.ts` | the end card |
 | `scenes/overlay.ts` | the printed sheet (`kits/paper.ts` `sheet`) |
 | `score.py`, `mix.json` | bossa bed, woodblocks, stamps, pencil, chords, harp, chimes |

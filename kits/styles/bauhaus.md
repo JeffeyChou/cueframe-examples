@@ -65,11 +65,17 @@ upright), square things **hop**.
 - Arrivals ease out expo; landings `settle` (back, overshoot 0.9): things land, they do not bounce.
 - Mechanical things move in **steps** (`stepped`): hops, the marker, counters, turns of an accent;
   put the steps on the bed's eighth notes so picture and music tick together.
-- Headlines `rise` glyph by glyph through a mask at the baseline (stagger 0.06–0.25).
+- Headlines `rise` glyph by glyph through a mask at the baseline (stagger 0.06–0.25). Sung or
+  narrated lines use `riseAt`: each glyph on its own time (from lyrics.json or words.json), an
+  accent colour from a glyph on with a pop, and out upward through the mask at a given time.
 - Stamps slam (×1.35 → 1 in 0.12 s) with a small flinch of whoever is stamped; rings draw on in
   0.45 s and overshoot their start.
-- Transitions: `circleWipe` (a small anticipation, then expo in from a character, so the character
-  becomes the next field) and `columnWipe` (four paper columns with coloured lips).
+- Transitions: a circle (a small anticipation, then expo in from a character, so the character
+  becomes the next field), columns with coloured lips (rising, or `down` as blinds) and a bar
+  stepped across on the beat. Each wipe either covers (`circleWipe`, `columnWipe`: a colour over
+  the outgoing set) or reveals (`circleReveal`, `columnReveal`, `barReveal`: build the incoming set
+  in the wipe's `g` and it shows through the shape, which carries the eye across the cut). The kit
+  marks wipes `data-cf-audit="wipe"` and stamp frames `allow-overlap`.
 - The sheet (`kits/paper.ts` `sheet`) over everything: grain, light mottling, vignette.
 
 ## Story shape
@@ -90,9 +96,10 @@ under the moral, a rising harp for the columns, a chime per primitive.
 |---|---|
 | `BH`, `TYPE`, `GRID`, `columns` | palette, fonts, the grid's geometry |
 | `outExpo`, `inExpo`, `inOutExpo`, `settle`, `stepped` | the easing and stepped mechanics |
-| `grid`, `rule`, `rise` | hairline grid, growing rules, masked headline |
+| `grid`, `rule`, `rise`, `riseAt` | hairline grid, growing rules, masked headline, the same timed per glyph |
 | `paperShape`, `rect`, `poly` | printed paper shapes (kits/materials `paper`) |
 | `primitive` (disc, block, wedge) | the poster shapes with ink accents |
 | `figure`, `eyePair`, `superellipse` | fable characters |
 | `stamp`, `stampPose`, `ring`, `bubble` | marks |
-| `circleWipe`, `columnWipe` | transitions |
+| `circleWipe`, `columnWipe` | transitions that cover |
+| `circleReveal`, `columnReveal`, `barReveal`, `circleRadius` | transitions that reveal the next set; the circle's radius |
