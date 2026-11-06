@@ -1,0 +1,9 @@
+{
+  "name": "@cueframe/example-style-riso",
+  "private": true,
+  "type": "module",
+  "cueframe": {
+    "generated": ["build/fonts/fonts.json"],
+    "needs": "bash examples/style-riso/make.sh"
+  }
+}

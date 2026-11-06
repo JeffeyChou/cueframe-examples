@@ -25,6 +25,12 @@ a short demo film.
 <b><a href="examples/style-bauhaus">style-bauhaus</a></b>: Bauhaus fable. Three squares, one circle, a stamp: 没有规矩，不成方圆 (said the square). Swiss grid, masked headlines, stepped motion, circle and column wipes. 19 s.<br>
 <sub>uses: <code>kits/bauhaus</code> (<code>styles/bauhaus.md</code>), <code>kits/materials</code>, <code>paper</code></sub></td>
 </tr>
+<tr>
+<td width="50%" valign="top"><a href="examples/style-riso"><img src="examples/style-riso/preview.webp" width="100%" alt="style-riso"></a><br>
+<b><a href="examples/style-riso">style-riso</a></b>: risograph. 雨停了: a walker in the rain printed plate by plate in teal, yellow and fluorescent pink; the plates drift while the rain thins and snap back on the downbeat. Sampled bass, vibraphone and nylon guitar. 17.5 s.<br>
+<sub>uses: <code>kits/print</code> (<code>styles/riso.md</code>), <code>audio.sampler</code>, <code>credits</code></sub></td>
+<td width="50%" valign="top"></td>
+</tr>
 </table>
 
 ## Explainers

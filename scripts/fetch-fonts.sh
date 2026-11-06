@@ -54,4 +54,6 @@ examples/style-comic/data/fonts/Bangers.ttf $BANGERS
 examples/style-bauhaus/data/fonts/NotoSansSC.ttf $SANS
 examples/style-bauhaus/data/fonts/NotoSerifSC.ttf $SERIF
 examples/style-bauhaus/data/fonts/Jost.ttf $JOST
+examples/style-riso/data/fonts/NotoSansSC.ttf $SANS
+examples/style-riso/data/fonts/Jost.ttf $JOST
 LIST
