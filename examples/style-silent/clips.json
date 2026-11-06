@@ -1,0 +1,4 @@
+[
+  { "id": "a", "src": "data/clips/market.mp4", "in": 0, "dur": 6, "speed": 1.15 },
+  { "id": "b", "src": "data/clips/market.mp4", "in": 15.6, "dur": 6, "speed": 1.15 }
+]

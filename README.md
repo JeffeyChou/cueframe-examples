@@ -29,7 +29,9 @@ a short demo film.
 <td width="50%" valign="top"><a href="examples/style-riso"><img src="examples/style-riso/preview.webp" width="100%" alt="style-riso"></a><br>
 <b><a href="examples/style-riso">style-riso</a></b>: risograph. 雨停了: a walker in the rain printed plate by plate in teal, yellow and fluorescent pink; the plates drift while the rain thins and snap back on the downbeat. Sampled bass, vibraphone and nylon guitar. 17.5 s.<br>
 <sub>uses: <code>kits/print</code> (<code>styles/riso.md</code>), <code>audio.sampler</code>, <code>credits</code></sub></td>
-<td width="50%" valign="top"></td>
+<td width="50%" valign="top"><a href="examples/style-silent"><img src="examples/style-silent/preview.webp" width="100%" alt="style-silent"></a><br>
+<b><a href="examples/style-silent">style-silent</a></b>: silent film. 市场街 1906: the Library of Congress's Market Street ride, four days before the earthquake, projected as a worn sepia print; the photograph turns to ink, an iris closes on the clock, the next card burns in the gate. Upright piano. 24 s.<br>
+<sub>uses: <code>kits/film</code> (<code>styles/silent.md</code>), <code>footage</code>, <code>data/sources.json</code> + <code>credits</code>, <code>audio.sampler</code></sub></td>
 </tr>
 </table>
 

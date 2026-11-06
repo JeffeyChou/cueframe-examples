@@ -1,0 +1,8 @@
+{
+  "stems": [
+    { "name": "piano", "file": "build/stems/piano.wav", "role": "bed", "gain": 0.8 },
+    { "name": "room", "file": "build/stems/room.wav", "role": "sfx", "gain": 0.5 }
+  ],
+  "target": { "lufs": -14, "tp": -2 },
+  "fade_out": 0.6
+}

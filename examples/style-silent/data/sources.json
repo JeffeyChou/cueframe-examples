@@ -1,0 +1,23 @@
+{
+  "sources": [
+    {
+      "id": "market-street",
+      "file": "data/clips/market.mp4",
+      "kind": "footage",
+      "title": "A trip down Market Street before the fire",
+      "author": "Miles Brothers",
+      "date": "1906-04-14",
+      "licence": "Public domain",
+      "page": "https://www.loc.gov/item/00694408/",
+      "url": "https://tile.loc.gov/storage-services/service/mbrs/ntscrm/00015143/00015143.mp4",
+      "retrieved": "2026-11-05",
+      "spec": "LoC access mp4, 1440×1080, 24 fps, 579.5 s, 226 536 580 bytes; make.sh cuts 455–480 s into data/clips/market.mp4 (H.264, no audio). The transfer runs at about 0.87× (LoC notes: 8:23 at about 15 fps), so the plates play it at 1.15×.",
+      "credit": "A trip down Market Street before the fire (Miles Brothers, 1906). Library of Congress, Motion Picture, Broadcasting, and Recorded Sound Division, Before and After the Great Earthquake and Fire: Early Films of San Francisco, 1897 to 1916 Collection. Public domain.",
+      "note": "Facts on the cards come from the LoC record: filmed 14 April 1906, four days before the earthquake and fire of 18 April 1906.",
+      "used": [
+        { "src": [455, 461.9], "film": [3, 9] },
+        { "src": [470.6, 477.5], "film": [9, 15] }
+      ]
+    }
+  ]
+}

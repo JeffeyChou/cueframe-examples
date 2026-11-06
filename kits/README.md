@@ -15,6 +15,7 @@ path (`../../kits/texture.js`); a helper only one piece uses lives in that piece
 | `comic.ts` | the newspaper-comic look (style bible `styles/comic.md`): Ben-Day plates off register, panels, balloons, captions, sound effects, bursts, speed lines | style-comic |
 | `bauhaus.ts` | the Bauhaus-fable look (style bible `styles/bauhaus.md`): grid, masked headlines (also timed per glyph, for lyrics), stepped mechanics, primitives, shape characters, stamps, circle, column and bar wipes that cover or reveal the next set | style-bauhaus |
 | `print.ts` | spot-ink printing (style bible `styles/riso.md`): plates drawn as ink densities and printed in one WebGL pass — dots, lines, solids, wood grain; misregistration fixed per shot, kicks and drift; a roller that lays each plate down; presets `riso`, `silkscreen`, `woodcut`, `halftone` | style-riso |
+| `film.ts` | film looks for archival and screen stories (style bible `styles/silent.md`): footage redrawn as ink (`redraw`), a projected print (`film`: weave, flicker, halation, dust, hairs, scratches, toning, tint, iris, burn) and a tube fed by a worn tape (`crt`) | style-silent |
 | `svg.ts` | plain SVG helpers the style kits share: `el`, `stageSvg`, `place`, `text`, `clipUrl`, `bbox` | comic.ts, bauhaus.ts |
 
 ## Styles

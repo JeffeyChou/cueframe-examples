@@ -56,4 +56,5 @@ examples/style-bauhaus/data/fonts/NotoSerifSC.ttf $SERIF
 examples/style-bauhaus/data/fonts/Jost.ttf $JOST
 examples/style-riso/data/fonts/NotoSansSC.ttf $SANS
 examples/style-riso/data/fonts/Jost.ttf $JOST
+examples/style-silent/data/fonts/NotoSerifSC.ttf $SERIF
 LIST
