@@ -12,7 +12,9 @@ read `cueframe/AGENTS.md` first, it is the contract for every project here.
    Copy one into the project only to change it. A film in one of the looks starts from its bible in
    `kits/styles/`; restyling one follows "Make a style your own" in `kits/README.md`.
 3. Large binaries (fonts over ~1 MB, audio, video, rendered plates) are never committed: add them
-   to `.gitignore` and to `scripts/fetch-fonts.sh` or the example's `make.sh`.
+   to `.gitignore` and to `scripts/fetch-fonts.sh` or the example's `make.sh`. Material somebody
+   else made (footage, images, recordings, data) needs an entry in `data/sources.json` and a passing
+   `cueframe-py credits`; the `sourcing` skill says where to find it and how to read its licence.
 4. A `README.md` with what the piece is and the commands that build it, from the repository root.
    Files it imports from `build/` go in its `package.json` as `"cueframe": { "generated": [...],
    "needs": "..." }`.
