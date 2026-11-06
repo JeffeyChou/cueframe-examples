@@ -23,6 +23,17 @@ Paper with a faint grid, a huge black serif word top-left, letter-spaced Jost be
 ink baseline with shapes standing on it in a row, numbered labels under them, a red square
 somewhere as the only bright accent.
 
+## What it is not
+
+- **Not Swiss motion graphics**: the grid and the type are Swiss, but shapes act out a story with
+  a protagonist; nothing is there only to look designed.
+- **Not a corporate explainer**: no gradients, drop shadows, rounded icons or friendly UI colour;
+  the irony needs the hard, flat poster.
+- **Not constructivist propaganda**: no shouting diagonals or red-on-black slogans; the baseline
+  stays level and the moral is dry.
+- **Not print**: flat fills, no dots or misregistration (that is `print.ts`); the only texture is
+  the paper sheet.
+
 ## Colour
 
 | Token | Hex | Role |
@@ -77,6 +88,19 @@ upright), square things **hop**.
   in the wipe's `g` and it shows through the shape, which carries the eye across the cut). The kit
   marks wipes `data-cf-audit="wipe"` and stamp frames `allow-overlap`.
 - The sheet (`kits/paper.ts` `sheet`) over everything: grain, light mottling, vignette.
+
+## Camera grammar
+
+The camera is mostly a poster on a wall: it moves rarely, and each move means something.
+
+| Move | Expresses | Can serve |
+|---|---|---|
+| Locked side elevation | order, the rules of the world | most of the fable |
+| Column or circle wipe (cover) | the next step, a rule changing | 01 → 02 → 03, a new chapter |
+| Circle reveal from a shape | an arrival, a point of view | the outsider entering, a close look |
+| Slow truck along the baseline | a procession, time passing | a queue, a production line, bureaucracy |
+| Push-in on one shape | pressure, the test | a figure squeezed into the mould |
+| Headline rising through a mask | the narrator's verdict | a title, the moral |
 
 ## Story shape
 

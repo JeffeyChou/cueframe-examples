@@ -23,7 +23,43 @@ path (`../../kits/texture.js`); a helper only one piece uses lives in that piece
 A style kit is a look you can start a film from: its bible in `styles/<name>.md` (what reads in
 three seconds, palette, type, composition, motion, sound, the kit's functions) and a short demo
 film in `examples/style-<name>`. Start a piece in that look by reading the bible and the demo's
-scenes, then import the kit.
+scenes, then import the kit. A new bible starts from [`styles/TEMPLATE.md`](styles/TEMPLATE.md):
+only what stays true for every film; the demo's story, shots and score go in its README.
+
+### Make a style your own
+
+Restyling a look (for a brand, a series, a mood) is a short conversation, then a frame, then a
+demo. The bible and the demo's scenes come first, read in full.
+
+1. **Ask, one question at a time** (two or three options, the recommended one first): what the
+   film is for and where it plays (format, platform, brand or IP); what should change; then
+   section by section. About ten questions at most; "you decide" means take the recommendations.
+2. **Sort each wish** into one of three groups and say which before agreeing to it:
+
+   | Group | Sections | Means |
+   |---|---|---|
+   | Safe to change | palette within its colour logic, type, motion tempo and amount, sound palette, one signature move swapped | the style stays itself |
+   | Changes its character | the medium or rendering, the colour logic itself, the camera grammar | possible; say what is lost |
+   | Can't change | the three-second read and *what it is not*, the kit's engine | that is another style: suggest a closer one |
+
+   Vague wishes, translated: **premium / 高级** → fewer colours, stronger light–dark contrast,
+   slower motion, more empty space, lighter type. **Younger / 活泼** → a brighter accent, cuts on
+   the beat, bouncier easing, more percussion. **Calmer / 安静** → slower tempo, longer holds,
+   fewer moving things, sparser instruments. **Our brand** → the brand colour as an accent, not
+   the ground; the brand face for titles only if it covers the film's language and allows video;
+   the logo at the open or the end.
+3. **At most five changes a round**, and changes travel together: faster motion wants denser
+   sound, a darker palette rechecks type contrast, a new material brings new pitfalls. Keep the
+   signature: swap one signature move at most. Story, cast, opening, ending, pacing and voice are
+   free in every film and need no restyle.
+4. **Summarise** (before → after → what it costs) and wait for an OK. Then copy the bible to
+   `styles/<new>.md` ("Based on <base>"), changes in place, and a `## Changes` table at the end
+   (section | base | now | why).
+5. **Prove it on one frame**: the same composition rendered with the base settings and the new
+   ones, side by side (base on the left), from real code. Show it and wait. After two rounds of
+   notes that don't land, suggest a closer base.
+6. **Demo, 15–30 s**, with a story unlike the base demo's: every row of the changes table visible
+   on screen, one signature move, one real silence, music and effects (no voice unless asked).
 
 Designs: cueframe `docs/design/camera-space-acting.md` (acting), `docs/design/materials.md` and
 `docs/design/paths-paper-music.md` (texture, materials, paper),

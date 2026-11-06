@@ -18,6 +18,16 @@ Kit: [`kits/comic.ts`](../comic.ts). Demo: [`examples/style-comic`](../../exampl
 4. Lettering that slaps in: balloons, a yellow caption box, sound effects in block letters with an
    ink shadow, a starburst on the hit, speed lines toward it.
 
+## What it is not
+
+- **Not manga**: colour newspaper print with Ben-Day dots, not grey screentone and black-and-white
+  speed lines.
+- **Not a parallax motion comic**: the panels are flat print; the camera reads the page and the
+  characters act inside their panels.
+- **Not pop art**: the dots are small print texture under the drawing, never the subject.
+- **Not risograph**: process cyan, magenta and yellow under a black key, misregistered colour
+  plates only; fluorescent spot inks are `print.ts`.
+
 ## Page and panels
 
 - Page 3200 × 2200 units, masthead band to y ≈ 300 (title as a sound effect, issue and date in
@@ -75,6 +85,17 @@ instead of a shake, and keep oscillations ≤ 2.5 Hz and small (the ringing cloc
 rocks 3°; its hammer swings at 2 Hz).
 - Rhythm of a strip: page in (≈ 2 s) → 起 3 s → 承 3 s → 转 3 s → 合 3.5 s → page (≈ 2 s) → ink.
 - End on ink black (0.6 s), never a hard cut.
+
+## Camera grammar
+
+| Move | Expresses | Can serve |
+|---|---|---|
+| Full page | the strip as an object, where we are | before the first panel, after the last |
+| Glide to the next panel (0.55–0.85 s, motion blur) | reading order, the next beat | 起 → 承 → 转 → 合 |
+| Hold with a slow drift (×1.035) | a beat landing, a pause | a line of dialogue, the setup |
+| One punch-in (+5 %) | the impact | the turn's hit, the punchline |
+| Pull back to the full page | the joke complete, a look back | after the last panel |
+| Ink to black (0.6 s) | the episode ends | the end, a cliffhanger |
 
 ## Sound
 
